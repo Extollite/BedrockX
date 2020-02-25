@@ -7,16 +7,6 @@
 #include"framework.h"
 
 void sometest() {
-    if (1) {
-        auto handle = addListener([](PostInitEvent& ev) {
-            do_log(L"high prio listener\n");
-            }, HIGH);
-        auto handle2 = addListener([](PostInitEvent& ev) {
-            do_log(L"low prio listener\n");
-            }, LOW);
-        //removeListener(handle2); //add&remove listener dynamicly
-        PostInitEvent::_call();
-    }
 	addListener(
 		[](PlayerJoinEvent& ev) {
 			printf("listen\n");
@@ -56,6 +46,7 @@ THook(int, "main", int a, void* b) {
     sometest();
 	loadall();
 	PostInitEvent::_call();
+	PostInitEvent::_removeall();
     printf("here\n");
 	return original(a, b);
 }

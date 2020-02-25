@@ -15,10 +15,11 @@ THook(void, "?startServerThread@ServerInstance@@QEAAXXZ", void* a) {
 	LocateS<ServerNetworkHandler>::assign(*LocateS<Minecraft>()->getServerNetworkHandler());
 	printf("level %p neth %p\n",LocateS<Level>()._srv, LocateS<ServerNetworkHandler>()._srv);
 	ServerStartedEvent::_call();
+	ServerStartedEvent::_removeall();
 }
 THook(void, "?handle@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@AEBVSetLocalPlayerAsInitializedPacket@@@Z", ServerNetworkHandler& thi, NetworkIdentifier const& b, unsigned char* pk) {
 	original(thi, b, pk);
 	ServerPlayer* sp = thi._getServerPlayer(b, pk[16]);
 	if(sp)
-	PlayerJoinEvent::_call(*sp);
+		PlayerJoinEvent::_call(*sp);
 }

@@ -63,6 +63,9 @@ public:
 		else
 			return;
 	}
+	static void _removeall() {
+		listener.clear();
+	}
 	static LInfo<T> _reg(function<void(T&)>&& cb, EvPrio prio) {
 		LInfo<T> lf;
 		lf.id = newListenerID();
