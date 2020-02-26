@@ -1,8 +1,8 @@
-#include"pch.h"
+#include "pch.h"
 //PlayerMap.h
 static std::vector<DePlayerCB> depcbs;
 LIGHTBASE_API void _regDePlayerCB(DePlayerCB cb) {
-	depcbs.emplace_back(std::move(cb));
+	depcbs.emplace_back(cb);
 }
 
 THook(void, "??_EServerPlayer@@UEAAPEAXI@Z", ServerPlayer* thi, char a2) {

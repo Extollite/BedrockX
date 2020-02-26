@@ -12,3 +12,5 @@ struct LocateS {
 		_srv = (T*)&srv;
 	}
 };
+template<class T>
+LIGHTBASE_API T* LocateS<T>::_srv;

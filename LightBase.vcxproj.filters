@@ -43,9 +43,16 @@
     <Filter Include="头文件\types">
       <UniqueIdentifier>{ba2db65a-3a18-4a8a-9bfa-c4df60ca1f36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\scheduler">
+      <UniqueIdentifier>{a2cecbd5-ece1-4ddd-9c39-0a00fcb27a82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\scheduler">
+      <UniqueIdentifier>{a659f36d-51db-4684-9c79-9650cf3f7d63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include=".clang-format" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LightBase.cpp">
@@ -71,6 +78,9 @@
     </ClCompile>
     <ClCompile Include="mc\RuntimeRefl.cpp">
       <Filter>源文件\mc</Filter>
+    </ClCompile>
+    <ClCompile Include="scheduler\sch.cpp">
+      <Filter>源文件\scheduler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="headers\stl\langPack.h">
       <Filter>头文件\stl</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\api\scheduler\scheduler.h">
+      <Filter>头文件\scheduler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

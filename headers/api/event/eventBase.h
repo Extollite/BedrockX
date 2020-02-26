@@ -43,8 +43,7 @@ struct CallBackStorage {
 	CallBackStorage() {
 		data = 1;
 	}
-	CallBackStorage(function<void(T&)>&& fun,LInfo<T> lf):id(lf) {
-		data = std::move(fun);
+	CallBackStorage(function<void(T&)>&& fun,LInfo<T> lf):id(lf),data(std::forward< function<void(T&)>>(fun)) {
 	}
 };
 template<class T>
@@ -70,17 +69,17 @@ public:
 		LInfo<T> lf;
 		lf.id = newListenerID();
 		if (prio == HIGH) {
-			listener.emplace_front(std::move(cb),lf);
+			listener.emplace_front(std::forward< function<void(T&)>>(cb),lf);
 			return lf;
 		}
 		if (prio == LOW) {
-			listener.emplace_back(std::move(cb), lf);
+			listener.emplace_back(std::forward< function<void(T&)>>(cb), lf);
 			return lf;
 		}
 		for (auto it = listener.begin(); it != listener.end(); ++it) {
 			if (!(*it)) {
 				//flag
-				listener.emplace(it, std::move(cb), lf);
+				listener.emplace(it, std::forward< function<void(T&)>>(cb), lf);
 			}
 		}
 		return lf;
@@ -132,16 +131,16 @@ public:
 	INotifyPlayerEvent(ServerPlayer& sp) :IPlayerEvent(sp) {}
 };
 
+
 template<class T>
 LInfo<T> addListener(function<void(T&)>&& fn, EvPrio prio = MEDUIM) {
-	return T::_reg(std::move(fn), prio);
+	return T::_reg(std::forward<function<void(T&)>>(fn), prio);
 }
 template<class T>
 void removeListener(LInfo<T> lf) {
 	T::_remove(lf);
 }
-
 template<typename T>
-auto addListener(T const& x, EvPrio prio = MEDUIM) {
-	return addListener(function(x),prio);
+auto addListener(T&& fn, EvPrio prio = MEDUIM) {
+	return addListener(function(std::forward<T>(fn)), prio);
 }

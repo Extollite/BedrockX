@@ -1,4 +1,4 @@
 #pragma once
-#include"eventBase.h"
-class PostInitEvent :public INotifyEvent<PostInitEvent> {};
-class ServerStartedEvent :public INotifyEvent< ServerStartedEvent> {};
+#include "eventBase.h"
+class PostInitEvent : public INotifyEvent<PostInitEvent> {};
+class ServerStartedEvent : public INotifyEvent<ServerStartedEvent> {};

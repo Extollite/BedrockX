@@ -11,8 +11,8 @@ public:
     MallocVal get(string_view key);
     void put(string_view key, string_view val);
     void del(string_view key);
-    void iter(std::function<bool(string_view key)>f);
-    void iter(std::function<bool(string_view key, string_view val)>);
+    void iter(std::function<bool(string_view key)>&&);
+    void iter(std::function<bool(string_view key, string_view val)>&&);
     static void free(void* ptr);
 };
 class MallocVal {

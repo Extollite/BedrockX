@@ -17,6 +17,6 @@ using std::string, std::string_view,std::shared_ptr,std::unique_ptr;
 //#include"api/gui/gui.h"
 #include"api/serviceLocate.h"
 #include"api/refl/playerMap.h"
-
+#include"api/scheduler/scheduler.h"
 #endif // ! 
 

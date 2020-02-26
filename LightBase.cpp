@@ -2,30 +2,33 @@
 //
 
 #include "pch.h"
-#include<api/gui/gui.h>
-#include<filesystem>
-#include"framework.h"
+#include <api/gui/gui.h>
+#include <filesystem>
+#include "framework.h"
 
 void sometest() {
 	addListener(
 		[](PlayerJoinEvent& ev) {
 			printf("listen\n");
-			auto sf = std::make_shared <FullForm>();
-			sf->addWidget(GUIDropdown("114514", { "kksk","1919810" }, 1));
+			auto sf = std::make_shared<FullForm>();
+			sf->addWidget(GUIDropdown("114514", { "kksk", "1919810" }, 1));
 			sf->addWidget(GUIInput("wtfwtf", "1919810"));
 			sf->addWidget(GUISlider("sss", 1, 100));
 			sf->addWidget(GUIToggle("xxx"));
 			sf->addWidget(GUILabel("label"));
 			sendForm(ev.getPlayer(), FormBinder(sf, function([](ServerPlayer& sp, FullForm& sf, string_view x) {
 				std::cout << x << std::endl;
-				})));
+			})));
 		});
+	addListener([](ServerStartedEvent&) {
+		LocateS<MainHandler>()->schedule(DelayedTask([]() { printf("tick\n"); }, 20 * 5));
+	});
 }
 static void loadall() {
 	do_log(L"BedrockX Loaded!\n");
 	addListener(function([](ServerStartedEvent& ev) {
 		printf("server started\n");
-		}));
+	}));
 	using namespace std::filesystem;
 	create_directory("bdxmod");
 	directory_iterator ent("bdxmod");
@@ -43,10 +46,10 @@ static void loadall() {
 	}
 }
 THook(int, "main", int a, void* b) {
-    sometest();
+	sometest();
 	loadall();
 	PostInitEvent::_call();
 	PostInitEvent::_removeall();
-    printf("here\n");
+	printf("here\n");
 	return original(a, b);
 }
