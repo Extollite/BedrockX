@@ -9,16 +9,24 @@
 void sometest() {
 	addListener(
 		[](PlayerJoinEvent& ev) {
-			printf("listen\n");
-			auto sf = std::make_shared<FullForm>();
-			sf->addWidget(GUIDropdown("114514", { "kksk", "1919810" }, 1));
-			sf->addWidget(GUIInput("wtfwtf", "1919810"));
-			sf->addWidget(GUISlider("sss", 1, 100));
-			sf->addWidget(GUIToggle("xxx"));
-			sf->addWidget(GUILabel("label"));
-			sendForm(ev.getPlayer(), FormBinder(sf, function([](ServerPlayer& sp, FullForm& sf, string_view x) {
-				std::cout << x << std::endl;
-			})));
+			printf("listen %s %d\n", ev.getPlayer()->getNameTag().c_str(),ev.getPlayer()->getDimensionId());
+			using namespace GUI;
+				auto sf = std::make_shared<FullForm>();
+				sf->addWidget(GUIDropdown("114514", { "kksk", "1919810" }, 1));
+				sf->addWidget(GUIInput("wtfwtf", "1919810"));
+				sf->addWidget(GUISlider("sss", 1, 100));
+				sf->addWidget(GUIToggle("xxx"));
+				sf->addWidget(GUILabel("label"));
+				sendForm(ev.getPlayer(), FormBinder(sf, function([](ServerPlayer& sp, FullForm& sf, string_view x) {
+					std::array<variant<string, int>, 5> ar;
+					auto v = parseFormResult(x, ar);
+					if (v)
+						for (auto& i : ar) {
+							std::visit([](auto& vv) { std::cout << vv << std::endl; }, i);
+						}
+					else
+						printf("close\n");
+				})));
 		});
 	addListener([](ServerStartedEvent&) {
 		LocateS<MainHandler>()->schedule(DelayedTask([]() { printf("tick\n"); }, 20 * 5));

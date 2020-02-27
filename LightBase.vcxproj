@@ -196,6 +196,13 @@
     <ClInclude Include="headers\api\serviceLocate.h" />
     <ClInclude Include="headers\api\types\types.h" />
     <ClInclude Include="headers\api_pch.h" />
+    <ClInclude Include="headers\mcapi\Actor.h" />
+    <ClInclude Include="headers\mcapi\BlockSource.h" />
+    <ClInclude Include="headers\mcapi\Core.h" />
+    <ClInclude Include="headers\mcapi\Dimension.h" />
+    <ClInclude Include="headers\mcapi\Item_Block.h" />
+    <ClInclude Include="headers\mcapi\Level.h" />
+    <ClInclude Include="headers\mcapi\Player.h" />
     <ClInclude Include="headers\pch.h" />
     <ClInclude Include="headers\rapidjson\rapidjson.h" />
     <ClInclude Include="headers\stl\Bstream.h" />

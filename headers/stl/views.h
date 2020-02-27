@@ -71,6 +71,10 @@ public:
         view_end = (T*)(sv.data() + sv.size());
         //dbg_assert(((uintptr_t)view_end - (uintptr_t)view_start) % sizeof(T) == 0);
     }
+    array_view(T* start, T* end) {
+		view_start = start;
+		view_end = end;
+    }
     size_t size()
     {
         return ((uintptr_t)view_end - (uintptr_t)view_start) / sizeof(T);

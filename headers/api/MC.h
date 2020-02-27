@@ -1,7 +1,7 @@
 #pragma once
 #include"Loader.h"
 #include"lightbase.h"
-class Level {
+/*class Level {
 
 };
 class BlockPos {
@@ -14,7 +14,16 @@ public:
 		Call("?sendNetworkPacket@ServerPlayer@@UEBAXAEAVPacket@@@Z",void, decltype(this), class Packet&)(this, pk);
 	}
 };
-class NetworkIdentifier{};
+*/
+#include<mcapi/Core.h>
+#include<mcapi/Player.h>
+#include<mcapi/Level.h>
+#include<mcapi/BlockSource.h>
+#include<mcapi/Dimension.h>
+#include<mcapi/Item_Block.h>
+#include<mcapi/Actor.h>
+class ServerPlayer;
+class NetworkIdentifier;
 class ServerNetworkHandler {
 public:
 	//class ServerPlayer * __ptr64 __cdecl ServerNetworkHandler::_getServerPlayer(class NetworkIdentifier const & __ptr64,unsigned char)
@@ -24,6 +33,6 @@ public:
 };
 class Minecraft {
 public:
-	MCAPI Level* __ptr64 __cdecl getLevel(void)const;
+	MCAPI class Level* __ptr64 __cdecl getLevel(void)const;
 	MCAPI ServerNetworkHandler* __ptr64 __cdecl getServerNetworkHandler(void);
 };

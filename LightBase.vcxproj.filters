@@ -49,6 +49,9 @@
     <Filter Include="源文件\scheduler">
       <UniqueIdentifier>{a659f36d-51db-4684-9c79-9650cf3f7d63}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\mcapi">
+      <UniqueIdentifier>{660e354b-6049-47b9-8207-a84528ad388e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -164,6 +167,27 @@
     </ClInclude>
     <ClInclude Include="headers\api\scheduler\scheduler.h">
       <Filter>头文件\scheduler</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\Actor.h">
+      <Filter>头文件\mcapi</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\BlockSource.h">
+      <Filter>头文件\mcapi</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\Core.h">
+      <Filter>头文件\mcapi</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\Dimension.h">
+      <Filter>头文件\mcapi</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\Item_Block.h">
+      <Filter>头文件\mcapi</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\Level.h">
+      <Filter>头文件\mcapi</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\Player.h">
+      <Filter>头文件\mcapi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
