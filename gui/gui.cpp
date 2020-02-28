@@ -14,7 +14,7 @@ namespace GUI {
 		ws.apply(VarUInt(form.formid));
 		ws.apply(VarUInt(payload.size()));
 		ws.write(payload.data(), payload.size());
-		MyPkt<100, false> guipk{ std::move(ws.data) };
+		MyPkt<100, false> guipk{ ws.data };
 		sp.sendNetworkPacket(guipk);
 		formMap._map.emplace(&sp, std::make_unique<FormBinder<FullForm>>(std::forward<FormBinder<FullForm>>(form)));
 	}

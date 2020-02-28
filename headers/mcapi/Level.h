@@ -30,7 +30,9 @@ public:
 	MCAPI void forceRemoveEntity(class Actor&);
 	MCAPI struct AdventureSettings& getAdventureSettings(void);
 	MCAPI enum Difficulty getDifficulty(void) const;
-	MCAPI class Dimension* getDimension(class AutomaticID<class Dimension, int>) const;
+	MCINLINE class Dimension* getDimension(int a0) const {
+		return Call("?getDimension@Level@@QEBAPEAVDimension@@V?$AutomaticID@VDimension@@H@@@Z", class Dimension*, void const*,int)(this,a0);
+	};
 	MCAPI class GameRules& getGameRules(void);
 	MCAPI class MapItemSavedData* getMapSavedData(struct ActorUniqueID);
 	MCAPI int getNewPlayerId(void) const;
@@ -155,4 +157,8 @@ public:
 /* std || und args */
 	/* bad retval */
 #endif
+};
+class LevelStorage {
+public:
+	MCINLINE void freeCaches() { Call("?freeCaches@LevelStorage@@UEAAXXZ", void, LevelStorage const*)(this); }
 };

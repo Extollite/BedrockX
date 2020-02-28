@@ -5,7 +5,10 @@
 typedef unsigned long long xuid_t;
 typedef unsigned char permlvl_t;
 enum TextType : char {
-	Text = 1
+	RAW = 0,
+	POPUP = 3,
+	JUKEBOX_POPUP = 4,
+	TIP = 5
 };
 template <typename T>
 struct Wrapped {
@@ -45,6 +48,7 @@ struct WLevel : Wrapped<ServerLevel> {
 	LBAPI WActor getEntity(unsigned long entid);
 	LBAPI WActor getRuntimeEntity(unsigned long rtid); //?
 	LBAPI WDim getDim(int dimid);
+	LBAPI void broadcastText(string_view text, TextType type = RAW);
 };
 struct WActor : Wrapped<Actor> {
 	WActor(Actor& x) : Wrapped<Actor>(x) {}
@@ -83,7 +87,7 @@ struct WPlayer : Wrapped<ServerPlayer> {
 	auto getDim() {
 		return actor()->getDim();
 	}
-	LBAPI void sendText(string_view text, TextType type = Text);
+	LBAPI void sendText(string_view text, TextType type = RAW);
 	LBAPI void kick(string const& reason);
 	LBAPI void forceKick();
 	LBAPI void kill();

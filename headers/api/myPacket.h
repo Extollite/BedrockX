@@ -26,11 +26,11 @@ public:
 template<int pid,bool batching=true,bool compress=true>
 class MyPkt:public Packet {
 public:
-    string view;
+    string_view view;
     MyPkt() {
         compressible = compress;
      }
-    MyPkt(string&& sv):view(std::forward<string>(sv)) {
+    MyPkt(string_view sv):view(sv) {
         compressible = compress;
     }
     inline virtual ~MyPkt() {}

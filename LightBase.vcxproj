@@ -166,6 +166,8 @@
     <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="api\helper.cpp" />
+    <ClCompile Include="api\WActor.cpp" />
     <ClCompile Include="api\WLevel.cpp" />
     <ClCompile Include="api\WPlayer.cpp" />
     <ClCompile Include="dllmain.cpp" />
@@ -201,6 +203,7 @@
     <ClInclude Include="headers\api\refl\playerMap.h" />
     <ClInclude Include="headers\api\scheduler\scheduler.h" />
     <ClInclude Include="headers\api\serviceLocate.h" />
+    <ClInclude Include="headers\api\types\helper.h" />
     <ClInclude Include="headers\api\types\types.h" />
     <ClInclude Include="headers\api_pch.h" />
     <ClInclude Include="headers\mcapi\Actor.h" />

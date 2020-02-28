@@ -30,6 +30,8 @@ public:
 	ServerPlayer* _getServerPlayer(NetworkIdentifier const& a0, unsigned char a1) {
 		return Call("?_getServerPlayer@ServerNetworkHandler@@AEAAPEAVServerPlayer@@AEBVNetworkIdentifier@@E@Z", ServerPlayer*, decltype(this), decltype(a0), decltype(a1))(this, a0, a1);
 	}
+	MCAPI void disconnectClient(class NetworkIdentifier const&, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const&, bool);
+	MCINLINE void onDisconnect(class NetworkIdentifier const& a0) { Call("?onDisconnect@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@_N1@Z", void, ServerNetworkHandler const*, class NetworkIdentifier const&)(this, a0); }
 };
 class Minecraft {
 public:

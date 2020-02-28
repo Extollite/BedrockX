@@ -1,4 +1,8 @@
 #include "pch.h"
+
+template <class T>
+LIGHTBASE_API T* LocateS<T>::_srv;
+
 static MainHandler mh;
 LIGHTBASE_API tick_t ticknow;
 LIGHTBASE_API taskid_t gtaskid;
