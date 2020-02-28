@@ -10,12 +10,15 @@ typedef unsigned int taskid_t;
 extern LIGHTBASE_API tick_t ticknow;
 extern LIGHTBASE_API taskid_t gtaskid;
 struct DelayedTask {
-	tick_t exec_time;
+	tick_t schedule_time;
+	tick_t time;
 	taskid_t taskid;
+	bool repeat;
 	function<void(void)> cb;
-	DelayedTask(function<void(void)>&& fn, tick_t time_diff) : cb(std::forward<function<void(void)>>(fn)) {
+	DelayedTask(function<void(void)>&& fn, tick_t time_diff,bool repeating=false) : cb(std::forward<function<void(void)>>(fn)) {
 		taskid = ++gtaskid;
-		exec_time = ticknow + time_diff;
+		repeat = repeating;
+		time =  time_diff;
 	}
 };
 #ifdef LIGHTBASE_EXPORTS

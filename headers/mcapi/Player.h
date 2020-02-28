@@ -1,7 +1,7 @@
 #pragma once
 #include "Core.h"
 #include"Actor.h"
-class Player :public Mob{
+MCCLS class Player : public Mob {
 public:
 	MCAPI bool canBeSeenOnMap(void) const;
 	MCAPI bool canDestroy(class Block const&) const;
@@ -225,7 +225,7 @@ public:
 	MCINLINE class std::unique_ptr<class BodyControl,struct std::default_delete<class BodyControl> > initBodyControl(){ return Call("?initBodyControl@Player@@EEAA?AV?$unique_ptr@VBodyControl@@U?$default_delete@VBodyControl@@@std@@@std@@XZ",class std::unique_ptr<class BodyControl,struct std::default_delete<class BodyControl> > ,Player const*)(this);}
 #endif
 };
-class ServerPlayer :public Player{
+MCCLS class ServerPlayer : public Player {
 public:
 	MCAPI void checkCheating(class Vec3 const&);
 	MCAPI unsigned int findClientChunkRadius(unsigned int) const;

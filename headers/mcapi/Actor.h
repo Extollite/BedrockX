@@ -1,6 +1,6 @@
 #pragma once
 #include "Core.h"
-class Actor {
+MCCLS class Actor {
 public:
 	MCAPI Actor(class Level&);
 	MCAPI Actor(class ActorDefinitionGroup*, struct ActorDefinitionIdentifier const&);
@@ -378,7 +378,7 @@ public:
 	MCINLINE struct ActorUniqueID getSourceUniqueID()const { return Call("?getSourceUniqueID@Actor@@UEBA?AUActorUniqueID@@XZ",struct ActorUniqueID ,Actor const*)(this);}
 #endif
 };
-class Mob:public Actor {
+MCCLS class Mob : public Actor {
 public:
 	MCAPI Mob(class Level&);
 	MCAPI Mob(class ActorDefinitionGroup*, struct ActorDefinitionIdentifier const&);
@@ -543,7 +543,7 @@ public:
 	MCINLINE class std::unique_ptr<class BodyControl,struct std::default_delete<class BodyControl> > initBodyControl(){ return Call("?initBodyControl@Mob@@MEAA?AV?$unique_ptr@VBodyControl@@U?$default_delete@VBodyControl@@@std@@@std@@XZ",class std::unique_ptr<class BodyControl,struct std::default_delete<class BodyControl> > ,Mob const*)(this);}
 #endif
 };
-class BlockActor {
+MCCLS class BlockActor {
 public:
 	MCAPI BlockActor(enum BlockActorType, class BlockPos const&, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const&);
 	MCAPI void setCustomName(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const&);

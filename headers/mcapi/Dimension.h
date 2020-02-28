@@ -1,6 +1,6 @@
 #pragma once
 #include "Core.h"
-class Dimension {
+MCCLS class Dimension {
 public:
 	MCAPI Dimension(class Level&, class AutomaticID<class Dimension, int>, short, class Scheduler&, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>);
 	MCAPI float distanceToNearestPlayerSqr2D(class Vec3);

@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -78,6 +78,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>LIGHTBASE</TargetName>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);headers/</IncludePath>
+    <LibraryPath>Lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetName>LIGHTBASE</TargetName>
@@ -112,6 +114,7 @@
       <PreprocessorDefinitions>_DEBUG;LIGHTBASE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,6 +166,8 @@
     <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="api\WLevel.cpp" />
+    <ClCompile Include="api\WPlayer.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="event\event.cpp" />
     <ClCompile Include="gui\gui.cpp" />
@@ -180,9 +185,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="headers\api\event\actorEvent.h" />
     <ClInclude Include="headers\api\event\eventBase.h" />
     <ClInclude Include="headers\api\event\event_pch.h" />
     <ClInclude Include="headers\api\event\genericEvent.h" />
+    <ClInclude Include="headers\api\event\levelEvent.h" />
     <ClInclude Include="headers\api\event\playerEvent.h" />
     <ClInclude Include="headers\api\gui\gui.h" />
     <ClInclude Include="headers\api\hash.h" />

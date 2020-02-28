@@ -43,7 +43,7 @@ struct CallBackStorage {
 	CallBackStorage() {
 		data = 1;
 	}
-	CallBackStorage(function<void(T&)>&& fun,LInfo<T> lf):id(lf),data(std::forward< function<void(T&)>>(fun)) {
+	CallBackStorage(function<void(T&)>&& fun,LInfo<T> lf):data(std::forward< function<void(T&)>>(fun)),id(lf) {
 	}
 };
 template<class T>
@@ -112,6 +112,14 @@ public:
 	}
 	IPlayerEvent(ServerPlayer& s) :sp(s) {}
 };
+class IActorEvent {
+	WActor sp;
+public:
+	WActor getActor() {
+		return sp;
+	}
+	IActorEvent(Actor& s) : sp(s) {}
+};
 template<typename T>
 class IEventBase :public EventCaller<T>, public IAbortableEvent {
 
@@ -123,6 +131,13 @@ class IGenericPlayerEvent :public IGenericEvent<T>, public IPlayerEvent {
 public:
 	IGenericPlayerEvent(ServerPlayer& sp) :IPlayerEvent(sp) {}
 };
+
+template<class T>
+class IGenericActorEvent : public IGenericEvent<T>, public IActorEvent {
+public:
+	IGenericActorEvent(Actor& sp) : IActorEvent(sp) {}
+};
+
 template<class T>
 class INotifyEvent :public IEventBase<T> {};
 template<class T>

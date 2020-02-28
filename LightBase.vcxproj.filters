@@ -52,6 +52,9 @@
     <Filter Include="头文件\mcapi">
       <UniqueIdentifier>{660e354b-6049-47b9-8207-a84528ad388e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\api">
+      <UniqueIdentifier>{f9957867-ab48-46c2-b3ef-324be6b6e9c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -84,6 +87,12 @@
     </ClCompile>
     <ClCompile Include="scheduler\sch.cpp">
       <Filter>源文件\scheduler</Filter>
+    </ClCompile>
+    <ClCompile Include="api\WLevel.cpp">
+      <Filter>源文件\api</Filter>
+    </ClCompile>
+    <ClCompile Include="api\WPlayer.cpp">
+      <Filter>源文件\api</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +197,12 @@
     </ClInclude>
     <ClInclude Include="headers\mcapi\Player.h">
       <Filter>头文件\mcapi</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\api\event\actorEvent.h">
+      <Filter>头文件\event</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\api\event\levelEvent.h">
+      <Filter>头文件\event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

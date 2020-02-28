@@ -3,18 +3,18 @@
 #include "hook.h"
 #include "lightbase.h"
 template <typename T, int off>
-T& dAccess(void* ptr) {
+inline T& dAccess(void* ptr) {
 	return *(T*)(((uintptr_t)ptr) + off);
 }
 template <typename T, int off, typename P>
-T& dAccess(P& ptr) {
+inline T& dAccess(P& ptr) {
 	return *(T*)(((uintptr_t)&ptr) + off);
 }
 
 template <CHash>
 struct DLSYMCACHE {
 	static void* ptr;
-	static void load(const char* fn) {
+	inline static void load(const char* fn) {
 		if (!ptr) {
 			ptr = GetServerSymbol(fn);
 		}
@@ -22,12 +22,16 @@ struct DLSYMCACHE {
 };
 template <CHash hs>
 void* DLSYMCACHE<hs>::ptr;
-template <CHash hash, typename ret, typename... p>
+template <CHash hash,typename ret, typename... p>
 struct __CALL_IMP {
-	__CALL_IMP(const char* fn) {
+	//const char* fn_;
+	inline __CALL_IMP(const char* fn) {
 		DLSYMCACHE<hash>::load(fn);
+		//fn_ = fn;
 	}
-	ret operator()(p... args) {
+	inline ret operator()(p... args) {
+		//printf("%s calling %p hash %I64u\n",fn_, DLSYMCACHE<hash, hash2>::ptr,hash);
+		//auto ptr = GetServerSymbol(fn_);
 		return ((ret(*)(p...))DLSYMCACHE<hash>::ptr)(args...);
 	}
 };

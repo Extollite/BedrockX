@@ -1,6 +1,6 @@
 #pragma once
 #include "Core.h"
-class Level {
+MCCLS class Level {
 public:
 	MCAPI Level(class SoundPlayer&, class std::unique_ptr<class LevelStorage, struct std::default_delete<class LevelStorage>>, class IMinecraftEventing&, bool, class Scheduler&, class StructureManager&, class ResourcePackManager&, class IEntityRegistryOwner&, class std::unique_ptr<class BlockComponentFactory, struct std::default_delete<class BlockComponentFactory>>, class std::unique_ptr<class BlockDefinitionGroup, struct std::default_delete<class BlockDefinitionGroup>>);
 	MCAPI void addListener(class LevelListener&);
@@ -130,7 +130,7 @@ public:
 };
 #pragma once
 #include "Core.h"
-class ServerLevel:public Level {
+MCCLS class ServerLevel : public Level {
 public:
 	MCAPI ServerLevel(class SoundPlayer&, class std::unique_ptr<class LevelStorage, struct std::default_delete<class LevelStorage>>, class IMinecraftEventing&, class ResourcePackManager&, class ResourcePackManager&, class StructureManager&, class MinecraftCommands&, class Scheduler&, class IEntityRegistryOwner&, class std::unique_ptr<class BlockComponentFactory, struct std::default_delete<class BlockComponentFactory>>, class std::unique_ptr<class BlockDefinitionGroup, struct std::default_delete<class BlockDefinitionGroup>>);
 	MCINLINE void addEntryToTagCache() { Call("?addEntryToTagCache@ServerLevel@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z", void, ServerLevel const*)(this); }

@@ -1,6 +1,6 @@
 #pragma once
 #include "Core.h"
-class BlockSource {
+MCCLS class BlockSource {
 public:
 	MCAPI BlockSource(class Level&, class Dimension&, class ChunkSource&, bool, bool);
 	MCAPI void addListener(class BlockSourceListener&);

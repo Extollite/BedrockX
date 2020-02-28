@@ -79,7 +79,7 @@ public:
     {
         return ((uintptr_t)view_end - (uintptr_t)view_start) / sizeof(T);
     }
-    T& operator[](int idx)
+    T& operator[](size_t idx)
     {
 //        dbg_assert(idx < size());
         return view_start[idx];

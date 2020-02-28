@@ -9,7 +9,14 @@
 void sometest() {
 	addListener(
 		[](PlayerJoinEvent& ev) {
-			printf("listen %s %d\n", ev.getPlayer()->getNameTag().c_str(),ev.getPlayer()->getDimensionId());
+			printf("barrier\n");
+			printf("listen %s %d\n",ev.getPlayer().getName().c_str(), ev.getPlayer()->getCarriedItem().getId());
+			auto sp = ev.getPlayer();
+			LocateS<MainHandler>()->schedule(DelayedTask([sp]() {
+				printf("add %d\n", sp.v->getCarriedItem().getId());
+			},
+				2,true));
+			return;
 			using namespace GUI;
 				auto sf = std::make_shared<FullForm>();
 				sf->addWidget(GUIDropdown("114514", { "kksk", "1919810" }, 1));
@@ -28,14 +35,15 @@ void sometest() {
 						printf("close\n");
 				})));
 		});
-	addListener([](ServerStartedEvent&) {
-		LocateS<MainHandler>()->schedule(DelayedTask([]() { printf("tick\n"); }, 20 * 5));
-	});
 }
 static void loadall() {
 	do_log(L"BedrockX Loaded!\n");
 	addListener(function([](ServerStartedEvent& ev) {
 		printf("server started\n");
+		LocateS<MainHandler>()->schedule(DelayedTask([]() {
+			LocateS<WLevel>()->getUsers();
+		},
+			2, false));
 	}));
 	using namespace std::filesystem;
 	create_directory("bdxmod");
@@ -48,7 +56,7 @@ static void loadall() {
 			}
 			else {
 				do_log(L"Error when loading %s\n", i.path().c_str());
-				printf("last error %d\n", GetLastError());
+				printf("last error %ul\n", GetLastError());
 			}
 		}
 	}

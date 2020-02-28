@@ -263,3 +263,19 @@ public:
 	/* bad retval */
 #endif
 };
+class ItemStack:public ItemStackBase {
+public:
+	MCAPI ItemStack(class Item const&, int);
+	MCAPI ItemStack(void);
+	MCAPI class ItemStack& operator=(class ItemStack const&);
+	MCAPI class ItemStack getStrippedNetworkItem(void) const;
+	MCAPI bool sameItemAndAuxAndBlockData(class ItemStack const&) const;
+	MCAPI void useAsFuel(void);
+	MCAPI bool useOn(class Actor&, int, int, int, unsigned char, float, float, float);
+	MCINLINE void reinit(class Item const& a0, int a1, int a2) { Call("?reinit@ItemStack@@MEAAXAEBVItem@@HH@Z", void, ItemStack const*, class Item const&, int, int)(this, a0, a1, a2); }
+	MCINLINE void reinit(class BlockLegacy const& a0, int a1) { Call("?reinit@ItemStack@@UEAAXAEBVBlockLegacy@@H@Z", void, ItemStack const*, class BlockLegacy const&, int)(this, a0, a1); }
+#if 0
+/* std || und args */
+	/* bad retval */
+#endif
+};
