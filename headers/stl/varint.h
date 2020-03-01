@@ -42,16 +42,17 @@ struct VarInts {
 using VarUInt = VarInts<unsigned int>;
 using VarULong = VarInts<unsigned long long>;
 
-template <typename T>
+
 struct MCString {
 	string_view view;
-	MCString(T&) {}
-	MCString(T&,string_view sv) : view(sv) {}
+	MCString() {}
+	MCString(string_view sv) : view(sv) {}
+	template <typename T>
 	void pack(T& ws) const {
 		ws.apply(VarUInt(view.size()));
 		ws.write(view.data(), view.size());
 	}
-	void unpack(RBStream& rs) const {
+	void unpack(RBStream& rs) {
 		VarUInt sz;
 		rs.apply(sz);
 		view = string_view((const char*)rs.data, sz.v);

@@ -100,6 +100,12 @@
     <ClCompile Include="api\WActor.cpp">
       <Filter>源文件\api</Filter>
     </ClCompile>
+    <ClCompile Include="api\WMob.cpp">
+      <Filter>源文件\api</Filter>
+    </ClCompile>
+    <ClCompile Include="api\WDim.cpp\WDim.cpp">
+      <Filter>源文件\api</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\api\hash.h">
@@ -212,6 +218,9 @@
     </ClInclude>
     <ClInclude Include="headers\api\types\helper.h">
       <Filter>头文件\types</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\ChunkSource.h">
+      <Filter>头文件\mcapi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

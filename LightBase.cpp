@@ -32,12 +32,29 @@ void sometest() {
 				printf("sv %p\n", sv);
 				printf("dim %p %p\n", WActor(*sp.v).getDim().v, sv->getDimension(0));
 				WPlayer wp = sp;
-				printf("ename %s\n", ExtendedCertificate::getIdentityName(*wp._getCert()).c_str());
-				printf("cmd %d\n", BDX::runcmd("help 2"));
-				printf("cmd %d\n", BDX::runcmd("help 3"));
-				printf("asplayer %d\n", BDX::runcmdAs(wp, "me kksk"));
-				printf("asplayer2 %d\n", BDX::runcmdAs(wp, "op kksk"));
-				wp.teleport({ 114, 514, 1919 }, 0);
+				//printf("ename %s\n", ExtendedCertificate::getIdentityName(*wp._getCert()).c_str());
+				//printf("cmd %d\n", BDX::runcmd("help 2"));
+				//printf("cmd %d\n", BDX::runcmd("help 3"));
+				//printf("asplayer %d\n", BDX::runcmdAs(wp, "me kksk"));
+				//printf("asplayer2 %d\n", BDX::runcmdAs(wp, "op kksk"));
+				//wp.teleport({ 114, 514, 1919 }, 0);
+				xuid_t xuid = wp.getXuid();
+				std::cout << xuid << std::endl;
+				BlockSource bs(LocateS<ServerLevel>(),wp.getDim(),LocateS<ChunkSource>(),1,0);
+				auto pos = wp->getPos();
+				printf("pos %f %f %f\n", pos.x, pos.y, pos.z);
+				
+				auto& blk=bs.getBlock(pos.x, 16, pos.z);
+				printf("blkid %d\n",(int)blk.getBlockItemId());
+				pos.x = 1024;
+				pos.z = 1024;
+				for (int x = pos.x - 20; x <= pos.x + 20; ++x)
+					for (int z = pos.z - 20; z <= pos.z + 20; ++z) {
+						bs.setBlock({ x, 100, z }, blk, 3, { NULL }, NULL);
+					}
+				printf("->%d\n", (int)bs.getBlock(pos.x, 100, pos.z).getBlockItemId());
+			//	wp.kill();
+				wp.teleport(pos, 0);
 			},
 				2, false));
 			return;

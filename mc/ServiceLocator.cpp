@@ -35,3 +35,7 @@ THook(void, "?setupStandaloneServer@DedicatedServerCommands@@SAXAEAVMinecraft@@A
 	LocateS<LevelStorage>::assign(*d);
 	original(a, b, c, d, e, f);
 }
+THook(void*, "??0ChunkSource@@QEAA@V?$unique_ptr@VChunkSource@@U?$default_delete@VChunkSource@@@std@@@std@@@Z", ChunkSource* a1, void** a2) {
+	LocateS<ChunkSource>::assign(*a1);
+	return original(a1, a2);
+}

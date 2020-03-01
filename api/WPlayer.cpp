@@ -5,7 +5,7 @@ LBAPI const string& WPlayer::getName() {
 LBAPI void WPlayer::sendText(string_view text, TextType tp) {
 	WBStream txtpkws;
 	txtpkws.data.reserve(8 + text.size());
-	txtpkws.apply((char)tp, (char)0, MCString(txtpkws, text));
+	txtpkws.apply((char)tp, (char)0, MCString(text));
 	MyPkt<9> pk{ txtpkws.data };
 	v->sendNetworkPacket(pk);
 }
@@ -50,4 +50,15 @@ LBAPI void WPlayer::kick(const string& reason) {
 }
 LBAPI void WPlayer::forceKick() {
 	LocateS<ServerNetworkHandler>()->onDisconnect(*_getNI());
+}
+#include<sstream>
+LBAPI xuid_t WPlayer::getXuid() {
+	xuid_t rv=114514;
+	auto str = ExtendedCertificate::getXuid(*_getCert());
+	std::stringstream ss(str);
+	ss >> rv;
+	return rv;
+}
+LBAPI permlvl_t WPlayer::getPermLvl() {
+	return v->getCommandPermissionLevel()&0xff;
 }

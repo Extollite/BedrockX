@@ -168,7 +168,9 @@
   <ItemGroup>
     <ClCompile Include="api\helper.cpp" />
     <ClCompile Include="api\WActor.cpp" />
+    <ClCompile Include="api\WDim.cpp\WDim.cpp" />
     <ClCompile Include="api\WLevel.cpp" />
+    <ClCompile Include="api\WMob.cpp" />
     <ClCompile Include="api\WPlayer.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="event\event.cpp" />
@@ -208,6 +210,7 @@
     <ClInclude Include="headers\api_pch.h" />
     <ClInclude Include="headers\mcapi\Actor.h" />
     <ClInclude Include="headers\mcapi\BlockSource.h" />
+    <ClInclude Include="headers\mcapi\ChunkSource.h" />
     <ClInclude Include="headers\mcapi\Core.h" />
     <ClInclude Include="headers\mcapi\Dimension.h" />
     <ClInclude Include="headers\mcapi\Item_Block.h" />

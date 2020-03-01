@@ -40,6 +40,7 @@ struct WDim : Wrapped<Dimension> {
 	LBAPI void setBlock(int x, int y, int z, int blkid);
 	LBAPI struct WBlock getBlock(int x, int y, int z);
 	LBAPI BlockSource* _getBlockSource();
+	LBAPI int getID();
 };
 struct WLevel : Wrapped<ServerLevel> {
 	WLevel(ServerLevel& x) : Wrapped<ServerLevel>(x) {}
@@ -66,7 +67,9 @@ struct WMob : Wrapped<Mob> {
 		return (WActor*)this;
 	}
 	LBAPI WPlayer getLastHurtByPlayer();
+	LBAPI void kill();
 };
+#include "helper.h"
 struct WPlayer : Wrapped<ServerPlayer> {
 	WPlayer(ServerPlayer& x) : Wrapped<ServerPlayer>(x) {}
 	WActor* actor() {
@@ -90,7 +93,12 @@ struct WPlayer : Wrapped<ServerPlayer> {
 	LBAPI void sendText(string_view text, TextType type = RAW);
 	LBAPI void kick(string const& reason);
 	LBAPI void forceKick();
-	LBAPI void kill();
+	LBAPI void kill() {
+		mob()->kill();
+	}
+	LBAPI bool runcmd(string const& str) {
+		return BDX::runcmdAs(*this, str);
+	}
 	LBAPI NetworkIdentifier* _getNI();
 	LBAPI Certificate* _getCert();
 };
@@ -103,14 +111,19 @@ struct WBlock : Wrapped<Block> {
 struct WBlockActor : Wrapped<BlockActor> {
 	WBlockActor(BlockActor& i) : Wrapped<BlockActor>(i) {}
 };
-class Explosion;
-struct WExplosion : Wrapped<Explosion> {
-	WExplosion(Explosion& i) : Wrapped<Explosion>(i) {}
-	LBAPI Actor* getCause();
-	LBAPI Vec3& getPos();
-	LBAPI char& breaking();
-	LBAPI char& firing();
+struct WBlockSource:Wrapped<BlockSource> {
+	WBlockSource(BlockSource& x) : Wrapped<BlockSource>(x) {}
+	LBAPI WDim getDim();
 };
+struct WExplosion {
+	WBlockSource bs;
+	float rad;
+	Actor* cause;
+	Vec3* pos;
+	char breaking;
+	char firing;
+};
+
 /*
 struct Item *__fastcall Item::setAllowOffhand(Item *this)
 {

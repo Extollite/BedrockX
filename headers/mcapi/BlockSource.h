@@ -1,7 +1,10 @@
 #pragma once
 #include "Core.h"
+#include"ChunkSource.h"
 MCCLS class BlockSource {
-public:
+private:
+	char filler[224];
+public : 
 	MCAPI BlockSource(class Level&, class Dimension&, class ChunkSource&, bool, bool);
 	MCAPI void addListener(class BlockSourceListener&);
 	MCAPI void addToRandomTickingQueue(class BlockPos const&, class Block const&, int, int);
@@ -87,6 +90,9 @@ public:
 	MCINLINE float _getLiquidHeight(class BlockPos const& a0, enum MaterialType a1, bool a2) { return Call("?_getLiquidHeight@BlockSource@@AEAAMAEBVBlockPos@@W4MaterialType@@_N@Z", float, BlockSource const*, class BlockPos const&, enum MaterialType, bool)(this, a0, a1, a2); }
 	MCINLINE class BlockTickingQueue* _getTickingQueue(class BlockPos const& a0, enum TickingQueueType a1) const { return Call("?_getTickingQueue@BlockSource@@AEBAPEAVBlockTickingQueue@@AEBVBlockPos@@W4TickingQueueType@@@Z", class BlockTickingQueue*, BlockSource const*, class BlockPos const&, enum TickingQueueType)(this, a0, a1); }
 	MCINLINE void _removeFromTickingQueue(class BlockPos const& a0, class Block const& a1, enum TickingQueueType a2) { Call("?_removeFromTickingQueue@BlockSource@@AEAAXAEBVBlockPos@@AEBVBlock@@W4TickingQueueType@@@Z", void, BlockSource const*, class BlockPos const&, class Block const&, enum TickingQueueType)(this, a0, a1, a2); }
+	MCINLINE ~BlockSource() {
+		Call("??1BlockSource@@UEAA@XZ",void, void*)(this);
+	}
 #if 0
 /* std || und args */
 	/* bad retval */

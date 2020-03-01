@@ -20,8 +20,11 @@ LBAPI WDim WActor::getDim() {
 	ptr += poff_dim;
 	return WDim(**(Dimension**)ptr);
 }
+LBAPI int WActor::getDimID() {
+	return v->getDimensionId();
+}
 LBAPI void WActor::teleport(Vec3 to, int dimid) {
-	if (v->getDimensionId()!=dimid)
+	if (getDimID()!=dimid)
 		Call("?teleport@TeleportCommand@@AEBAXAEAVActor@@VVec3@@PEAV3@V?$AutomaticID@VDimension@@H@@@Z", void, void*, Actor*, Vec3, Vec3*, int)(NULL, v, to, &to, dimid);
 	Call("?teleport@TeleportCommand@@AEBAXAEAVActor@@VVec3@@PEAV3@V?$AutomaticID@VDimension@@H@@@Z", void, void*, Actor*, Vec3, Vec3*, int)(NULL,v,to,&to,dimid);
 }

@@ -17,7 +17,6 @@ EXPORT_EVENT(PlayerUseItemOnEntityEvent);
 EXPORT_EVENT(ServerStartedEvent);
 EXPORT_EVENT(PostInitEvent);
 EXPORT_EVENT(ActorDeathEvent);
-EXPORT_EVENT(ActorHurtedEvent);
 EXPORT_EVENT(LevelExplodeEvent);
 
 static struct exec_now {

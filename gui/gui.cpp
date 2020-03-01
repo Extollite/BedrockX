@@ -11,9 +11,7 @@ namespace GUI {
 	LIGHTBASE_API void sendForm(ServerPlayer& sp, FormBinder<FullForm>&& form) {
 		auto payload = form.seralize();
 		WBStream ws;
-		ws.apply(VarUInt(form.formid));
-		ws.apply(VarUInt(payload.size()));
-		ws.write(payload.data(), payload.size());
+		ws.apply(VarUInt(form.formid), MCString(payload));
 		MyPkt<100, false> guipk{ ws.data };
 		sp.sendNetworkPacket(guipk);
 		formMap._map.emplace(&sp, std::make_unique<FormBinder<FullForm>>(std::forward<FormBinder<FullForm>>(form)));
@@ -22,9 +20,7 @@ namespace GUI {
 	LIGHTBASE_API void sendForm(ServerPlayer& sp, FormBinder<SimpleForm>&& form) {
 		auto payload = form.seralize();
 		WBStream ws;
-		ws.apply(VarUInt(form.formid));
-		ws.apply(VarUInt(payload.size()));
-		ws.write(payload.data(), payload.size());
+		ws.apply(VarUInt(form.formid), MCString(payload));
 		MyPkt<100, false> guipk{ std::move(ws.data) };
 		sp.sendNetworkPacket(guipk);
 		formMap._map.emplace(&sp, std::make_unique<FormBinder<SimpleForm>>(std::forward<FormBinder<SimpleForm>>(form)));

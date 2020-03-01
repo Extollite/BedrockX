@@ -14,7 +14,7 @@ LBAPI WPlayer WLevel::getPlayer(string_view name) {
 LBAPI void WLevel::broadcastText(string_view text, TextType tp) {
 	WBStream txtpkws;
 	txtpkws.data.reserve(8 + text.size());
-	txtpkws.apply((char)tp, (char)0, MCString(txtpkws, text));
+	txtpkws.apply((char)tp, (char)0, MCString(text));
 	MyPkt<9> pk{ txtpkws.data };
 	auto view = getUsers();
 	for (auto i : view) {
