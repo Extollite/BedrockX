@@ -106,6 +106,15 @@
     <ClCompile Include="api\WDim.cpp\WDim.cpp">
       <Filter>源文件\api</Filter>
     </ClCompile>
+    <ClCompile Include="event\LevelEvent.cpp">
+      <Filter>源文件\event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\ActorEvent.cpp">
+      <Filter>源文件\event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\PlayerEvent.cpp">
+      <Filter>源文件\event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\api\hash.h">

@@ -25,12 +25,7 @@ THook(void, "?initCoreEnums@MinecraftCommands@@QEAAX_NAEBVBaseGameVersion@@@Z", 
 	original(a0, a1, a2);
 	LocateS<MinecraftCommands>::assign(*a0);
 }
-	THook(void, "?handle@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@AEBVSetLocalPlayerAsInitializedPacket@@@Z", ServerNetworkHandler& thi, NetworkIdentifier const& b, unsigned char* pk) {
-	original(thi, b, pk);
-	ServerPlayer* sp = thi._getServerPlayer(b, pk[16]);
-	if (sp)
-		PlayerJoinEvent::_call(*sp);
-}
+
 THook(void, "?setupStandaloneServer@DedicatedServerCommands@@SAXAEAVMinecraft@@AEAVIMinecraftApp@@AEAVLevel@@AEAVLevelStorage@@AEAVDedicatedServer@@AEAVWhitelistFile@@@Z", void* a, void* b, void* c, LevelStorage* d, void* e, void* f) {
 	LocateS<LevelStorage>::assign(*d);
 	original(a, b, c, d, e, f);
@@ -38,4 +33,8 @@ THook(void, "?setupStandaloneServer@DedicatedServerCommands@@SAXAEAVMinecraft@@A
 THook(void*, "??0ChunkSource@@QEAA@V?$unique_ptr@VChunkSource@@U?$default_delete@VChunkSource@@@std@@@std@@@Z", ChunkSource* a1, void** a2) {
 	LocateS<ChunkSource>::assign(*a1);
 	return original(a1, a2);
+}
+THook(void*, "?activate@RakNetServerLocator@@AEAAXXZ", RakNetServerLocator* thi) {
+	LocateS<RakNetServerLocator>::assign(*thi);
+	return original(thi);
 }

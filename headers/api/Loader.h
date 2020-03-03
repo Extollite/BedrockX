@@ -6,10 +6,6 @@ template <typename T, int off>
 inline T& dAccess(void* ptr) {
 	return *(T*)(((uintptr_t)ptr) + off);
 }
-template <typename T, int off, typename P>
-inline T& dAccess(P& ptr) {
-	return *(T*)(((uintptr_t)&ptr) + off);
-}
 
 template <CHash>
 struct DLSYMCACHE {
@@ -37,7 +33,7 @@ struct __CALL_IMP {
 };
 #define VA_EXPAND(...) __VA_ARGS__
 #define Call(fn, ret, ...) __CALL_IMP<do_hash(fn), ret, __VA_ARGS__>(fn)
-
+#define SYM(fn) (DLSYMCACHE<do_hash(fn)>::load(fn))
 
 class THookRegister {
 public:

@@ -173,7 +173,10 @@
     <ClCompile Include="api\WMob.cpp" />
     <ClCompile Include="api\WPlayer.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="event\ActorEvent.cpp" />
     <ClCompile Include="event\event.cpp" />
+    <ClCompile Include="event\LevelEvent.cpp" />
+    <ClCompile Include="event\PlayerEvent.cpp" />
     <ClCompile Include="gui\gui.cpp" />
     <ClCompile Include="LightBase.cpp" />
     <ClCompile Include="mc\RuntimeRefl.cpp" />

@@ -1,13 +1,14 @@
 #pragma once
 #include"eventBase.h"
-class ActorDeathEvent : public IActorEvent, public IEventBase <ActorDeathEvent > {
+class MobDeathEvent : public IMobEvent, public IEventBase<MobDeathEvent> {
 	ActorDamageSource* src;
 public:
-	ActorDeathEvent(Actor& _ac, ActorDamageSource* _src) : src(_src),IActorEvent(_ac) {}
+	MobDeathEvent(Mob& _ac, ActorDamageSource* _src) : src(_src), IMobEvent(_ac) {}
 	ActorDamageSource& getSource() {
 		return *src;
 	}
 };
+/*
 class ActorHurtedEvent : public IGenericActorEvent<ActorHurtedEvent>{
 	ActorDamageSource* src;
 	int& damage;
@@ -19,4 +20,4 @@ public:
 	int& getDamage() {
 		return damage;
 	}
-};
+};*/

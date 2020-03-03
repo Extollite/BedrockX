@@ -52,6 +52,7 @@ class EventCaller {
 public:
 	template<typename... P>
 	static auto _call(P&&... args) {
+		printf("call event %s\n", typeid(T).name());
 		T ev(std::forward<P>(args)...);
 		for (auto& i : EventCaller<T>::listener) {
 				i(ev);
@@ -114,11 +115,21 @@ public:
 };
 class IActorEvent {
 	WActor sp;
+
 public:
 	WActor getActor() {
 		return sp;
 	}
 	IActorEvent(Actor& s) : sp(s) {}
+};
+class IMobEvent {
+	WMob sp;
+
+public:
+	WMob getMob() {
+		return sp;
+	}
+	IMobEvent(Mob& s) : sp(s) {}
 };
 template<typename T>
 class IEventBase :public EventCaller<T>, public IAbortableEvent {

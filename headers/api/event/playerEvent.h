@@ -4,13 +4,9 @@
 class PlayerChatEvent : public IGenericPlayerEvent<PlayerChatEvent> {
 public:
 	string& _chat;
-	string& _name;
-	PlayerChatEvent(ServerPlayer& sp, string& chat, string& name) : IGenericPlayerEvent(sp), _chat(chat), _name(name) {}
+	PlayerChatEvent(ServerPlayer& sp, string& chat) : IGenericPlayerEvent(sp), _chat(chat) {}
 	const string& getChat() {
 		return _chat;
-	}
-	const string& getName() {
-		return _name;
 	}
 };
 class PlayerCMDEvent : public IGenericPlayerEvent<PlayerCMDEvent> {

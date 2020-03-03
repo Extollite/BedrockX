@@ -32,20 +32,19 @@ void sometest() {
 				printf("sv %p\n", sv);
 				printf("dim %p %p\n", WActor(*sp.v).getDim().v, sv->getDimension(0));
 				WPlayer wp = sp;
-				//printf("ename %s\n", ExtendedCertificate::getIdentityName(*wp._getCert()).c_str());
+				printf("ename %s\n", ExtendedCertificate::getIdentityName(*wp._getCert()).c_str());
 				//printf("cmd %d\n", BDX::runcmd("help 2"));
-				//printf("cmd %d\n", BDX::runcmd("help 3"));
-				//printf("asplayer %d\n", BDX::runcmdAs(wp, "me kksk"));
-				//printf("asplayer2 %d\n", BDX::runcmdAs(wp, "op kksk"));
-				//wp.teleport({ 114, 514, 1919 }, 0);
+				printf("cmd %d\n", BDX::runcmd("help 3"));
+				printf("asplayer %d\n", BDX::runcmdAs(wp, "me kksk"));
+				printf("asplayer2 %d\n", BDX::runcmdAs(wp, "op kksk"));
+				wp.teleport({ 114, 514, 1919 }, 0);
 				xuid_t xuid = wp.getXuid();
 				std::cout << xuid << std::endl;
-				BlockSource bs(LocateS<ServerLevel>(),wp.getDim(),LocateS<ChunkSource>(),1,0);
+				BlockSource bs(LocateS<ServerLevel>(), wp.getDim(), LocateS<ChunkSource>(), 1, 0);
 				auto pos = wp->getPos();
 				printf("pos %f %f %f\n", pos.x, pos.y, pos.z);
-				
-				auto& blk=bs.getBlock(pos.x, 16, pos.z);
-				printf("blkid %d\n",(int)blk.getBlockItemId());
+				auto& blk = bs.getBlock(pos.x, 16, pos.z);
+				printf("blkid %d\n", (int)blk.getBlockItemId());
 				pos.x = 1024;
 				pos.z = 1024;
 				for (int x = pos.x - 20; x <= pos.x + 20; ++x)
@@ -53,11 +52,10 @@ void sometest() {
 						bs.setBlock({ x, 100, z }, blk, 3, { NULL }, NULL);
 					}
 				printf("->%d\n", (int)bs.getBlock(pos.x, 100, pos.z).getBlockItemId());
-			//	wp.kill();
+				//	wp.kill();
 				wp.teleport(pos, 0);
 			},
 				2, false));
-			return;
 			using namespace GUI;
 			auto sf = std::make_shared<FullForm>();
 			sf->addWidget(GUIDropdown("114514", { "kksk", "1919810" }, 1));
@@ -82,9 +80,14 @@ static void loadall() {
 	addListener(function([](ServerStartedEvent& ev) {
 		printf("server started\n");
 		LocateS<MainHandler>()->schedule(DelayedTask([]() {
-			LocateS<WLevel>()->getUsers();
+			char buf[1024];
+			auto tm__ = time(NULL);
+			tm tm2;
+			localtime_s(&tm2, &tm__);
+			strftime(buf, 1024, "motd: time %H:%M:%S", &tm2);
+			LocateS<RakNetServerLocator>()->accounce(buf, "kksk", 0, 114514, 1919810, true);
 		},
-			2, false));
+			2, true));
 	}));
 	using namespace std::filesystem;
 	create_directory("bdxmod");
@@ -110,3 +113,7 @@ THook(int, "main", int a, void* b) {
 	printf("here\n");
 	return original(a, b);
 }
+/*
+THook(void, "?handle@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@AEBVItemFrameDropItemPacket@@@Z") {
+
+}*/
