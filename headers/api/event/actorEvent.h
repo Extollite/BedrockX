@@ -8,7 +8,6 @@ public:
 		return *src;
 	}
 };
-/*
 class ActorHurtedEvent : public IGenericActorEvent<ActorHurtedEvent>{
 	ActorDamageSource* src;
 	int& damage;
@@ -20,4 +19,4 @@ public:
 	int& getDamage() {
 		return damage;
 	}
-};*/
+};

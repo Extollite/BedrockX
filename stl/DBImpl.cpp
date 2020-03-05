@@ -1,32 +1,50 @@
 #include "pch.h"
 #include <cassert>
-KVDBImpl::KVDBImpl(const char* path) {
+KVDBImpl::KVDBImpl(const char* path, bool read_cache, int cache_sz) {
+	rdopt = leveldb::ReadOptions();
+	wropt = leveldb::WriteOptions();
+	leveldb_options_create();
+	rdopt.fill_cache = read_cache;
+	rdopt.verify_checksums = false;
+	wropt.sync = false;
+	if (cache_sz) {
+		options.block_cache = leveldb::NewLRUCache(cache_sz);
+	}
+	options.reuse_logs = true; //WARN:EXPERIMENTAL
+	options.create_if_missing = true;
+	leveldb::Status status = leveldb::DB::Open(options, path, &db);
+	if (!status.ok()) {
+		printf("cannot load %s reason: %s", path, status.ToString().c_str());
+	}
+	assert(status.ok());
 }
-MallocVal KVDBImpl::get(string_view key) {
-	auto it = vdb.find(string(key));
-	if (it == vdb.end()) {
-		return MallocVal(NULL, 0);
-	}
-	else {
-		void* mem = malloc(it->second.size());
-		if (mem) {
-			memcpy(mem, it->second.data(), it->second.size());
-			return MallocVal(mem, it->second.size());
-		}
-	}
-	assert(false);
-	return MallocVal(NULL, 0);
+KVDBImpl::~KVDBImpl() {
+	delete db;
+}
+bool KVDBImpl::get(string_view key, string& val) {
+	return db->Get(rdopt, leveldb::Slice(key.data(), key.size()), &val).ok();
 }
 void KVDBImpl::put(string_view key, string_view val) {
-	vdb[string(key)] = string(val);
+	db->Put(wropt, leveldb::Slice(key.data(), key.size()), leveldb::Slice(val.data(), val.size()));
 }
 void KVDBImpl::del(string_view key) {
-	vdb.erase(string(key));
+	db->Delete(wropt, leveldb::Slice(key.data(), key.size()));
 }
-void KVDBImpl::iter(std::function<bool(string_view key)>&& f) {
+void KVDBImpl::iter(std::function<bool(string_view key)>&& fn) {
+	leveldb::Iterator* it = db->NewIterator(rdopt);
+	for (it->SeekToFirst(); it->Valid(); it->Next()) {
+		auto k = it->key();
+		auto v = it->value();
+		fn({ k.data(), k.size() });
+	}
+	delete it;
 }
-void KVDBImpl::iter(std::function<bool(string_view key, string_view val)>&& f) {
-}
-void KVDBImpl::free(void* ptr) {
-	::free(ptr);
+void KVDBImpl::iter(std::function<bool(string_view key, string_view val)>&& fn) {
+	leveldb::Iterator* it = db->NewIterator(rdopt);
+	for (it->SeekToFirst(); it->Valid(); it->Next()) {
+		auto k = it->key();
+		auto v = it->value();
+		fn({ k.data(), k.size() }, { v.data(), v.size() });
+	}
+	delete it;
 }

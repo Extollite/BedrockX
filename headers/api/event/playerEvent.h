@@ -49,7 +49,8 @@ class PlayerUseItemOnEvent : public IGenericPlayerEvent<PlayerUseItemOnEvent> {
 public:
 	BlockPos& pos;
 	uchar side;
-	PlayerUseItemOnEvent(ServerPlayer& sp, BlockPos& _pos, uchar _side) : IGenericPlayerEvent(sp), pos(_pos), side(_side) {}
+	WItem item;
+	PlayerUseItemOnEvent(ServerPlayer& sp, BlockPos& _pos,WItem _item, uchar _side) : IGenericPlayerEvent(sp), pos(_pos), side(_side),item(_item) {}
 	BlockPos& getPos() {
 		return pos;
 	}
@@ -62,5 +63,16 @@ public:
 	}
 	uchar getSide() {
 		return side;
+	}
+	WItem getItemInHand() {
+		return item;
+	}
+};
+class PlayerUseItemEvent : public IGenericPlayerEvent<PlayerUseItemEvent> {
+public:
+	WItem item;
+	PlayerUseItemEvent(ServerPlayer& sp,WItem _item) : IGenericPlayerEvent(sp), item(_item) {}
+	WItem getItem() {
+		return item;
 	}
 };

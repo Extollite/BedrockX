@@ -1,0 +1,4 @@
+--overlay-triplets=VcPkgTriplets
+--triplet
+x64-windows
+leveldb

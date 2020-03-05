@@ -22,6 +22,7 @@ THook(
 void sometest() {
 	addListener(
 		[](PlayerJoinEvent& ev) {
+			return;
 			printf("barrier\n");
 			printf("listen %s %d\n", ev.getPlayer().getName().c_str(), ev.getPlayer()->getCarriedItem().getId());
 			auto sp = ev.getPlayer();

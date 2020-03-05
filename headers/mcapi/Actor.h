@@ -587,3 +587,24 @@ public:
 	MCINLINE class std::unique_ptr<class Packet,struct std::default_delete<class Packet> > getUpdatePacket(class BlockSource & a0){ return Call("?getUpdatePacket@BlockActor@@UEAA?AV?$unique_ptr@VPacket@@U?$default_delete@VPacket@@@std@@@std@@AEAVBlockSource@@@Z",class std::unique_ptr<class Packet,struct std::default_delete<class Packet> > ,BlockActor const*,class BlockSource &)(this,a0);}
 #endif
 };
+class ActorDamageSource {
+private:
+	char filler[0x10];
+
+public:
+	virtual void destruct1(unsigned int) = 0;
+	virtual bool isEntitySource() const = 0;
+	virtual bool isChildEntitySource() const = 0;
+
+private:
+	virtual void* unk0() = 0;
+	virtual void* unk1() = 0; //death msg
+	virtual void* unk2() = 0; //is creative
+	virtual void* unk3() = 0;//?
+	//no unk4???
+public:
+	virtual ActorUniqueID getEntityUniqueID() const = 0;
+	virtual int getEntityType() const = 0;
+private:
+	virtual int getEntityCategories() const = 0;
+};

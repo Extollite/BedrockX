@@ -14,13 +14,14 @@ EXPORT_EVENT(PlayerCMDEvent);
 EXPORT_EVENT(PlayerDestroyEvent);
 EXPORT_EVENT(PlayerUseItemOnEvent);
 EXPORT_EVENT(PlayerUseItemOnEntityEvent);
-
+EXPORT_EVENT(PlayerUseItemEvent);
 
 EXPORT_EVENT(ServerStartedEvent);
 EXPORT_EVENT(PostInitEvent);
 
 
 EXPORT_EVENT(MobDeathEvent);
+EXPORT_EVENT(ActorHurtedEvent);
 EXPORT_EVENT(LevelExplodeEvent);
 
 static struct exec_now {

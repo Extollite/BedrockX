@@ -43,9 +43,19 @@ THook(bool, "?destroyBlock@GameMode@@UEAA_NAEBVBlockPos@@E@Z", void* thi, BlockP
 		return original(thi, pos, unk);
 	return false;
 }
-
+/*ServerPlayer& sp, BlockPos& _pos,WItem _item, uchar _side*/
+THook(bool, "?useItemOn@GameMode@@UEAA_NAEAVItemStack@@AEBVBlockPos@@EAEBVVec3@@PEBVBlock@@@Z", void* thi, ItemStack& a2, BlockPos& a3_pos, unsigned char side, void * a5, void* a6_block) {
+	if (PlayerUseItemOnEvent::_call(*dAccess<ServerPlayer*, 8>(thi), a3_pos, a2, side))
+		return original(thi, a2, a3_pos, side, a5, a6_block);
+	return false;
+}
+THook(bool, "?useItem@GameMode@@UEAA_NAEAVItemStack@@@Z", void* thi, ItemStack& a2) {
+	if (PlayerUseItemEvent::_call(*dAccess<ServerPlayer*, 8>(thi), a2))
+		return original(thi, a2);
+	return false;
+}
 THook(int, "?handle@ItemUseOnActorInventoryTransaction@@UEBA?AW4InventoryTransactionError@@AEAVPlayer@@_N@Z", void* thi, ServerPlayer& sp, bool unk) {
-	if(PlayerUseItemOnEntityEvent::_call(sp, ActorUniqueID(0)))
+	if(PlayerUseItemOnEntityEvent::_call(sp, dAccess<ActorUniqueID,104>(thi)))
 		return original(thi, sp, unk);
 	return 0;
 }

@@ -55,6 +55,9 @@
     <Filter Include="源文件\api">
       <UniqueIdentifier>{f9957867-ab48-46c2-b3ef-324be6b6e9c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\mcapi\command">
+      <UniqueIdentifier>{4796525b-266f-4f76-9288-d31bf95debc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -230,6 +233,12 @@
     </ClInclude>
     <ClInclude Include="headers\mcapi\ChunkSource.h">
       <Filter>头文件\mcapi</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\Command\Command.h">
+      <Filter>头文件\mcapi\command</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\Command\CommandReg.h">
+      <Filter>头文件\mcapi\command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
