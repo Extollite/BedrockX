@@ -112,12 +112,11 @@ static void loadall() {
 		}
 	}
 }
-THook(int, "main", int a, void* b) {
+void entry(){
 	//sometest();
 	loadall();
 	PostInitEvent::_call();
 	PostInitEvent::_removeall();
-	return original(a, b);
 }
 /*
 THook(void, "?handle@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@AEBVItemFrameDropItemPacket@@@Z") {
