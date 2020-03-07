@@ -150,9 +150,6 @@
     <ClInclude Include="headers\api_pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="headers\pch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="headers\stl_pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -251,6 +248,9 @@
     </ClInclude>
     <ClInclude Include="headers\mcapi\VanillaBlocks.h">
       <Filter>头文件\mcapi</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\pch.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

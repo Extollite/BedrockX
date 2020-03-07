@@ -38,5 +38,5 @@ struct MainHandler {
 struct MainHandler {
 	LIGHTBASE_API bool cancel(taskid_t id);
 	LIGHTBASE_API taskid_t schedule(ITaskBase&& task);
-}
+};
 #endif
