@@ -46,6 +46,16 @@ struct ActorUniqueID {
 		id = i;
 	}
 };
+class ActorRuntimeID {
+	long id;
+	ActorRuntimeID() {
+		id = -1;
+	}
+	ActorRuntimeID(long i) {
+		id = i;
+	}
+};
+
 class Certificate;
 class ExtendedCertificate {
 public:

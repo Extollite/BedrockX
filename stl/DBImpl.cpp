@@ -3,7 +3,6 @@
 KVDBImpl::KVDBImpl(const char* path, bool read_cache, int cache_sz) {
 	rdopt = leveldb::ReadOptions();
 	wropt = leveldb::WriteOptions();
-	leveldb_options_create();
 	rdopt.fill_cache = read_cache;
 	rdopt.verify_checksums = false;
 	wropt.sync = false;
@@ -34,7 +33,6 @@ void KVDBImpl::iter(std::function<bool(string_view key)>&& fn) {
 	leveldb::Iterator* it = db->NewIterator(rdopt);
 	for (it->SeekToFirst(); it->Valid(); it->Next()) {
 		auto k = it->key();
-		auto v = it->value();
 		fn({ k.data(), k.size() });
 	}
 	delete it;

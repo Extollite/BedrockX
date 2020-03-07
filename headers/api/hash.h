@@ -6,7 +6,7 @@
 typedef unsigned long long CHash;
 constexpr CHash do_hash(const char* x, size_t sz) {
 	CHash rval = 0;
-	for (int i = 0; i < sz; ++i) {
+	for (size_t i = 0; i < sz; ++i) {
 		rval *= BKDR_MUL;
 		rval += x[i];
 		rval += BKDR_ADD;
@@ -24,7 +24,7 @@ constexpr CHash do_hash(const char* x) {
 }
 constexpr CHash do_hash2(const char* x, size_t sz) {
 	CHash rval = 0;
-	for (int i = 0; i < sz; ++i) {
+	for (size_t i = 0; i < sz; ++i) {
 		rval *= BKDR_MUL2;
 		rval += x[i];
 		rval += BKDR_ADD2;

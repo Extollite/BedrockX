@@ -58,6 +58,9 @@
     <Filter Include="头文件\mcapi\command">
       <UniqueIdentifier>{4796525b-266f-4f76-9288-d31bf95debc0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\cmd">
+      <UniqueIdentifier>{7ab0cc05-3472-4c13-a94d-1be35549699c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -106,9 +109,6 @@
     <ClCompile Include="api\WMob.cpp">
       <Filter>源文件\api</Filter>
     </ClCompile>
-    <ClCompile Include="api\WDim.cpp\WDim.cpp">
-      <Filter>源文件\api</Filter>
-    </ClCompile>
     <ClCompile Include="event\LevelEvent.cpp">
       <Filter>源文件\event</Filter>
     </ClCompile>
@@ -117,6 +117,12 @@
     </ClCompile>
     <ClCompile Include="event\PlayerEvent.cpp">
       <Filter>源文件\event</Filter>
+    </ClCompile>
+    <ClCompile Include="api\WDim.cpp">
+      <Filter>源文件\api</Filter>
+    </ClCompile>
+    <ClCompile Include="api\Command.cpp">
+      <Filter>源文件\api</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +245,12 @@
     </ClInclude>
     <ClInclude Include="headers\mcapi\Command\CommandReg.h">
       <Filter>头文件\mcapi\command</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\api\command\commands.h">
+      <Filter>头文件\cmd</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\VanillaBlocks.h">
+      <Filter>头文件\mcapi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

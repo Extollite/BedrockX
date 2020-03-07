@@ -52,7 +52,7 @@ class EventCaller {
 public:
 	template<typename... P>
 	static auto _call(P&&... args) {
-		printf("call event %s\n", typeid(T).name());
+		//printf("call event %s\n", typeid(T).name());
 		T ev(std::forward<P>(args)...);
 		for (auto& i : EventCaller<T>::listener) {
 				i(ev);

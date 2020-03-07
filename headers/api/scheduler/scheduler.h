@@ -9,31 +9,34 @@ typedef unsigned long long tick_t;
 typedef unsigned int taskid_t;
 extern LIGHTBASE_API tick_t ticknow;
 extern LIGHTBASE_API taskid_t gtaskid;
-struct DelayedTask {
+struct ITaskBase {
 	tick_t schedule_time;
-	tick_t time;
+	tick_t interval;
 	taskid_t taskid;
-	bool repeat;
 	function<void(void)> cb;
-	DelayedTask(function<void(void)>&& fn, tick_t time_diff,bool repeating=false) : cb(std::forward<function<void(void)>>(fn)) {
-		taskid = ++gtaskid;
-		repeat = repeating;
-		time =  time_diff;
-	}
+	ITaskBase(function<void(void)>&& fn, tick_t time_diff, tick_t interval, taskid_t tid) : schedule_time(ticknow + time_diff), interval(interval), taskid(tid), cb(std::move(fn)) {}
+};
+struct DelayedTask:ITaskBase {
+	DelayedTask(function<void(void)>&& fn, tick_t time_diff) : ITaskBase(std::move(fn),time_diff,0,++gtaskid) {}
+};
+struct RepeatingTask : ITaskBase {
+	RepeatingTask(function<void(void)>&& fn, tick_t interval) : ITaskBase(std::move(fn), 0, interval, ++gtaskid) {}
+};
+struct DelayedRepeatingTask : ITaskBase {
+	DelayedRepeatingTask(function<void(void)>&& fn, tick_t time_diff, tick_t interval) : ITaskBase(std::move(fn), time_diff, interval, ++gtaskid) {}
 };
 #ifdef LIGHTBASE_EXPORTS
 struct MainHandler {
-	std::multimap<tick_t, DelayedTask> tasks;
-	std::mutex _lock;
 	LIGHTBASE_API bool cancel(taskid_t id);
-	LIGHTBASE_API void schedule(DelayedTask&& task);
+	bool __cancel(taskid_t id);
+	LIGHTBASE_API taskid_t schedule(ITaskBase&& task);
+	taskid_t __schedule(ITaskBase&& task);
 	void tick();
 	MainHandler();
 };
 #else
 struct MainHandler {
 	LIGHTBASE_API bool cancel(taskid_t id);
-	LIGHTBASE_API void schedule(DelayedTask&& task);
+	LIGHTBASE_API taskid_t schedule(ITaskBase&& task);
 }
-
 #endif

@@ -12,6 +12,21 @@ class Player;
 template <typename T> class CommandSelectorResults;
 
 
+enum class CommandFlagValue : char {
+	None = 0,
+	Usage = 1,
+	Visibility2 = 2,
+	Visibility4 = 4,
+	Visibility6 = 6,
+	Sync = 8,
+	Execute = 16,
+	Type = 32,
+	Cheat = 64,
+};
+
+struct CommandFlag {
+	CommandFlagValue value;
+};
 class CommandOutputParameter {
 	std::string str;
 	int type;
@@ -27,28 +42,70 @@ public:
 };
 class CommandOutput {
 public:
-  __declspec(dllimport) void success(std::string const &, std::vector<CommandOutputParameter> const &params = {});
+  __declspec(dllimport) void success(std::string const &str="", std::vector<CommandOutputParameter> const &params = {});
   __declspec(dllimport) void error(std::string const &, std::vector<CommandOutputParameter> const &params = {});
   __declspec(dllimport) void addToResultList(std::string const &, Actor const &);
   template <typename T> void set(char const *name, T value);
+  void addMessage(
+	  std::string const& str) {
+	  Call("?addMessage@CommandOutput@@AEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV?$vector@VCommandOutputParameter@@V?$allocator@VCommandOutputParameter@@@std@@@3@W4CommandOutputMessageType@@@Z", void, string const&, std::vector<CommandOutputParameter> const&, int)(str, {}, 0);
+	}
 };
 
 class CommandOrigin;
 class Actor;
-class ActorDefinitionIdentifier;
+class HashedString {
+	uint64_t hash;
+	std::string str;
 
-
-
-template <typename T> class CommandSelector : public CommandSelectorBase {
 public:
-  inline CommandSelector() : CommandSelectorBase(std::is_same_v<T, Player>) {}
-  __declspec(dllimport) CommandSelectorResults<T> results(CommandOrigin const &) const;
+	std::string const& getString() const { return str; }
+
+	__declspec(dllimport) HashedString(HashedString const& rhs);
+	__declspec(dllimport) HashedString(HashedString&& rhs);
+	__declspec(dllimport) HashedString(char const* rhs);
+	__declspec(dllimport) HashedString(std::string const& rhs);
+	__declspec(dllimport) bool operator==(HashedString const& rhs) const;
+	__declspec(dllimport) bool operator!=(HashedString const& rhs) const;
 };
+struct ActorDefinitionIdentifier {
+public:
+		std::string ns;				// 0
+		std::string identifier;		// 32
+		std::string event;			// 64
+		std::string fullname;		// 96
+		HashedString canonicalHash; // 128
+
+	
+		inline HashedString const& getCanonicalHash() const { return canonicalHash; }
+		inline std::string const& getCanonicalName() const { return canonicalHash.getString(); }
+		inline std::string const& getFullName() const { return fullname; }
+		inline std::string const& getIdentifier() const { return identifier; }
+		inline std::string const& getInitEvent() const { return event; }
+		inline std::string const& getNamespace() const { return ns; }
+		inline bool isEmpty() const { return ns.empty() && identifier.empty(); }
+		inline bool isVanilla() const { return ns == "minecraft"; }
+		inline void setIdentifier(std::string const& id) { identifier = id; }
+		inline void setInitEvent(std::string const& e) { event = e; }
+
+		__declspec(dllimport) ActorDefinitionIdentifier(ActorDefinitionIdentifier const&);
+		__declspec(dllimport) ActorDefinitionIdentifier(ActorDefinitionIdentifier&&);
+		__declspec(dllimport) ActorDefinitionIdentifier(std::string, std::string, std::string);
+		__declspec(dllimport) ActorDefinitionIdentifier(std::string const&);
+		__declspec(dllimport) ActorDefinitionIdentifier(ActorType);
+		__declspec(dllimport) ActorDefinitionIdentifier& operator=(ActorDefinitionIdentifier const&);
+		__declspec(dllimport) bool operator==(ActorDefinitionIdentifier const&);
+	};
+	static_assert(offsetof(ActorDefinitionIdentifier, canonicalHash) == 128);
+
+
+
 template <typename T> struct InvertableFilter {
   T value;
   bool inverted;
 };
 class CommandSelectorBase {
+public:
   uint32_t version;                                                                     // 0
   uint32_t type;                                                                        // 4
   uint32_t order;                                                                       // 8
@@ -68,7 +125,7 @@ class CommandSelectorBase {
   bool playerOnly;                                                                      // 164
   bool explicitIdSelector;                                                              // 165
 
-public:
+
   inline bool isExplicitIdSelector() const { return explicitIdSelector; }
   inline void addNameFilter(InvertableFilter<std::string> const &filter) { namefilters.emplace_back(filter); }
   inline void addTagFilter(InvertableFilter<std::string> const &filter) {
@@ -89,7 +146,13 @@ public:
 protected:
   __declspec(dllimport) CommandSelectorBase(bool isPlayer);
 };
-static_assert(sizeof(CommandSelectorBase) == 166);
+static_assert(offsetof(CommandSelectorBase, explicitIdSelector) == 165);
+template <typename T>
+class CommandSelector : public CommandSelectorBase {
+public:
+	inline CommandSelector() : CommandSelectorBase(std::is_same_v<T, Player>) {}
+	__declspec(dllimport) CommandSelectorResults<T> results(CommandOrigin const&) const;
+};
 template <typename T>
 class CommandSelectorResults {
   std::shared_ptr<std::vector<T *>> data;

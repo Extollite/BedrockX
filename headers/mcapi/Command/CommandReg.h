@@ -1,17 +1,21 @@
 #pragma once
-#include<string>
-#include<string_view>
-#include<memory>
-#include<vector>
-#include"Command.h"
+#include <string>
+#include <string_view>
+#include <memory>
+#include <vector>
+#include "Command.h"
+
+
 template <typename T>
 class typeid_t {
 public:
-	short value;
+	unsigned short value;
+
 	typeid_t(typeid_t const& id) : value(id.value) {}
-	typeid_t(short value) : value(value) {}
+	typeid_t(unsigned short value) : value(value) {}
 };
-enum class CommandPermissionLevel : char { Normal = 0,
+enum CommandPermissionLevel{ 
+	Normal = 0,
 	Privileged = 1,
 	AutomationPlayer = 2,
 	OperatorOnly = 3,
@@ -27,26 +31,31 @@ public:
 
 class Command {
 protected:
-  int unk8;         // 8
-  void *unk16;      // 16
-  int unk24;        // 24
-  bool b28;         // 28
-  char flag; // 29
-  Command() {
-    unk24 = -1;
-    b28   = 5;
-  }
+	int unk8;		   // 8
+	void* unk16;	   // 16
+	int unk24;		   // 24
+	unsigned char b28; // 28
+	CommandFlag flag;  // 29
+	Command() {
+		unk24 = -1;
+		b28 = 5;
+	}
 
 public:
-  __declspec(dllimport) virtual ~Command();
-  virtual void execute(CommandOrigin const &, CommandOutput &) = 0;
-
+	__declspec(dllimport) virtual ~Command();
+	virtual void execute(CommandOrigin const&, CommandOutput&) = 0;
+	template <typename T>
+	static bool checkHasTargets2(CommandSelectorResults<T> const& a, CommandOutput& b) {
+		return checkHasTargets(a, b);
+	}
 protected:
-  //??$checkHasTargets@VActor@@@Command@@KA_NAEBV?$CommandSelectorResults@VActor@@@@AEAVCommandOutput@@@Z
-  template <typename T>
-  __declspec(dllimport) static bool checkHasTargets(CommandSelectorResults<T> const &, CommandOutput &);
+	//??$checkHasTargets@VActor@@@Command@@KA_NAEBV?$CommandSelectorResults@VActor@@@@AEAVCommandOutput@@@Z
+	template <typename T>
+	__declspec(dllimport) static bool checkHasTargets(CommandSelectorResults<T> const&, CommandOutput&);
 };
-enum class CommandParameterDataType { NORMAL, ENUM, SOFT_ENUM };
+enum class CommandParameterDataType { NORMAL,
+	ENUM,
+	SOFT_ENUM };
 class CommandRegistry;
 struct CommandParameterData;
 class CommandRegistry {
@@ -62,9 +71,9 @@ public:
 		CommandVersion version;					  // 0
 		FactoryFn factory;						  // 8
 		std::vector<CommandParameterData> params; // 16
-		char unk;								  // 40
-		inline Overload(CommandVersion version, FactoryFn factory, std::initializer_list<CommandParameterData>&& args)
-			: version(version), factory(factory), params(args), unk(0xFF) {}
+		unsigned char unk;						  // 40
+		inline Overload(CommandVersion version, FactoryFn factory, std::vector<CommandParameterData>& args)
+			: version(version), factory(factory), params(args), unk(255) {}
 	};
 	struct Signature {
 		std::string name;								  // 0
@@ -122,9 +131,10 @@ public:
 	}
 	bool parseEnumInt(
 		void* target, CommandRegistry::ParseToken const& token, CommandOrigin const&, int, std::string&,
-		std::vector<std::string>&) const {Type
+		std::vector<std::string>&) const {
 		auto data = getEnumData(token);
-		*(int*)target = data;
+		printf("parse %d\n", int(data));
+		*(int*)target = (int)data;
 		return true;
 	}
 
@@ -137,18 +147,17 @@ public:
 			converted.emplace_back(value.first, (uint64_t)value.second);
 		return addEnumValuesInternal(name, converted, tid, &CommandRegistry::parseEnumInt).val;
 	}
-	template <typename Type>
-	unsigned addEnumValuesFrom1(
+	unsigned addEnumValues(
 		std::string const& name, typeid_t<CommandRegistry> tid,
 		std::initializer_list<std::string> const& values) {
 		std::vector<std::pair<std::string, uint64_t>> converted;
 		uint64_t idx = 0;
 		for (auto& value : values)
-			converted.emplace_back(value.first, ++idx);
+			converted.emplace_back(value, ++idx);
 		return addEnumValuesInternal(name, converted, tid, &CommandRegistry::parseEnumInt).val;
 	}
 	inline void registerOverload(
-		std::string const& name, Overload::FactoryFn factory, std::initializer_list<CommandParameterData> args) {
+		std::string const& name, Overload::FactoryFn factory, std::vector<CommandParameterData>& args) {
 		Signature* signature = const_cast<Signature*>(findCommand(name));
 		auto& overload = signature->overloads.emplace_back(CommandVersion{}, factory, args);
 		registerOverloadInternal(*signature, overload);
@@ -156,24 +165,26 @@ public:
 };
 
 struct CommandParameterData {
-  using ParseFn = bool (CommandRegistry::*)(
-      void *, CommandRegistry::ParseToken const &, CommandOrigin const &, int, std::string &,
-      std::vector<std::string> &) const;
-  typeid_t<CommandRegistry> tid; // 0
-  ParseFn parser;                // 8
-  std::string name;              // 16
-  char const *desc;              // 48
-  int unk56;                     // 56
-  CommandParameterDataType type; // 60
-  int offset;                    // 64
-  int flag_offset;               // 68
-  bool mand;                 // 72
-  bool pad73;                    // 73
-  CommandParameterData(
-      typeid_t<CommandRegistry> tid, ParseFn parser, std::string_view name, CommandParameterDataType type,
-      char const *desc, int offset, bool _mand, int flag_offset)
-      : tid(tid), parser(parser), name(name), desc(desc), unk56(-1), type(type), offset(offset),
-        flag_offset(flag_offset), mand(_mand) {}
+	using ParseFn = bool (CommandRegistry::*)(
+		void*, CommandRegistry::ParseToken const&, CommandOrigin const&, int, std::string&,
+		std::vector<std::string>&) const;
+	typeid_t<CommandRegistry> tid; // 0
+	ParseFn parser;				   // 8
+	std::string name;			   // 16
+	char const* desc;			   // 48
+	int unk56;					   // 56
+	CommandParameterDataType type; // 60
+	int offset;					   // 64
+	int flag_offset;			   // 68
+	bool mand;					   // 72
+	bool pad73;					   // 73
+	CommandParameterData():tid(0) {}
+	CommandParameterData(
+		typeid_t<CommandRegistry> tid, ParseFn parser, std::string_view desc_, CommandParameterDataType type,
+		char const* enumname, int offset, bool optional, int flag_offset)
+		: tid(tid), parser(parser), name(desc_), desc(enumname), unk56(-1), type(type), offset(offset),
+		  flag_offset(flag_offset), mand(optional),pad73(false) {}
 };
-
-
+static_assert(offsetof(CommandParameterData, pad73) == 73);
+static_assert(offsetof(CommandParameterData, name) == 16);
+static_assert(offsetof(CommandParameterData, unk56) == 56);

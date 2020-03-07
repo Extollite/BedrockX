@@ -12,7 +12,7 @@ namespace BDX {
 			memcpy(fake_vtbl, vtbl, sizeof(fake_vtbl));
 			//vtbl: 0x0:RTTI info,0x8 D2Ev
 			*(void**)filler = fake_vtbl + 1;
-			fake_vtbl[1] = dummy;
+			fake_vtbl[1] = (void*)dummy;
 		}
 	};
 	SCO* pSCO;
@@ -27,7 +27,7 @@ namespace BDX {
 		Call("??0PlayerCommandOrigin@@QEAA@AEAVPlayer@@@Z", void, void*, ServerPlayer*)(filler, wp);
 		if (FAKE_PORGVTBL[1] == NULL) {
 			memcpy(FAKE_PORGVTBL, ((void**)filler[0])-1, sizeof(FAKE_PORGVTBL));
-			FAKE_PORGVTBL[1] = dummy;
+			FAKE_PORGVTBL[1] = (void*)dummy;
 		}
 		filler[0] = FAKE_PORGVTBL+1;
 		return MinecraftCommands::_runcmd(filler, cmd, 4, 1);

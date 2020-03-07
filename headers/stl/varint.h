@@ -49,7 +49,7 @@ struct MCString {
 	MCString(string_view sv) : view(sv) {}
 	template <typename T>
 	void pack(T& ws) const {
-		ws.apply(VarUInt(view.size()));
+		ws.apply(VarUInt((unsigned int)view.size()));
 		ws.write(view.data(), view.size());
 	}
 	void unpack(RBStream& rs) {

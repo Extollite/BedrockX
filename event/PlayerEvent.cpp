@@ -55,7 +55,7 @@ THook(bool, "?useItem@GameMode@@UEAA_NAEAVItemStack@@@Z", void* thi, ItemStack& 
 	return false;
 }
 THook(int, "?handle@ItemUseOnActorInventoryTransaction@@UEBA?AW4InventoryTransactionError@@AEAVPlayer@@_N@Z", void* thi, ServerPlayer& sp, bool unk) {
-	if(PlayerUseItemOnEntityEvent::_call(sp, dAccess<ActorUniqueID,104>(thi)))
+	if(PlayerUseItemOnEntityEvent::_call(sp, dAccess<ActorRuntimeID,104>(thi))) //WARNING:HARDCODED OFFSET
 		return original(thi, sp, unk);
 	return 0;
 }

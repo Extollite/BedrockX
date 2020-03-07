@@ -13,7 +13,7 @@ enum TextType : char {
 template <typename T>
 struct Wrapped {
 	T* v;
-	Wrapped(T& x) : v(&x) {}
+	Wrapped(T const& x) : v((T*)&x) {}
 	Wrapped(T* x) : v(x) {}
 	operator T&() {
 		return *v;
@@ -35,29 +35,20 @@ struct WPlayer;
 struct WActor;
 struct WDim : Wrapped<Dimension> {
 	WDim(Dimension& x) : Wrapped<Dimension>(x) {}
-	LBAPI BlockPos getSpawnPos();
-	LBAPI float getTime();
-	LBAPI void setBlock(int x, int y, int z, int blkid);
+	LBAPI std::unique_ptr<BlockSource> makeSource();
+	LBAPI void setBlock(int x, int y, int z, Block const& blk);
 	LBAPI struct WBlock getBlock(int x, int y, int z);
-	LBAPI BlockSource* _getBlockSource();
 	LBAPI int getID();
 };
 struct WLevel : Wrapped<ServerLevel> {
 	WLevel(ServerLevel& x) : Wrapped<ServerLevel>(x) {}
 	LBAPI array_view<WPlayer> getUsers();
 	LBAPI WPlayer getPlayer(string_view name);
-	LBAPI WActor getEntity(unsigned long entid);
-	LBAPI WActor getRuntimeEntity(unsigned long rtid); //?
-	LBAPI WDim getDim(int dimid);
 	LBAPI void broadcastText(string_view text, TextType type = RAW);
 };
 struct WActor : Wrapped<Actor> {
 	WActor(Actor& x) : Wrapped<Actor>(x) {}
 	LBAPI void teleport(Vec3 to, int dimid);
-	LBAPI Vec3 const& getPos();
-	LBAPI string const& getNameTag();
-	LBAPI enum ActorType getType();
-	LBAPI struct ActorUniqueID const& getUniqueID();
 	LBAPI int getDimID();
 	LBAPI WDim getDim();
 };
@@ -66,7 +57,6 @@ struct WMob : Wrapped<Mob> {
 	WActor* actor() {
 		return (WActor*)this;
 	}
-	LBAPI WPlayer getLastHurtByPlayer();
 	LBAPI void kill();
 };
 #include "helper.h"
@@ -106,7 +96,7 @@ struct WItem : Wrapped<ItemStack> {
 	WItem(ItemStack& is) : Wrapped<ItemStack>(is) {}
 };
 struct WBlock : Wrapped<Block> {
-	WBlock(Block& i) : Wrapped<Block>(i) {}
+	WBlock(Block const& i) : Wrapped<Block>(i) {}
 };
 struct WBlockActor : Wrapped<BlockActor> {
 	WBlockActor(BlockActor& i) : Wrapped<BlockActor>(i) {}

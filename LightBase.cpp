@@ -5,6 +5,7 @@
 #include <api/gui/gui.h>
 #include <filesystem>
 #include "framework.h"
+/*
 THook(
 	void,
 	"?registerCommand@CommandRegistry@@QEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@"
@@ -18,45 +19,33 @@ THook(
 	void* a, void** b, void* c) {
 	b[0] = b[1] = NULL;
 	return b;
-}
+}*/
+/*
 void sometest() {
 	addListener(
 		[](PlayerJoinEvent& ev) {
-			return;
-			printf("barrier\n");
-			printf("listen %s %d\n", ev.getPlayer().getName().c_str(), ev.getPlayer()->getCarriedItem().getId());
+			//printf("barrier\n");
+			//printf("listen %s %d\n", ev.getPlayer().getName().c_str(), ev.getPlayer()->getCarriedItem().getId());
 			auto sp = ev.getPlayer();
 			LocateS<MainHandler>()->schedule(DelayedTask([sp]() {
 				printf("add %d\n", sp.v->getCarriedItem().getId());
 				LocateS<WLevel>()->broadcastText("114514");
-				ServerLevel* sv = LocateS<ServerLevel>().operator->();
-				printf("sv %p\n", sv);
-				printf("dim %p %p\n", WActor(*sp.v).getDim().v, sv->getDimension(0));
-				WPlayer wp = sp;
+				printf("dim %p %p\n", WActor(*sp.v).getDim().v, LocateS<ServerLevel>()->getDimension(0));
+				WPlayer wp(*sp.v);
 				printf("ename %s\n", ExtendedCertificate::getIdentityName(*wp._getCert()).c_str());
-				//printf("cmd %d\n", BDX::runcmd("help 2"));
 				printf("cmd %d\n", BDX::runcmd("help 3"));
 				printf("asplayer %d\n", BDX::runcmdAs(wp, "me kksk"));
 				printf("asplayer2 %d\n", BDX::runcmdAs(wp, "op kksk"));
 				wp.teleport({ 114, 514, 1919 }, 0);
 				xuid_t xuid = wp.getXuid();
 				std::cout << xuid << std::endl;
-				BlockSource bs(LocateS<ServerLevel>(), wp.getDim(), LocateS<ChunkSource>(), 1, 0);
-				auto pos = wp->getPos();
-				printf("pos %f %f %f\n", pos.x, pos.y, pos.z);
-				auto& blk = bs.getBlock(pos.x, 16, pos.z);
-				printf("blkid %d\n", (int)blk.getBlockItemId());
-				pos.x = 1024;
-				pos.z = 1024;
-				for (int x = pos.x - 20; x <= pos.x + 20; ++x)
-					for (int z = pos.z - 20; z <= pos.z + 20; ++z) {
-						bs.setBlock({ x, 100, z }, blk, 3, { NULL }, NULL);
-					}
-				printf("->%d\n", (int)bs.getBlock(pos.x, 100, pos.z).getBlockItemId());
-				//	wp.kill();
-				wp.teleport(pos, 0);
+				LocateS<MainHandler>()->schedule(RepeatingTask([sp](){
+					//sp.v->kill();
+					WPlayer wp = sp;
+					wp.getDim().setBlock(int(wp->getPos().x), int(wp->getPos().y), int(wp->getPos().z),VanillaBlocks::DiamondBlock());
+				},2));
 			},
-				2, false));
+				2));
 			using namespace GUI;
 			auto sf = std::make_shared<FullForm>();
 			sf->addWidget(GUIDropdown("114514", { "kksk", "1919810" }, 1));
@@ -76,11 +65,10 @@ void sometest() {
 			})));
 		});
 }
-static void loadall() {
-	do_log(L"BedrockX Loaded!\n");
+
 	addListener(function([](ServerStartedEvent& ev) {
 		printf("server started\n");
-		LocateS<MainHandler>()->schedule(DelayedTask([]() {
+		LocateS<MainHandler>()->schedule(RepeatingTask([]() {
 			char buf[1024];
 			auto tm__ = time(NULL);
 			tm tm2;
@@ -88,8 +76,26 @@ static void loadall() {
 			strftime(buf, 1024, "motd: time %H:%M:%S", &tm2);
 			LocateS<RakNetServerLocator>()->accounce(buf, "kksk", 0, 114514, 1919810, true);
 		},
-			2, true));
+			2));
 	}));
+*/
+void PrintErrorMessage() {
+	DWORD errorMessageID = ::GetLastError();
+	if (errorMessageID == 0) {
+		std::wcerr << "wtf\n";
+		return;
+	}
+	std::wcerr << errorMessageID << std::endl;
+	LPWSTR messageBuffer = nullptr;
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, errorMessageID,
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&messageBuffer, 0, NULL);
+	std::wcerr << messageBuffer << std::endl;
+	LocalFree(messageBuffer);
+}
+
+static void loadall() {
+	do_log(L"BedrockX Loaded!\n");
 	using namespace std::filesystem;
 	create_directory("bdxmod");
 	directory_iterator ent("bdxmod");
@@ -101,17 +107,16 @@ static void loadall() {
 			}
 			else {
 				do_log(L"Error when loading %s\n", i.path().c_str());
-				printf("last error %ul\n", GetLastError());
+				PrintErrorMessage();
 			}
 		}
 	}
 }
 THook(int, "main", int a, void* b) {
-	sometest();
+	//sometest();
 	loadall();
 	PostInitEvent::_call();
 	PostInitEvent::_removeall();
-	printf("here\n");
 	return original(a, b);
 }
 /*

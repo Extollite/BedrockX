@@ -16,24 +16,35 @@ EXPORT_EVENT(PlayerUseItemOnEvent);
 EXPORT_EVENT(PlayerUseItemOnEntityEvent);
 EXPORT_EVENT(PlayerUseItemEvent);
 
+EXPORT_EVENT(RegisterCommandEvent);
+
 EXPORT_EVENT(ServerStartedEvent);
 EXPORT_EVENT(PostInitEvent);
 
 
 EXPORT_EVENT(MobDeathEvent);
-EXPORT_EVENT(ActorHurtedEvent);
+EXPORT_EVENT(MobHurtedEvent);
 EXPORT_EVENT(LevelExplodeEvent);
 
 static struct exec_now {
 	exec_now() {
-		addListener([](PostInitEvent&) {
+		addListener([](ServerStartedEvent&) {
 #define OPTIMIZE_EVENT(x) x::_cleanup();
+			OPTIMIZE_EVENT(PlayerPreJoinEvent);
 			OPTIMIZE_EVENT(PlayerJoinEvent);
 			OPTIMIZE_EVENT(PlayerLeftEvent);
 			OPTIMIZE_EVENT(PlayerChatEvent);
+			OPTIMIZE_EVENT(PlayerCMDEvent);
 			OPTIMIZE_EVENT(PlayerDestroyEvent);
 			OPTIMIZE_EVENT(PlayerUseItemOnEvent);
-			OPTIMIZE_EVENT(ServerStartedEvent);
+			OPTIMIZE_EVENT(PlayerUseItemOnEntityEvent);
+			OPTIMIZE_EVENT(PlayerUseItemEvent);
+
+			OPTIMIZE_EVENT(RegisterCommandEvent);
+
+			OPTIMIZE_EVENT(MobDeathEvent);
+			OPTIMIZE_EVENT(MobHurtedEvent);
+			OPTIMIZE_EVENT(LevelExplodeEvent);
 		});
 	}
 } __exec_now;

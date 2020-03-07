@@ -42,8 +42,11 @@ public:
 };
 class PlayerUseItemOnEntityEvent : public IGenericPlayerEvent<PlayerUseItemOnEntityEvent> {
 public:
-	struct ActorUniqueID rtid;
-	PlayerUseItemOnEntityEvent(ServerPlayer& sp, ActorUniqueID rti) : IGenericPlayerEvent<PlayerUseItemOnEntityEvent>(sp), rtid(rti) {}
+	class ActorRuntimeID rtid;
+	Actor* victim;
+	PlayerUseItemOnEntityEvent(ServerPlayer& sp, ActorRuntimeID rti) : IGenericPlayerEvent<PlayerUseItemOnEntityEvent>(sp), rtid(rti) {
+		victim = LocateS<ServerLevel>()->getRuntimeEntity(rtid, false);
+	}
 };
 class PlayerUseItemOnEvent : public IGenericPlayerEvent<PlayerUseItemOnEvent> {
 public:

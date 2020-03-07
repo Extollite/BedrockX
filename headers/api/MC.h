@@ -1,20 +1,7 @@
 #pragma once
 #include"Loader.h"
 #include"lightbase.h"
-/*class Level {
 
-};
-class BlockPos {
-public:
-	int x, y, z;
-};
-class ServerPlayer{
-public:
-	void sendNetworkPacket(class Packet& pk){
-		Call("?sendNetworkPacket@ServerPlayer@@UEBAXAEAVPacket@@@Z",void, decltype(this), class Packet&)(this, pk);
-	}
-};
-*/
 #include<mcapi/Core.h>
 #include<mcapi/Player.h>
 #include<mcapi/Level.h>
@@ -22,6 +9,8 @@ public:
 #include<mcapi/Dimension.h>
 #include<mcapi/Item_Block.h>
 #include<mcapi/Actor.h>
+#include<mcapi/Command/Command.h>
+#include<mcapi/VanillaBlocks.h>
 class ServerPlayer;
 class NetworkIdentifier;
 class ServerNetworkHandler {

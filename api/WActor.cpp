@@ -9,12 +9,11 @@ LBAPI WDim WActor::getDim() {
 		for (int i = 96; i < 116; ++i) {
 			if (myMEM[i] == get) {
 				if (poff_dim) {
-					printf("wtf actor %d %d\n", poff_dim, i * 8);
+					printf("wtf actor %lld %d\n", poff_dim, i * 8);
 				}
 				poff_dim = i * 8;
 			}
 		}
-		printf("actor poff %d\n", poff_dim);
 	}
 	uintptr_t ptr = (uintptr_t)v;
 	ptr += poff_dim;
