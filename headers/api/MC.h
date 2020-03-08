@@ -12,7 +12,6 @@
 #include<mcapi/Command/Command.h>
 #include<mcapi/VanillaBlocks.h>
 class ServerPlayer;
-class NetworkIdentifier;
 class ServerNetworkHandler {
 public:
 	//class ServerPlayer * __ptr64 __cdecl ServerNetworkHandler::_getServerPlayer(class NetworkIdentifier const & __ptr64,unsigned char)

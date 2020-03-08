@@ -48,11 +48,56 @@ public:
   template <typename T> void set(char const *name, T value);
   void addMessage(
 	  std::string const& str) {
-	  Call("?addMessage@CommandOutput@@AEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV?$vector@VCommandOutputParameter@@V?$allocator@VCommandOutputParameter@@@std@@@3@W4CommandOutputMessageType@@@Z", void, string const&, std::vector<CommandOutputParameter> const&, int)(str, {}, 0);
+	  Call("?addMessage@CommandOutput@@AEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV?$vector@VCommandOutputParameter@@V?$allocator@VCommandOutputParameter@@@std@@@3@W4CommandOutputMessageType@@@Z", void,void*, string const&, std::vector<CommandOutputParameter> const&, int)(this,str, {}, 0);
 	}
 };
 
-class CommandOrigin;
+
+enum class OriginType : char {
+    Player = 0,
+    Block = 1,
+    MinecartBlock = 2,
+    DevConsole = 3,
+    Test = 4,
+    AutomationPlayer = 5,
+    ClientAutomation = 6,
+    DedicatedServer = 7,
+    Actor = 8,
+    Virtual = 9,
+    GameArgument = 10,
+    ActorServer = 11
+};
+
+class CommandOrigin {
+public:
+    CommandOrigin(CommandOrigin const&) = delete;
+    virtual ~CommandOrigin();
+    virtual std::string getRequestId() const = 0;
+    virtual std::string getName() const = 0;
+    virtual BlockPos getBlockPosition() const = 0;
+    virtual Vec3 getWorldPosition() const = 0;
+    virtual Level* getLevel() const = 0;
+    virtual Dimension* getDimension() const = 0;
+    virtual Actor* getEntity() const = 0;
+    virtual CommandPermissionLevel getPermissionsLevel() const = 0;
+    virtual std::unique_ptr<CommandOrigin> clone() const = 0;
+    virtual bool unk1() const = 0;
+    virtual bool unk2() const = 0;
+    virtual bool hasChatPerms() const = 0;
+    virtual bool hasTellPerms() const = 0;
+    virtual bool canUseAbility(AbilitiesIndex) const = 0;
+    virtual bool isWorldBuilder() const = 0;
+    virtual bool canUseCommandsWithoutCheatsEnabled() const = 0;
+    virtual bool isSelectorExpansionAllowed() const = 0;
+    virtual NetworkIdentifier getSourceId_net() const = 0;
+    virtual char getSourceSubId() const = 0;
+    virtual CommandOrigin* getOutputReceiver() const = 0;
+    virtual OriginType getOriginType() const=0;
+    virtual mce::UUID const& getUUID() const = 0;
+    virtual void toCommandOriginData_stub() const = 0;
+    virtual void handleCommandOutputCallback_stub(void*) = 0;
+    virtual void _setUUID(mce::UUID const&) = 0;
+};
 class Actor;
 class HashedString {
 	uint64_t hash;

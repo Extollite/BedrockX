@@ -8,9 +8,8 @@
 #include <memory>
 #include <functional>
 #include"mass.h"
-enum ActorType : int {
-
-};
+enum ActorType : int;
+enum class AbilitiesIndex : int;
 class Vec3 {
 public:
 	float x, y, z;
@@ -62,5 +61,11 @@ public:
 	static MCAPI std::string getXuid(Certificate const&);
 	static MCAPI std::string getIdentityName(Certificate const&);
 };
+namespace mce {
+	class UUID;
+};
+class NetworkIdentifier {
+	char filler[144];
+};
 
-
+constexpr const int SAFE_PADDING = 32;

@@ -264,7 +264,11 @@ public:
 #endif
 };
 class ItemStack:public ItemStackBase {
+	char filler[0x88+SAFE_PADDING];
 public:
+	MCINLINE ~ItemStack() {
+		((void(*)(void*, char))((*(void***)this)[0]))(this, 0);
+	}
 	MCAPI ItemStack(class Item const&, int);
 	MCAPI ItemStack(void);
 	MCAPI class ItemStack& operator=(class ItemStack const&);

@@ -72,8 +72,8 @@ public:
 		FactoryFn factory;						  // 8
 		std::vector<CommandParameterData> params; // 16
 		unsigned char unk;						  // 40
-		inline Overload(CommandVersion version, FactoryFn factory, std::vector<CommandParameterData>& args)
-			: version(version), factory(factory), params(args), unk(255) {}
+		inline Overload(CommandVersion version, FactoryFn factory, std::vector<CommandParameterData>&& args)
+			: version(version), factory(factory), params(std::forward< std::vector<CommandParameterData>>(args)), unk(255) {}
 	};
 	struct Signature {
 		std::string name;								  // 0
@@ -133,7 +133,6 @@ public:
 		void* target, CommandRegistry::ParseToken const& token, CommandOrigin const&, int, std::string&,
 		std::vector<std::string>&) const {
 		auto data = getEnumData(token);
-		printf("parse %d\n", int(data));
 		*(int*)target = (int)data;
 		return true;
 	}
@@ -157,9 +156,9 @@ public:
 		return addEnumValuesInternal(name, converted, tid, &CommandRegistry::parseEnumInt).val;
 	}
 	inline void registerOverload(
-		std::string const& name, Overload::FactoryFn factory, std::vector<CommandParameterData>& args) {
+		std::string const& name, Overload::FactoryFn factory, std::vector<CommandParameterData>&& args) {
 		Signature* signature = const_cast<Signature*>(findCommand(name));
-		auto& overload = signature->overloads.emplace_back(CommandVersion{}, factory, args);
+		auto& overload = signature->overloads.emplace_back(CommandVersion{}, factory, std::forward<std::vector<CommandParameterData>>(args));
 		registerOverloadInternal(*signature, overload);
 	}
 };

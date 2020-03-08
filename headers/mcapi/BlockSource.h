@@ -3,7 +3,7 @@
 #include"ChunkSource.h"
 MCCLS class BlockSource {
 private:
-	char filler[224];
+	char filler[224+ SAFE_PADDING];
 public : 
 	MCAPI BlockSource(class Level&, class Dimension&, class ChunkSource&, bool, bool);
 	MCAPI void addListener(class BlockSourceListener&);

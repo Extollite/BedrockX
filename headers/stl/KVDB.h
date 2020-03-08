@@ -18,7 +18,7 @@ class KVDBImpl {
 		leveldb::WriteOptions wropt;
 		leveldb::Options options;
 #else
-	char filler[128];
+	char filler[160];
 #endif
 public:
 	LIGHTBASE_API ~KVDBImpl();

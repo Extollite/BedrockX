@@ -76,10 +76,9 @@ namespace CMDREG {
 		E val;
 	};
 
-	class MakeCommand {
-	public:
+	struct MakeCommand {
 		MakeCommand(string const& name, const char* desc, int lvl) {
-			LocateS<CommandRegistry>()->registerCommand(name, desc, (CommandPermissionLevel)lvl, { CommandFlagValue(0) }, { CommandFlagValue(72) });
+			LocateS<CommandRegistry>()->registerCommand(name, desc, (CommandPermissionLevel)lvl, { CommandFlagValue(0) }, { CommandFlagValue(0) });
 		}
 	};
 
@@ -98,10 +97,8 @@ namespace CMDREG {
 		}
 	}
 	template <typename Dummy, typename... TP>
-	class MakeOverload {
+	struct MakeOverload {
 		using container = std::tuple<std::remove_reference_t<TP>...>;
-
-	public:
 		class sub : public Command {
 		public:
 			container data;
@@ -117,11 +114,9 @@ namespace CMDREG {
 			}
 			sub() {}
 		};
-		std::vector<CommandParameterData> vc;
-		std::vector<string> argn;
 		static std::function<void(container&)> new_cb;
 		template <typename TX>
-		inline void reg_impl_sub(uintptr_t off, string const& desc) {
+		inline void reg_impl_sub(uintptr_t off, string const& desc, std::vector<CommandParameterData>& vc) {
 			off += offsetof(sub, data);
 			if constexpr (std::is_base_of_v<Ioptional, TX>) {
 				using TXX = decltype(TX::val);
@@ -142,32 +137,36 @@ namespace CMDREG {
 			}
 		}
 		template <std::size_t... Index>
-		inline void reg_helper(std::index_sequence<Index...>) {
+		inline void reg_helper(std::vector<CommandParameterData>& vc,
+		std::vector<string>& argn,std::index_sequence<Index...>) {
 			container& cter = *(container*)0;
-			(reg_impl_sub<std::remove_reference_t<decltype(std::get<Index>(cter))>>((uintptr_t)std::addressof(std::get<Index>(cter)) - (uintptr_t)std::addressof(cter), argn[Index]), ...);
+			(reg_impl_sub<std::remove_reference_t<decltype(std::get<Index>(cter))>>((uintptr_t)std::addressof(std::get<Index>(cter)) - (uintptr_t)std::addressof(cter), argn[Index],vc), ...);
 		}
-		void regMe(string const& cname) {
-			LocateS<CommandRegistry>()->registerOverload(cname, &factory, vc);
+		inline void regMe(string const& cname, std::vector<CommandParameterData>&& vc) {
+			LocateS<CommandRegistry>()->registerOverload(cname, &factory, std::forward< std::vector<CommandParameterData>>(vc));
 		}
 		template <typename... TP2>
 		MakeOverload(Dummy*, std::function<void(container&)>&& _new_cb, string const& cname, bool (*__cb)(CommandOrigin const&, CommandOutput&, TP...), TP2... argns) {
 			static_assert(sizeof...(TP2) == sizeof...(TP));
 			new_cb = std::forward<decltype(new_cb)>(_new_cb);
 			sub::cb = (decltype(sub::cb))__cb;
+			std::vector<CommandParameterData> vc;
+			std::vector<string> argn;
 			(argn.emplace_back(argns), ...);
-			static_assert(sizeof...(TP2) == sizeof...(TP));
 			constexpr auto size = std::tuple_size<container>::value;
-			reg_helper(std::make_index_sequence<size>{});
-			regMe(cname);
+			reg_helper(vc,argn,std::make_index_sequence<size>{});
+			regMe(cname,std::move(vc));
 		}
 		template <typename... TP2>
-		MakeOverload(Dummy*, string const& cname, bool (*__cb)(CommandOrigin const&, CommandOutput&, TP...), TP2... argns) {
+		inline MakeOverload(Dummy*, string const& cname, bool (*__cb)(CommandOrigin const&, CommandOutput&, TP...), TP2... argns) {
 			static_assert(sizeof...(TP2) == sizeof...(TP));
 			sub::cb = (decltype(sub::cb))__cb;
+			std::vector<CommandParameterData> vc;
+			std::vector<string> argn;
 			(argn.emplace_back(argns), ...);
 			constexpr auto size = std::tuple_size<container>::value;
-			reg_helper(std::make_index_sequence<size>{});
-			regMe(cname);
+			reg_helper(vc,argn, std::make_index_sequence<size>{});
+			regMe(cname, std::move(vc));
 		}
 		static std::unique_ptr<Command> factory() {
 			auto rv = std::make_unique<sub>();
@@ -181,8 +180,8 @@ namespace CMDREG {
 	std::function<void(std::tuple<std::remove_reference_t<TP>...>&)> MakeOverload<Dummy, TP...>::new_cb = [](auto&) {};
 };
 using CMDREG::CEnum, CMDREG::MakeCommand, CMDREG::MakeOverload, CMDREG::MyEnum, CMDREG::optional;
-
+static_assert(sizeof(MakeOverload<void,int>) ==1);
 #define CmdOverload(name2, cb, ...) \
-	{ MakeOverload __ov1((struct name2*)0, #name2, cb, __VA_ARGS__); }
+	{ MakeOverload __ov1((struct name2*)0, string(#name2), cb, __VA_ARGS__); }
 #define CmdOverload2(name2, cb, cb2, ...) \
 	{ MakeOverload __ov2((struct name2*)0, cb2, #name2, cb, __VA_ARGS__); }
