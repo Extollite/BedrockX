@@ -124,6 +124,9 @@
     <ClCompile Include="api\Command.cpp">
       <Filter>源文件\api</Filter>
     </ClCompile>
+    <ClCompile Include="dlsym.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\api\hash.h">
@@ -254,7 +257,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="Lib\bedrock_server_mod.lib" />
     <Library Include="Lib\Chakra.lib" />
   </ItemGroup>
 </Project>

@@ -274,6 +274,7 @@
     <ClCompile Include="api\WMob.cpp" />
     <ClCompile Include="api\WPlayer.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="dlsym.cpp" />
     <ClCompile Include="event\ActorEvent.cpp" />
     <ClCompile Include="event\event.cpp" />
     <ClCompile Include="event\LevelEvent.cpp" />
@@ -338,7 +339,6 @@
     <ClInclude Include="headers\stl_pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="Lib\bedrock_server_mod.lib" />
     <Library Include="Lib\Chakra.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

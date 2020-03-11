@@ -6,35 +6,59 @@ template <typename T, int off>
 inline T& dAccess(void* ptr) {
 	return *(T*)(((uintptr_t)ptr) + off);
 }
-
+#define __WEAK __declspec(selectany)
+//#define GetServerSymbol(x) dlsym_real(x)
+template <CHash>
+__WEAK void* __ptr_cache;
+template <CHash hash>
+inline static void* dlsym_cache(const char* fn) {
+	if (!__ptr_cache<hash>) {
+		__ptr_cache<hash> = dlsym_real(fn);
+		if (!__ptr_cache<hash>) {
+			printf("Cant found sym %s\n", fn);
+			exit(1);
+		}
+	}
+	return __ptr_cache<hash>;
+}
+#if 0
 template <CHash>
 struct DLSYMCACHE {
 	static void* ptr;
 	inline static void load(const char* fn) {
 		if (!ptr) {
-			ptr = GetServerSymbol(fn);
+			ptr = dlsym_real(fn);
+			if (!ptr) {
+				printf("Cant found sym %s\n", fn);
+				exit(1);
+			}
 		}
 	}
 };
 template <CHash hs>
 void* DLSYMCACHE<hs>::ptr;
+#endif
+#if 0
 template <CHash hash,typename ret, typename... p>
 struct __CALL_IMP {
-	//const char* fn_;
+	void* ptr;
 	inline __CALL_IMP(const char* fn) {
-		DLSYMCACHE<hash>::load(fn);
-		//fn_ = fn;
+		ptr = dlsym<hash>(fn);
 	}
-	inline ret operator()(p... args) {
-		//printf("%s calling %p hash %I64u\n",fn_, DLSYMCACHE<hash, hash2>::ptr,hash);
-		//auto ptr = GetServerSymbol(fn_);
-		return ((ret(*)(p...))DLSYMCACHE<hash>::ptr)(args...);
+	ret inline operator()(p... args) {
+		return ((ret(*)(p...))ptr)(args...);
 	}
 };
+#endif
 #define VA_EXPAND(...) __VA_ARGS__
-#define Call(fn, ret, ...) __CALL_IMP<do_hash(fn), ret, __VA_ARGS__>(fn)
-#define SYM(fn) (DLSYMCACHE<do_hash(fn)>::load(fn))
-
+//#define Call(fn, ret, ...) __CALL_IMP<do_hash(fn), ret, __VA_ARGS__>(fn)
+template <CHash hash, typename ret, typename... p>
+static inline auto __imp_Call(const char* fn) {
+	return ((ret(*)(p...))(dlsym_cache<hash>(fn)));
+}
+#define Call(fn, ret, ...) (__imp_Call<do_hash(fn), ret, __VA_ARGS__>(fn))
+#define SYM(fn) (dlsym_cache<do_hash(fn)>(fn))
+#define dlsym(xx) SYM(xx)
 class THookRegister {
 public:
 	THookRegister(void* address, void* hook, void** org) {
@@ -44,7 +68,7 @@ public:
 		}
 	}
 	THookRegister(char const* sym, void* hook, void** org) {
-		auto found = GetServerSymbol(sym);
+		auto found = dlsym_real(sym);
 		if (found == nullptr) {
 			std::cerr << "SymbolNotFound: " << sym << std::endl;
 		}

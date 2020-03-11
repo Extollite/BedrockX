@@ -1,6 +1,6 @@
 #pragma once
 #define BKDR_MUL 97
-#define BKDR_ADD 0
+#define BKDR_ADD -10
 #define BKDR_MUL2 19260817
 #define BKDR_ADD2 1
 typedef unsigned long long CHash;

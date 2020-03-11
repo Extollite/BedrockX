@@ -1,5 +1,6 @@
 #include "pch.h"
 #include <thread>
+#include <deque>
 #include <atomic>
 template <class T>
 LIGHTBASE_API T* LocateS<T>::_srv;
@@ -14,7 +15,9 @@ inline static int getTID() {
 static int mainid;
 static tick_t _tick;
 static std::multimap<tick_t, ITaskBase> tasks;
+static std::deque<function<void()>> next_run;
 std::atomic<int> cas;
+std::atomic<bool> cas_nextrun;
 MainHandler::MainHandler() {
 	LocateS<MainHandler>::assign(*this);
 	mainid = getTID();
@@ -57,7 +60,25 @@ taskid_t MainHandler::__schedule(ITaskBase&& task) {
 	tasks.emplace(task.schedule_time, std::forward<ITaskBase>(task));
 	return id;
 }
+LBAPI void MainHandler::scheduleNext(function<void()>&& fn) {
+	bool lck = false;
+	while (!cas_nextrun.compare_exchange_weak(lck, true))
+		;
+	next_run.emplace_back(std::forward<function<void()>>(fn));
+	cas_nextrun.store(false);
+}
+void MainHandler::nextrun() {
+	bool lck = false;
+	while (!cas_nextrun.compare_exchange_weak(lck, true))
+		;
+	while (!next_run.empty()) {
+		next_run.front()();
+		next_run.pop_front();
+	}
+	cas_nextrun.store(false);
+}
 void MainHandler::tick() {
+	nextrun();
 	_tick++;
 	if (_tick % 10 != 0)
 		return;

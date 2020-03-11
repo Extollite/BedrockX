@@ -5,7 +5,14 @@
 #include <vector>
 #include "Command.h"
 
-
+static const std::map<string, void*> parse_ptr = {
+	{ typeid(string).name(),dlsym_real("??$parse@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z")},
+	{ typeid(bool).name(), dlsym_real("??$parse@_N@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") },
+	{ typeid(float).name(), dlsym_real("??$parse@M@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") },
+	{ typeid(int).name(), dlsym_real("??$parse@H@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") },
+	{ typeid(CommandSelector<Actor>).name(), dlsym_real("??$parse@V?$CommandSelector@VActor@@@@@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") },
+	{ typeid(CommandSelector<Player>).name(), dlsym_real("??$parse@V?$CommandSelector@VPlayer@@@@@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") }
+};
 template <typename T>
 class typeid_t {
 public:
@@ -14,19 +21,19 @@ public:
 	typeid_t(typeid_t const& id) : value(id.value) {}
 	typeid_t(unsigned short value) : value(value) {}
 };
-enum CommandPermissionLevel{ 
+enum CommandPermissionLevel {
 	Normal = 0,
 	Privileged = 1,
 	AutomationPlayer = 2,
 	OperatorOnly = 3,
-	ConsoleOnly = 4 };
+	ConsoleOnly = 4
+};
 
 class CommandVersion {
 public:
 	int min, max;
 	inline CommandVersion() : min(1), max(0x7FFFFFFF) {}
 	inline CommandVersion(int min, int max) : min(min), max(max) {}
-	static __declspec(dllimport) int const CurrentVersion;
 };
 
 class Command {
@@ -42,16 +49,21 @@ protected:
 	}
 
 public:
-	__declspec(dllimport) virtual ~Command();
+	virtual ~Command() {
+		Call("??1Command@@UEAA@XZ", void, void*)(this);
+	}
 	virtual void execute(CommandOrigin const&, CommandOutput&) = 0;
 	template <typename T>
-	static bool checkHasTargets2(CommandSelectorResults<T> const& a, CommandOutput& b) {
-		return checkHasTargets(a, b);
+	static bool checkHasTargets(CommandSelectorResults<T> const& a, CommandOutput& b) {
+		bool (*sym)(CommandSelectorResults<T> const& a, CommandOutput& b);
+		if constexpr (std::is_same<T, class Actor>()) {
+			sym = (decltype(sym))dlsym("??$checkHasTargets@VActor@@@Command@@KA_NAEBV?$CommandSelectorResults@VActor@@@@AEAVCommandOutput@@@Z");
+		}
+		else {
+			sym = (decltype(sym))dlsym("??$checkHasTargets@VPlayer@@@Command@@KA_NAEBV?$CommandSelectorResults@VActor@@@@AEAVCommandOutput@@@Z");
+		}
+		return sym(a, b);
 	}
-protected:
-	//??$checkHasTargets@VActor@@@Command@@KA_NAEBV?$CommandSelectorResults@VActor@@@@AEAVCommandOutput@@@Z
-	template <typename T>
-	__declspec(dllimport) static bool checkHasTargets(CommandSelectorResults<T> const&, CommandOutput&);
 };
 enum class CommandParameterDataType { NORMAL,
 	ENUM,
@@ -73,7 +85,7 @@ public:
 		std::vector<CommandParameterData> params; // 16
 		unsigned char unk;						  // 40
 		inline Overload(CommandVersion version, FactoryFn factory, std::vector<CommandParameterData>&& args)
-			: version(version), factory(factory), params(std::forward< std::vector<CommandParameterData>>(args)), unk(255) {}
+			: version(version), factory(factory), params(std::forward<std::vector<CommandParameterData>>(args)), unk(255) {}
 	};
 	struct Signature {
 		std::string name;								  // 0
@@ -100,29 +112,50 @@ public:
 	};
 #pragma endregion struct definition
 
-	__declspec(dllimport) void registerCommand(
-		std::string const&, char const*, CommandPermissionLevel, CommandFlag, CommandFlag);
-	__declspec(dllimport) void registerAlias(std::string const&, std::string const&);
-
-private:
-	__declspec(dllimport) Signature const* findCommand(std::string const&) const;
-	__declspec(dllimport) void registerOverloadInternal(Signature&, Overload&);
-
-	template <typename Type>
-	__declspec(dllimport) bool parse(
-		void*, ParseToken const&, CommandOrigin const&, int, std::string&, std::vector<std::string>&) const;
-
-	__declspec(dllimport) Symbol addEnumValuesInternal(
-		std::string const&, std::vector<std::pair<std::string, uint64_t>> const&, typeid_t<CommandRegistry>,
-		bool (CommandRegistry::*)(
+	MCINLINE void registerCommand(
+		std::string const& a, char const* b, CommandPermissionLevel c, CommandFlag d, CommandFlag e) {
+		Call("?registerCommand@CommandRegistry@@QEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBDW4CommandPermissionLevel@@UCommandFlag@@3@Z", void, void*, std::string const&, char const*, CommandPermissionLevel, CommandFlag, CommandFlag)(this, a, b, c, d, e);
+	}
+	MCINLINE void registerAlias(std::string const& a, std::string const& b) {
+		Call("?registerAlias@CommandRegistry@@QEAAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z", void, void*, std::string const&, std::string const&)(this, a, b);
+	}
+	MCINLINE Signature* findCommand(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& a0) {
+		Signature* (CommandRegistry::*rv)(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const&);
+		*((void**)&rv) = dlsym_real("?findCommand@CommandRegistry@@AEAAPEAUSignature@1@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z");
+		return (this->*rv)(a0);
+	}
+	MCINLINE void registerOverloadInternal(struct CommandRegistry::Signature& a0, struct CommandRegistry::Overload& a1) {
+		void (CommandRegistry::*rv)(struct CommandRegistry::Signature&, struct CommandRegistry::Overload&);
+		*((void**)&rv) = dlsym_real("?registerOverloadInternal@CommandRegistry@@AEAAXAEAUSignature@1@AEAUOverload@1@@Z");
+		return (this->*rv)(a0, a1);
+	}
+	Symbol addEnumValuesInternal(
+		std::string const& a0, std::vector<std::pair<std::string, uint64_t>> const& a1, typeid_t<CommandRegistry> a2,
+		bool (CommandRegistry::*a3)(
 			void*, CommandRegistry::ParseToken const&, CommandOrigin const&, int, std::string&,
-			std::vector<std::string>&) const);
-	__declspec(dllimport) unsigned addEnumValues(std::string const&, std::vector<std::string> const&);
-	__declspec(dllimport) uint64_t getEnumData(CommandRegistry::ParseToken const&) const;
+			std::vector<std::string>&) const) {
+		decltype(&CommandRegistry::addEnumValuesInternal) rv;
+		*(void**)&rv = dlsym_real("?addEnumValuesInternal@CommandRegistry@@AEAA?AVSymbol@1@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV?$vector@U?$pair@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@_K@std@@V?$allocator@U?$pair@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@_K@std@@@2@@4@V?$typeid_t@VCommandRegistry@@@@P81@EBA_NPEAXAEBUParseToken@1@AEBVCommandOrigin@@HAEAV34@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z@Z");
+		return (this->*rv)(a0, a1, a2, a3);
+	}
+	MCINLINE unsigned __int64 getEnumData(struct CommandRegistry::ParseToken const& a0) const {
+		unsigned __int64 (CommandRegistry::*rv)(struct CommandRegistry::ParseToken const&) const;
+		*((void**)&rv) = dlsym("?getEnumData@CommandRegistry@@AEBA_KAEBUParseToken@1@@Z");
+		return (this->*rv)(a0);
+	}
 
 public:
 	template <typename T>
-	inline static auto getParseFn() { return &CommandRegistry::parse<T>; }
+	inline static auto getParseFn() {
+		auto ptr = parse_ptr[typeid(T).name()];
+		if (!ptr) {
+			printf("Cant parse cmd data %s\n", typeid(T).name());
+			exit(1);
+		}
+		return (bool (CommandRegistry::*)(
+			void*, CommandRegistry::ParseToken const&, CommandOrigin const&, int, std::string&,
+			std::vector<std::string>&))ptr;
+	}
 
 	template <typename Type>
 	bool
@@ -135,16 +168,6 @@ public:
 		auto data = getEnumData(token);
 		*(int*)target = (int)data;
 		return true;
-	}
-
-	template <typename Type>
-	unsigned addEnumValues(
-		std::string const& name, typeid_t<CommandRegistry> tid,
-		std::initializer_list<std::pair<std::string, Type>> const& values) {
-		std::vector<std::pair<std::string, uint64_t>> converted;
-		for (auto& value : values)
-			converted.emplace_back(value.first, (uint64_t)value.second);
-		return addEnumValuesInternal(name, converted, tid, &CommandRegistry::parseEnumInt).val;
 	}
 	unsigned addEnumValues(
 		std::string const& name, typeid_t<CommandRegistry> tid,
@@ -177,12 +200,12 @@ struct CommandParameterData {
 	int flag_offset;			   // 68
 	bool mand;					   // 72
 	bool pad73;					   // 73
-	CommandParameterData():tid(0) {}
+	CommandParameterData() : tid(0) {}
 	CommandParameterData(
 		typeid_t<CommandRegistry> tid, ParseFn parser, std::string_view desc_, CommandParameterDataType type,
 		char const* enumname, int offset, bool optional, int flag_offset)
 		: tid(tid), parser(parser), name(desc_), desc(enumname), unk56(-1), type(type), offset(offset),
-		  flag_offset(flag_offset), mand(optional),pad73(false) {}
+		  flag_offset(flag_offset), mand(optional), pad73(false) {}
 };
 static_assert(offsetof(CommandParameterData, pad73) == 73);
 static_assert(offsetof(CommandParameterData, name) == 16);

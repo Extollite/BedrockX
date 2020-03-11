@@ -1,6 +1,7 @@
 #pragma once
 #include<api\hook.h>
 class Block;
+#define GetServerSymbol(x) dlsym(x)
 namespace VanillaBlocks {
 	inline Block& AcaciaFenceGate() { return **(Block**)GetServerSymbol("?mAcaciaFenceGate@VanillaBlocks@@3PEBVBlock@@EB"); }
 	inline Block& AcaciaSign() { return **(Block**)GetServerSymbol("?mAcaciaSign@VanillaBlocks@@3PEBVBlock@@EB"); }

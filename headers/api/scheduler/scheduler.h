@@ -31,6 +31,8 @@ struct MainHandler {
 	bool __cancel(taskid_t id);
 	LIGHTBASE_API taskid_t schedule(ITaskBase&& task);
 	taskid_t __schedule(ITaskBase&& task);
+	LIGHTBASE_API void scheduleNext(function<void()>&& fn);
+	void nextrun();
 	void tick();
 	MainHandler();
 };
@@ -38,5 +40,6 @@ struct MainHandler {
 struct MainHandler {
 	LIGHTBASE_API bool cancel(taskid_t id);
 	LIGHTBASE_API taskid_t schedule(ITaskBase&& task);
+	LIGHTBASE_API void scheduleNext(function<void()>&& fn);
 };
 #endif

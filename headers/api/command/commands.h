@@ -9,7 +9,7 @@ namespace CMDREG {
 	template <typename T>
 	inline typeid_t<CommandRegistry> getTPID();
 	inline typeid_t<CommandRegistry>& GETID(const char* name) {
-		return *(typeid_t<CommandRegistry>*)(GetServerSymbol(name));
+		return *(typeid_t<CommandRegistry>*)(dlsym_real(name));
 	}
 	inline typeid_t<CommandRegistry> ALLOCID() {
 		auto& id = *((unsigned short*)GetServerSymbol("?count@?$typeid_t@VCommandRegistry@@@@2GA"));
@@ -110,7 +110,7 @@ namespace CMDREG {
 			void execute(CommandOrigin const& a, CommandOutput& b) {
 				constexpr auto size = std::tuple_size<container>::value;
 				if (invoke_impl(a, b, std::make_index_sequence<size>{}))
-					b.success();
+					b.success("", {});
 			}
 			sub() {}
 		};
