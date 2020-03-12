@@ -7,4 +7,5 @@
 #include"stl/views.h"
 #include"stl/viewhelper.h"
 #include"stl/langPack.h"
+#include"stl/static_queue.h"
 #endif

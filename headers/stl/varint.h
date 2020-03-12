@@ -8,7 +8,8 @@ struct VarInts {
 	}
 	VarInts() {}
 	VarInts(T x) { v = x; }
-	void pack(WBStream& ws) const {
+	template<typename _TP>
+	void pack(WBStreamImpl<_TP>& ws) const {
 		unsigned char buf[16];
 		int ptr = 0;
 		T enc = v;

@@ -5,8 +5,8 @@
 #include <vector>
 #include "Command.h"
 
-static const std::map<string, void*> parse_ptr = {
-	{ typeid(string).name(),dlsym_real("??$parse@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z")},
+static std::map<string, void*> parse_ptr = {
+	{ typeid(std::string).name(),dlsym_real("??$parse@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z")},
 	{ typeid(bool).name(), dlsym_real("??$parse@_N@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") },
 	{ typeid(float).name(), dlsym_real("??$parse@M@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") },
 	{ typeid(int).name(), dlsym_real("??$parse@H@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") },
@@ -31,9 +31,9 @@ enum CommandPermissionLevel {
 
 class CommandVersion {
 public:
-	int min, max;
-	inline CommandVersion() : min(1), max(0x7FFFFFFF) {}
-	inline CommandVersion(int min, int max) : min(min), max(max) {}
+	int Min=1, Max=0x7FFFFFFF;
+	//inline CommandVersion() : min(1), max(0x7FFFFFFF) {}
+	//inline CommandVersion(int min, int max) : min(min), max(max) {}
 };
 
 class Command {
@@ -60,7 +60,7 @@ public:
 			sym = (decltype(sym))dlsym("??$checkHasTargets@VActor@@@Command@@KA_NAEBV?$CommandSelectorResults@VActor@@@@AEAVCommandOutput@@@Z");
 		}
 		else {
-			sym = (decltype(sym))dlsym("??$checkHasTargets@VPlayer@@@Command@@KA_NAEBV?$CommandSelectorResults@VActor@@@@AEAVCommandOutput@@@Z");
+			sym = (decltype(sym))dlsym("??$checkHasTargets@VPlayer@@@Command@@KA_NAEBV?$CommandSelectorResults@VPlayer@@@@AEAVCommandOutput@@@Z");
 		}
 		return sym(a, b);
 	}
@@ -147,14 +147,15 @@ public:
 public:
 	template <typename T>
 	inline static auto getParseFn() {
-		auto ptr = parse_ptr[typeid(T).name()];
+		bool (CommandRegistry:: * ptr)(
+			void*, CommandRegistry::ParseToken const&, CommandOrigin const&, int, std::string&,
+			std::vector<std::string>&) const;
+		*(void**)&ptr = parse_ptr[typeid(T).name()];
 		if (!ptr) {
 			printf("Cant parse cmd data %s\n", typeid(T).name());
 			exit(1);
 		}
-		return (bool (CommandRegistry::*)(
-			void*, CommandRegistry::ParseToken const&, CommandOrigin const&, int, std::string&,
-			std::vector<std::string>&))ptr;
+		return ptr;
 	}
 
 	template <typename Type>

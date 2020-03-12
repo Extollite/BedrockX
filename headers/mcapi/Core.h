@@ -8,15 +8,33 @@
 #include <memory>
 #include <functional>
 #include"mass.h"
+#include<stl/Bstream.h>
 enum ActorType : int;
 enum class AbilitiesIndex : int;
 class Vec3 {
 public:
 	float x, y, z;
+	string toString() {
+		return "(" + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + ")";
+	}
+	template<typename _TP>
+	void pack(WBStreamImpl<_TP>& ws) const {
+		ws.apply(x, y, z);
+	}
+	void unpack(RBStream& rs) {
+		rs.apply(x, y, z);
+	}
 };
 class BlockPos {
 public:
 	int x, y, z;
+	template<typename _TP>
+	void pack(WBStreamImpl<_TP>& ws) const {
+		ws.apply(x, y, z);
+	}
+	void unpack(RBStream& rs) {
+		rs.apply(x, y, z);
+	}
 };
 template <typename A, typename T>
 class AutomaticID {
@@ -33,25 +51,25 @@ public:
 	}
 };
 struct Tick {
-	unsigned long t;
+	unsigned long long t;
 };
 struct ActorUniqueID {
 public:
-	long id;
+	unsigned long long id;
 	ActorUniqueID() {
 		id = -1;
 	}
-	ActorUniqueID(long i) {
+	ActorUniqueID(unsigned long long i) {
 		id = i;
 	}
 };
 class ActorRuntimeID {
 public:
-	long id;
+	unsigned long long id;
 	ActorRuntimeID() {
 		id = -1;
 	}
-	ActorRuntimeID(long i) {
+	ActorRuntimeID(unsigned long long i) {
 		id = i;
 	}
 };

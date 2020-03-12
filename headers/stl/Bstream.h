@@ -17,7 +17,7 @@
 using std::string, std::string_view;
 template <class T>
 struct is_safe_obj : std::integral_constant<bool,
-    !std::is_class<T>::value>
+    !std::is_class<std::remove_reference_t<T>>::value>
 {
 };
 

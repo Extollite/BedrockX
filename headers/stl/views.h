@@ -66,6 +66,10 @@ public:
 		view_start = start;
 		view_end = end;
 	}
+	array_view(T& first) {
+		view_start = &first;
+		view_end = view_start + 1;
+	}
 	size_t size() {
 		return ((uintptr_t)view_end - (uintptr_t)view_start) / sizeof(T);
 	}

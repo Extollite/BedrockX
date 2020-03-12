@@ -98,6 +98,7 @@ static void loadall() {
 	do_log(L"BedrockX Loaded!\n");
 	using namespace std::filesystem;
 	create_directory("bdxmod");
+	create_directory("data");
 	directory_iterator ent("bdxmod");
 	for (auto& i : ent) {
 		if (i.is_regular_file() && i.path().extension() == ".dll") {

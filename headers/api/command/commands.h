@@ -74,6 +74,9 @@ namespace CMDREG {
 	template <typename E>
 	struct MyEnum : IMyEnum {
 		E val;
+		operator E() {
+			return val;
+		}
 	};
 
 	struct MakeCommand {
