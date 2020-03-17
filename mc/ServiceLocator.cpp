@@ -26,9 +26,10 @@ THook(void, "?initCoreEnums@MinecraftCommands@@QEAAX_NAEBVBaseGameVersion@@@Z", 
 	LocateS<MinecraftCommands>::assign(*a0);
 }
 
-THook(void, "?setupStandaloneServer@DedicatedServerCommands@@SAXAEAVMinecraft@@AEAVIMinecraftApp@@AEAVLevel@@AEAVLevelStorage@@AEAVDedicatedServer@@AEAVWhitelistFile@@@Z", void* a, void* b, void* c, LevelStorage* d, void* e, void* f) {
-	LocateS<LevelStorage>::assign(*d);
-	original(a, b, c, d, e, f);
+THook(void, "??0DBStorage@@QEAA@UConfig@0@@Z", LevelStorage* a, void* b) {
+	LocateS<LevelStorage>::assign(*a);
+	printf("levelstorage %p\n", LocateS<LevelStorage>()._srv);
+	original(a, b);
 }
 THook(void*, "??0ChunkSource@@QEAA@V?$unique_ptr@VChunkSource@@U?$default_delete@VChunkSource@@@std@@@std@@@Z", ChunkSource* a1, void** a2) {
 	LocateS<ChunkSource>::assign(*a1);
@@ -37,4 +38,13 @@ THook(void*, "??0ChunkSource@@QEAA@V?$unique_ptr@VChunkSource@@U?$default_delete
 THook(void*, "?update@RakNetServerLocator@@QEAAXXZ", RakNetServerLocator* thi) {
 	LocateS<RakNetServerLocator>::assign(*thi);
 	return original(thi);
+}
+
+THook(void*, "??0RakPeer@RakNet@@QEAA@XZ", RakPeer_t* p) {
+	static bool inited = false;
+	if (!inited) {
+		inited = 1;
+		LocateS<RakPeer_t>::assign(*p);
+	}
+	return original(p);
 }

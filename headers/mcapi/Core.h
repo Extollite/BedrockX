@@ -54,23 +54,36 @@ struct Tick {
 	unsigned long long t;
 };
 struct ActorUniqueID {
-public:
 	unsigned long long id;
+public:
 	ActorUniqueID() {
 		id = -1;
 	}
 	ActorUniqueID(unsigned long long i) {
 		id = i;
 	}
+	auto get() {
+		return id;
+	}
+	operator unsigned long long() {
+		return id;
+	}
 };
 class ActorRuntimeID {
-public:
 	unsigned long long id;
+
+public:
 	ActorRuntimeID() {
 		id = -1;
 	}
 	ActorRuntimeID(unsigned long long i) {
 		id = i;
+	}
+	auto get() {
+		return id;
+	}
+	operator unsigned long long() {
+		return id;
 	}
 };
 
@@ -123,5 +136,21 @@ public:
 private:
 	virtual int getEntityCategories() const = 0;
 };
-
+struct RakAddr_t {
+	char filler[0x90];
+	string toString() {
+		char buf[256];
+		Call("?ToString_New@SystemAddress@RakNet@@AEBAX_NPEADD@Z", void, void*, bool, char*, char)(this,true,buf,':');
+		return buf;
+	}
+};
+struct RakPeer_t {
+	RakPeer_t(RakPeer_t const&) = delete;
+	RakPeer_t(RakPeer_t&&) = delete;
+	RakAddr_t getAdr(NetworkIdentifier const& ni) {
+		RakAddr_t rv;
+		Call("?GetSystemAddressFromGuid@RakPeer@RakNet@@UEBA?AUSystemAddress@2@URakNetGUID@2@@Z", void, void*, RakAddr_t*, NetworkIdentifier const*)(this,&rv,&ni);
+		return rv;
+	}
+};
 constexpr const int SAFE_PADDING = 0;

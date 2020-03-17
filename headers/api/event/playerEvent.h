@@ -44,8 +44,15 @@ class PlayerUseItemOnEntityEvent : public IGenericPlayerEvent<PlayerUseItemOnEnt
 public:
 	class ActorRuntimeID rtid;
 	Actor* victim;
-	PlayerUseItemOnEntityEvent(ServerPlayer& sp, ActorRuntimeID rti) : IGenericPlayerEvent<PlayerUseItemOnEntityEvent>(sp), rtid(rti) {
+	enum TransType:char {
+		INTERACT=0,
+		ATTACK=1
+	} type;
+	PlayerUseItemOnEntityEvent(ServerPlayer& sp, ActorRuntimeID rti,int _type) : IGenericPlayerEvent<PlayerUseItemOnEntityEvent>(sp), rtid(rti),type((TransType)_type) {
 		victim = LocateS<ServerLevel>()->getRuntimeEntity(rtid, false);
+	}
+	bool isAttack() {
+		return type == ATTACK;
 	}
 };
 class PlayerUseItemOnEvent : public IGenericPlayerEvent<PlayerUseItemOnEvent> {

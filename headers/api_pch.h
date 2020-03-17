@@ -20,5 +20,6 @@ using std::string, std::string_view,std::shared_ptr,std::unique_ptr;
 #include"api/scheduler/scheduler.h"
 #include"api/types/helper.h"
 #include"api/command/commands.h"
+#include"api/xuidreg/xuidreg.h"
 #endif // ! 
 

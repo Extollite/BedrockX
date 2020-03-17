@@ -15,13 +15,13 @@ namespace BDX {
 			fake_vtbl[1] = (void*)dummy;
 		}
 	};
-	SCO* pSCO;
+	static SCO* pSCO;
 	LBAPI bool runcmd(const string& cmd) {
 		if (!pSCO)
 			pSCO = new SCO();
 		return MinecraftCommands::_runcmd(pSCO, cmd, 4, 1);
 	}
-	void* FAKE_PORGVTBL[26];
+	static void* FAKE_PORGVTBL[26];
 	LBAPI bool runcmdAs(WPlayer wp, const string& cmd) {
 		void** filler[5];
 		Call("??0PlayerCommandOrigin@@QEAA@AEAVPlayer@@@Z", void, void*, ServerPlayer*)(filler, wp);

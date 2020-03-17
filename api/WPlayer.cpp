@@ -1,7 +1,4 @@
 #include "pch.h"
-LBAPI const string& WPlayer::getName() {
-	return this->v->getNameTag();
-}
 LBAPI void WPlayer::sendText(string_view text, TextType tp) {
 	WBStream txtpkws;
 	txtpkws.data.reserve(8 + text.size());
@@ -51,14 +48,17 @@ LBAPI void WPlayer::kick(const string& reason) {
 LBAPI void WPlayer::forceKick() {
 	LocateS<ServerNetworkHandler>()->onDisconnect(*_getNI());
 }
-#include<sstream>
+
 LBAPI xuid_t WPlayer::getXuid() {
-	xuid_t rv=114514;
-	auto str = ExtendedCertificate::getXuid(*_getCert());
-	std::stringstream ss(str);
-	ss >> rv;
-	return rv;
+	auto xuid = ExtendedCertificate::getXuid(*_getCert());
+	return xuid.size()>1?std::stoull(xuid):114514;
+}
+LBAPI string WPlayer::getRealName() {
+	return ExtendedCertificate::getIdentityName(*_getCert());
 }
 LBAPI permlvl_t WPlayer::getPermLvl() {
 	return v->getCommandPermissionLevel()&0xff;
+}
+LBAPI string WPlayer::getIP() {
+	return (LocateS<RakPeer_t>()->getAdr(*_getNI()).toString());
 }

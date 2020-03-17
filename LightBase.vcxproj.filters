@@ -127,6 +127,12 @@
     <ClCompile Include="dlsym.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="xuidreg\xuidreg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WItem.cpp">
+      <Filter>源文件\api</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\api\hash.h">
@@ -253,6 +259,9 @@
       <Filter>头文件\mcapi</Filter>
     </ClInclude>
     <ClInclude Include="headers\pch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\api\xuidreg\xuidreg.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

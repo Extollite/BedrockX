@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="bds|Win32">
@@ -293,6 +293,8 @@
     </ClCompile>
     <ClCompile Include="scheduler\sch.cpp" />
     <ClCompile Include="stl\DBImpl.cpp" />
+    <ClCompile Include="WItem.cpp" />
+    <ClCompile Include="xuidreg\xuidreg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
@@ -315,6 +317,7 @@
     <ClInclude Include="headers\api\serviceLocate.h" />
     <ClInclude Include="headers\api\types\helper.h" />
     <ClInclude Include="headers\api\types\types.h" />
+    <ClInclude Include="headers\api\xuidreg\xuidreg.h" />
     <ClInclude Include="headers\api_pch.h" />
     <ClInclude Include="headers\mcapi\Actor.h" />
     <ClInclude Include="headers\mcapi\BlockSource.h" />

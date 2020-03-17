@@ -115,6 +115,7 @@ static void loadall() {
 }
 void entry(){
 	//sometest();
+	XIDREG::initAll();
 	loadall();
 	PostInitEvent::_call();
 	PostInitEvent::_removeall();

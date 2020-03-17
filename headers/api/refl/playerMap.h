@@ -17,7 +17,6 @@ public:
 
 private:
 	static void onDelete(playerMap<T>& thi, ServerPlayer* sp) {
-		printf("del %p\n", sp);
 		thi._map.erase(sp);
 	}
 

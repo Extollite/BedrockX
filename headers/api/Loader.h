@@ -6,58 +6,36 @@ template <typename T, int off>
 inline T& dAccess(void* ptr) {
 	return *(T*)(((uintptr_t)ptr) + off);
 }
+template <typename T, int off>
+inline T const& dAccess(void const* ptr) {
+	return *(T*)(((uintptr_t)ptr) + off);
+}
 #define __WEAK __declspec(selectany)
 //#define GetServerSymbol(x) dlsym_real(x)
-template <CHash>
+template <CHash,CHash>
 __WEAK void* __ptr_cache;
-template <CHash hash>
+template <CHash hash, CHash hash2>
 inline static void* dlsym_cache(const char* fn) {
-	if (!__ptr_cache<hash>) {
-		__ptr_cache<hash> = dlsym_real(fn);
-		if (!__ptr_cache<hash>) {
+	if (!__ptr_cache<hash, hash2>) {
+		__ptr_cache<hash, hash2> = dlsym_real(fn);
+		if (!__ptr_cache<hash, hash2>) {
 			printf("Cant found sym %s\n", fn);
 			exit(1);
 		}
 	}
-	return __ptr_cache<hash>;
+	return __ptr_cache<hash, hash2>;
 }
-#if 0
-template <CHash>
-struct DLSYMCACHE {
-	static void* ptr;
-	inline static void load(const char* fn) {
-		if (!ptr) {
-			ptr = dlsym_real(fn);
-			if (!ptr) {
-				printf("Cant found sym %s\n", fn);
-				exit(1);
-			}
-		}
-	}
-};
-template <CHash hs>
-void* DLSYMCACHE<hs>::ptr;
-#endif
-#if 0
-template <CHash hash,typename ret, typename... p>
-struct __CALL_IMP {
-	void* ptr;
-	inline __CALL_IMP(const char* fn) {
-		ptr = dlsym<hash>(fn);
-	}
-	ret inline operator()(p... args) {
-		return ((ret(*)(p...))ptr)(args...);
-	}
-};
-#endif
 #define VA_EXPAND(...) __VA_ARGS__
 //#define Call(fn, ret, ...) __CALL_IMP<do_hash(fn), ret, __VA_ARGS__>(fn)
-template <CHash hash, typename ret, typename... p>
+template <CHash hash, CHash hash2, typename ret, typename... p>
 static inline auto __imp_Call(const char* fn) {
-	return ((ret(*)(p...))(dlsym_cache<hash>(fn)));
+	return ((ret(*)(p...))(dlsym_cache<hash, hash2>(fn)));
 }
-#define Call(fn, ret, ...) (__imp_Call<do_hash(fn), ret, __VA_ARGS__>(fn))
-#define SYM(fn) (dlsym_cache<do_hash(fn)>(fn))
+#define SymCall(fn, ret, ...) (__imp_Call<do_hash(fn), do_hash2(fn), ret, __VA_ARGS__>(fn))
+#ifndef V8_ENV
+#define Call SymCall
+#endif // ! V8_ENV
+#define SYM(fn) (dlsym_cache<do_hash(fn), do_hash2(fn)>(fn))
 #define dlsym(xx) SYM(xx)
 class THookRegister {
 public:
@@ -97,14 +75,14 @@ public:
 	}
 };
 #define VA_EXPAND(...) __VA_ARGS__
-template <CHash>
+template <CHash,CHash>
 struct THookTemplate;
-template <CHash>
+template <CHash,CHash>
 extern THookRegister THookRegisterTemplate;
 
 #define _TInstanceHook(class_inh, pclass, iname, sym, ret, ...)                                             \
 	template <>                                                                                             \
-	struct THookTemplate<do_hash(iname)> class_inh {                                                        \
+	struct THookTemplate<do_hash(iname), do_hash2(iname)> class_inh {                                                        \
 		typedef ret (THookTemplate::*original_type)(__VA_ARGS__);                                           \
 		static original_type& _original() {                                                                 \
 			static original_type storage;                                                                   \
@@ -117,9 +95,9 @@ extern THookRegister THookRegisterTemplate;
 		ret _hook(__VA_ARGS__);                                                                             \
 	};                                                                                                      \
 	template <>                                                                                             \
-	static THookRegister THookRegisterTemplate<do_hash(iname)>{ sym, &THookTemplate<do_hash(iname)>::_hook, \
-		(void**)&THookTemplate<do_hash(iname)>::_original() };                                              \
-	ret THookTemplate<do_hash(iname)>::_hook(__VA_ARGS__)
+	static THookRegister THookRegisterTemplate<do_hash(iname), do_hash2(iname)>{ sym, &THookTemplate<do_hash(iname), do_hash2(iname)>::_hook, \
+		(void**)&THookTemplate<do_hash(iname), do_hash2(iname)>::_original() };                                              \
+	ret THookTemplate<do_hash(iname), do_hash2(iname)>::_hook(__VA_ARGS__)
 
 #define _TInstanceDefHook(iname, sym, ret, type, ...) \
 	_TInstanceHook(                                   \
@@ -128,7 +106,7 @@ extern THookRegister THookRegisterTemplate;
 
 #define _TStaticHook(pclass, iname, sym, ret, ...)                                                          \
 	template <>                                                                                             \
-	struct THookTemplate<do_hash(iname)> pclass {                                                           \
+	struct THookTemplate<do_hash(iname), do_hash2(iname)> pclass {                                                           \
 		typedef ret (*original_type)(__VA_ARGS__);                                                          \
 		static original_type& _original() {                                                                 \
 			static original_type storage;                                                                   \
@@ -141,9 +119,9 @@ extern THookRegister THookRegisterTemplate;
 		static ret _hook(__VA_ARGS__);                                                                      \
 	};                                                                                                      \
 	template <>                                                                                             \
-	static THookRegister THookRegisterTemplate<do_hash(iname)>{ sym, &THookTemplate<do_hash(iname)>::_hook, \
-		(void**)&THookTemplate<do_hash(iname)>::_original() };                                              \
-	ret THookTemplate<do_hash(iname)>::_hook(__VA_ARGS__)
+	static THookRegister THookRegisterTemplate<do_hash(iname), do_hash2(iname)>{ sym, &THookTemplate<do_hash(iname), do_hash2(iname)>::_hook, \
+		(void**)&THookTemplate<do_hash(iname), do_hash2(iname)>::_original() };                                              \
+	ret THookTemplate<do_hash(iname), do_hash2(iname)>::_hook(__VA_ARGS__)
 
 #define _TStaticDefHook(iname, sym, ret, type, ...) \
 	_TStaticHook(                                   \

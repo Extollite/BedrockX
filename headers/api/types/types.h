@@ -68,9 +68,13 @@ struct WPlayer : Wrapped<ServerPlayer> {
 	WMob* mob() {
 		return (WMob*)this;
 	}
-	LBAPI string const& getName();
+	string const& getName() {
+		return v->getNameTag();
+	}
 	LBAPI xuid_t getXuid();
+	LBAPI string getRealName();
 	LBAPI permlvl_t getPermLvl();
+	LBAPI string getIP();
 	void teleport(Vec3 to, int dimid) {
 		actor()->teleport(to, dimid);
 	}
@@ -94,6 +98,7 @@ struct WPlayer : Wrapped<ServerPlayer> {
 };
 struct WItem : Wrapped<ItemStack> {
 	WItem(ItemStack& is) : Wrapped<ItemStack>(is) {}
+	LBAPI unsigned char getCount() const;
 };
 struct WBlock : Wrapped<Block> {
 	WBlock(Block const& i) : Wrapped<Block>(i) {}

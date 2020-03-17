@@ -16,8 +16,8 @@ static int mainid;
 static tick_t _tick;
 static std::multimap<tick_t, ITaskBase> tasks;
 static std::deque<function<void()>> next_run;
-std::atomic<int> cas;
-std::atomic<bool> cas_nextrun;
+static std::atomic<int> cas;
+static std::atomic<bool> cas_nextrun;
 MainHandler::MainHandler() {
 	LocateS<MainHandler>::assign(*this);
 	mainid = getTID();

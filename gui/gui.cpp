@@ -143,6 +143,7 @@ namespace GUI {
 };
 THook(void, "?handle@?$PacketHandlerDispatcherInstance@VModalFormResponsePacket@@$0A@@@UEBAXAEBVNetworkIdentifier@@AEAVNetEventCallback@@AEAV?$shared_ptr@VPacket@@@std@@@Z", void* fake, NetworkIdentifier const& neti, ServerNetworkHandler& snh, unsigned char** pk) {
 	using namespace GUI;
+	original(fake, neti, snh, pk);
 	unsigned char* pkt = *pk;
 	ServerPlayer* sp = snh._getServerPlayer(neti, pkt[16]);
 	if (sp) {
