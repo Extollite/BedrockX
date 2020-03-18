@@ -1,4 +1,5 @@
-#include "pch.h"
+#include <lbpch.h>
+#include<api\event\event_pch.h>
 static int LID;
 LIGHTBASE_API int newListenerID() {
 	return ++LID;

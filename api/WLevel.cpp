@@ -1,15 +1,18 @@
-#include"pch.h"
+#include <lbpch.h>
+#include<api\types\types.h>
+#include<api\myPacket.h>
+#include<stl\varint.h>
 LBAPI array_view<WPlayer> WLevel::getUsers() {
 	uintptr_t ptr = (uintptr_t)this->v;
 	return array_view<WPlayer>(*(WPlayer**)(ptr + 88), *(WPlayer**)(ptr + 96));
 }
-LBAPI WPlayer WLevel::getPlayer(string_view name) {
+LBAPI optionalV<WPlayer> WLevel::getPlayer(string_view name) {
 	auto view = getUsers();
 	for (auto i : view) {
 		if (i.getName() == name)
 			return i;
 	}
-	return WPlayer(*(ServerPlayer*)0);
+	return {};
 }
 LBAPI void WLevel::broadcastText(string_view text, TextType tp) {
 	WBStream txtpkws;

@@ -1,6 +1,5 @@
 #pragma once
-//stub ??_EServerPlayer@@UEAAPEAXI@Z
-#include <unordered_map>
+#include <lbpch.h>
 class ServerPlayer;
 struct DePlayerCB {
 	void* userdata;

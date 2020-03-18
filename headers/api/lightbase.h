@@ -11,4 +11,5 @@
 #define LIGHTBASE_API __declspec(dllimport)
 #endif
 #define MCAPI __declspec(dllimport)
+#define LBAPI LIGHTBASE_API
 typedef unsigned char uchar;

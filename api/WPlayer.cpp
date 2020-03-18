@@ -1,4 +1,7 @@
-#include "pch.h"
+#include <lbpch.h>
+#include<api\types\types.h>
+#include<api\myPacket.h>
+#include<stl\varint.h>
 LBAPI void WPlayer::sendText(string_view text, TextType tp) {
 	WBStream txtpkws;
 	txtpkws.data.reserve(8 + text.size());

@@ -1,4 +1,6 @@
 #pragma once
+#include<string_view>
+using std::string_view;
 #define BKDR_MUL 131
 #define BKDR_ADD 0
 typedef unsigned long long CHash;

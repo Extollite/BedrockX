@@ -1,4 +1,5 @@
-#include "pch.h"
+#include<lbpch.h>
+#include<api\refl\playerMap.h>
 //PlayerMap.h
 static std::vector<DePlayerCB> depcbs;
 LIGHTBASE_API void _regDePlayerCB(DePlayerCB cb) {

@@ -168,9 +168,6 @@
     <ClInclude Include="headers\stl\Bstream.h">
       <Filter>头文件\stl</Filter>
     </ClInclude>
-    <ClInclude Include="headers\stl\dbgassert.h">
-      <Filter>头文件\stl</Filter>
-    </ClInclude>
     <ClInclude Include="headers\stl\KVDB.h">
       <Filter>头文件\stl</Filter>
     </ClInclude>
@@ -258,10 +255,13 @@
     <ClInclude Include="headers\mcapi\VanillaBlocks.h">
       <Filter>头文件\mcapi</Filter>
     </ClInclude>
-    <ClInclude Include="headers\pch.h">
+    <ClInclude Include="headers\api\xuidreg\xuidreg.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="headers\api\xuidreg\xuidreg.h">
+    <ClInclude Include="headers\extra_pch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\lbpch.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

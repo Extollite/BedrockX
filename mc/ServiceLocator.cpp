@@ -1,6 +1,8 @@
-#include "pch.h"
+#include<lbpch.h>
 #include "api/MC.h"
-
+#include<api/types/types.h>
+#include<api/event/genericEvent.h>
+#include<api/serviceLocate.h>
 template <class T>
 LIGHTBASE_API T* LocateS<T>::_srv;
 
@@ -9,13 +11,13 @@ THook(void, "?initAsDedicatedServer@Minecraft@@QEAAXXZ", Minecraft* mc) {
 	printf("MC %p\n", mc);
 	original(mc);
 }
-static WLevel lvl(*(ServerLevel*)NULL);
+static WLevel wl;
 THook(void, "?startServerThread@ServerInstance@@QEAAXXZ", void* a) {
 	original(a);
 	LocateS<Level>::assign(*LocateS<Minecraft>()->getLevel());
-	lvl.v = ((ServerLevel*)(LocateS<Minecraft>()->getLevel()));
+	wl.v = (ServerLevel*)LocateS<Minecraft>()->getLevel();
 	LocateS<ServerLevel>::assign(*(ServerLevel*)LocateS<Minecraft>()->getLevel());
-	LocateS<WLevel>::assign(lvl);
+	LocateS<WLevel>::assign(wl);
 	LocateS<ServerNetworkHandler>::assign(*LocateS<Minecraft>()->getServerNetworkHandler());
 	printf("level %p neth %p\n", LocateS<Level>()._srv, LocateS<ServerNetworkHandler>()._srv);
 	ServerStartedEvent::_call();
@@ -26,12 +28,12 @@ THook(void, "?initCoreEnums@MinecraftCommands@@QEAAX_NAEBVBaseGameVersion@@@Z", 
 	LocateS<MinecraftCommands>::assign(*a0);
 }
 
-THook(void, "??0DBStorage@@QEAA@UConfig@0@@Z", LevelStorage* a, void* b) {
+THook(void*, "?loadServerPlayerData@LevelStorage@@QEAA?AV?$unique_ptr@VCompoundTag@@U?$default_delete@VCompoundTag@@@std@@@std@@AEBVPlayer@@_N@Z", LevelStorage* a, void* b,void* c,void* d) {
 	LocateS<LevelStorage>::assign(*a);
-	printf("levelstorage %p\n", LocateS<LevelStorage>()._srv);
-	original(a, b);
+	return original(a, b,c,d);
 }
 THook(void*, "??0ChunkSource@@QEAA@V?$unique_ptr@VChunkSource@@U?$default_delete@VChunkSource@@@std@@@std@@@Z", ChunkSource* a1, void** a2) {
+	printf("chunksource %p\n", a1);
 	LocateS<ChunkSource>::assign(*a1);
 	return original(a1, a2);
 }

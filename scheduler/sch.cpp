@@ -1,7 +1,11 @@
-#include "pch.h"
+#include<lbpch.h>
 #include <thread>
 #include <deque>
 #include <atomic>
+#include <map>
+#include <mutex>
+#include<api\scheduler\scheduler.h>
+using std::function;
 template <class T>
 LIGHTBASE_API T* LocateS<T>::_srv;
 static int zero = 0;
@@ -110,7 +114,7 @@ void MainHandler::tick() {
 			cas.store(0);
 	}
 }
-THook(void, "?tick@Level@@UEAAXXZ", Level* lv) {
+THook(void, "?tick@Level@@UEAAXXZ", class Level* lv) {
 	original(lv);
 	mh.tick();
 }

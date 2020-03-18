@@ -1,5 +1,8 @@
 #pragma once
 #include"Loader.h"
+#include<string_view>
+#include<string>
+using std::string_view;
 enum class PacketReliability { Relible, RelibleOrdered };
 class BinaryStream {
 public:

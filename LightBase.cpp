@@ -1,10 +1,12 @@
 ﻿// LightBase.cpp : 定义 DLL 的导出函数。
 //
 
-#include "pch.h"
-#include <api/gui/gui.h>
+#include<lbpch.h>
+#include<iostream>
 #include <filesystem>
 #include "framework.h"
+#include<api/xuidreg/xuidreg.h>
+#include<api/event/genericEvent.h>
 /*
 THook(
 	void,

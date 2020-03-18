@@ -1,4 +1,8 @@
-#include <pch.h>
+#include<lbpch.h>
+#include<stl\KVDB.h>
+#include<stl\viewhelper.h>
+#include<api\event\playerEvent.h>
+#include<api\xuidreg\xuidreg.h>
 namespace XIDREG {
 	static KVDBImpl xuiddb("xuiddb");
 	LBAPI bool str2id(string const& str, xuid_t& val) {

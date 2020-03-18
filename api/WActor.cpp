@@ -1,4 +1,5 @@
-#include "pch.h"
+#include <lbpch.h>
+#include<api\types\types.h>
 static uintptr_t poff_dim;
 LBAPI WDim WActor::getDim() {
 	if (!poff_dim) {

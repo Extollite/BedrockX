@@ -1,5 +1,5 @@
-#include "pch.h"
-#include <cassert>
+#include<lbpch.h>
+#include<stl\KVDB.h>
 KVDBImpl::KVDBImpl(const char* path, bool read_cache, int cache_sz) {
 	rdopt = leveldb::ReadOptions();
 	wropt = leveldb::WriteOptions();

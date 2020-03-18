@@ -1,13 +1,12 @@
 #pragma once
-#include "../Core.h"
-#include <string>
-#include <type_traits>
+#include<lbpch.h>
 
 class CommandRegistry;
 class CommandOrigin;
 class CommandOutput;
 class Actor;
 class Player;
+enum CommandPermissionLevel : char;
 
 template <typename T>
 class CommandSelectorResults;
@@ -100,9 +99,9 @@ public:
 	virtual BlockPos getBlockPosition() const = 0;
 	virtual Vec3 getWorldPosition() const = 0;
 	virtual Level* getLevel() const = 0;
-	virtual Dimension* getDimension() const = 0;
+	virtual class Dimension* getDimension() const = 0;
 	virtual Actor* getEntity() const = 0;
-	virtual CommandPermissionLevel getPermissionsLevel() const = 0;
+	virtual enum CommandPermissionLevel getPermissionsLevel() const = 0;
 	virtual std::unique_ptr<CommandOrigin> clone() const = 0;
 	virtual bool unk1() const = 0;
 	virtual bool unk2() const = 0;

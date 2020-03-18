@@ -1,9 +1,10 @@
 #pragma once
-#include <pch.h>
+#include<lbpch.h>
 #include <rapidjson/document.h>
 #include <rapidjson/stringbuffer.h>
 #include <variant>
 #include <array>
+#include <stl\viewhelper.h>
 namespace GUI {
 	using std::variant;
 	struct GUIButton {

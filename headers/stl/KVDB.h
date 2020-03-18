@@ -10,7 +10,6 @@
 #include<leveldb\iterator.h>
 #endif
 using std::string_view,std::string;
-class MallocVal;
 class KVDBImpl {
 #ifdef  LIGHTBASE_EXPORTS
 		leveldb::DB* db;

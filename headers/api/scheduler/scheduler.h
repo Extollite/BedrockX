@@ -1,10 +1,7 @@
 #pragma once
+#include<lbpch.h>
 #include "../serviceLocate.h"
 #include <api/lightbase.h>
-#include <map>
-#include <functional>
-#include <mutex>
-using std::function;
 typedef unsigned long long tick_t;
 typedef unsigned int taskid_t;
 extern LIGHTBASE_API tick_t ticknow;

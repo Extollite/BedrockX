@@ -1,12 +1,8 @@
 #pragma once
+#include<lbpch.h>
 #define MCAPI __declspec(dllimport)
 #define MCINLINE inline
 #define MCCLS
-#include <api/Loader.h>
-#include <api/serviceLocate.h>
-#include <vector>
-#include <memory>
-#include <functional>
 #include"mass.h"
 #include<stl/Bstream.h>
 enum ActorType : int;
@@ -101,19 +97,6 @@ public:
 		return (*rv)(a0);
 	}
 };
-namespace mce {
-	class UUID;
-};
-class NetworkIdentifier {
-	char filler[144];
-};
-namespace Util
-{
-	class HashString;
-};
-namespace Json {
-	class Value;
-}
 
 class ActorDamageSource {
 private:
@@ -136,21 +119,30 @@ public:
 private:
 	virtual int getEntityCategories() const = 0;
 };
-struct RakAddr_t {
-	char filler[0x90];
-	string toString() {
-		char buf[256];
-		Call("?ToString_New@SystemAddress@RakNet@@AEBAX_NPEADD@Z", void, void*, bool, char*, char)(this,true,buf,':');
-		return buf;
-	}
+
+class ChunkPos {
+public:
+	int x, z;
 };
-struct RakPeer_t {
-	RakPeer_t(RakPeer_t const&) = delete;
-	RakPeer_t(RakPeer_t&&) = delete;
-	RakAddr_t getAdr(NetworkIdentifier const& ni) {
-		RakAddr_t rv;
-		Call("?GetSystemAddressFromGuid@RakPeer@RakNet@@UEBA?AUSystemAddress@2@URakNetGUID@2@@Z", void, void*, RakAddr_t*, NetworkIdentifier const*)(this,&rv,&ni);
-		return rv;
+
+template<typename TP>
+struct optionalV {
+	TP val;
+	bool set;
+	optionalV(TP&& t) : val(std::forward<TP>(t)) {
+		set = true;
+	}
+	optionalV(TP const& t) : val(t) {
+		set = true;
+	}
+	optionalV() {
+		set = false;
+	}
+	operator bool() {
+		return set;
+	}
+	operator TP() {
+		return val;
 	}
 };
 constexpr const int SAFE_PADDING = 0;

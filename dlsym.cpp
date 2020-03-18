@@ -1,11 +1,11 @@
-#include "pch.h"
+#include<lbpch.h>
 #include <list>
 #include <string>
 #include<filesystem>
 #include <string_view>
 #include <cstdio>
 #include <fstream>
-#include<Windows.h>
+#include"framework.h"
 using std::list;
 using std::string, std::string_view;
 typedef unsigned long long hash_t;
@@ -22,7 +22,7 @@ struct hashval {
 	hash_t hash;
 	string data;
 	hashval() {}
-	hashval(string&& a, hash_t b, string&& c) : key(std::forward<string>(a)), data(std::forward<string>(c)), hash(b) {}
+	hashval(string&& a, hash_t b, string&& c) : key(std::forward<string>(a)), hash(b), data(std::forward<string>(c)) {}
 };
 struct RoDB_R {
 	std::ifstream fp;

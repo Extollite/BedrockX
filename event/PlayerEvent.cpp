@@ -1,4 +1,5 @@
-#include "pch.h"
+#include <lbpch.h>
+#include<api\event\playerEvent.h>
 /*
 EXPORT_EVENT(PlayerPreJoinEvent);
 EXPORT_EVENT(PlayerJoinEvent);

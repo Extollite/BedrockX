@@ -1,10 +1,6 @@
 #pragma once
-#include<array>
+#include <tuple>
 #include <mcapi/Command/CommandReg.h>
-#include <type_traits>
-#include<string>
-using std::string;
-
 namespace CMDREG {
 	template <typename T>
 	inline typeid_t<CommandRegistry> getTPID();
@@ -12,7 +8,7 @@ namespace CMDREG {
 		return *(typeid_t<CommandRegistry>*)(dlsym_real(name));
 	}
 	inline typeid_t<CommandRegistry> ALLOCID() {
-		auto& id = *((unsigned short*)GetServerSymbol("?count@?$typeid_t@VCommandRegistry@@@@2GA"));
+		auto& id = *((unsigned short*)SYM("?count@?$typeid_t@VCommandRegistry@@@@2GA"));
 		return { id++ };
 	}
 

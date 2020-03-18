@@ -1,4 +1,5 @@
 #pragma once
+#include<api\lightbase.h>
 template<class T>
 struct LocateS {
 	LIGHTBASE_API static T* _srv;

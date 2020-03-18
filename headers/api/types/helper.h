@@ -1,5 +1,5 @@
 #pragma once
-#include"types.h"
+struct WPlayer;
 #include<string>
 namespace BDX {
 	using std::string;

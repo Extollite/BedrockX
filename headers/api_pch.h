@@ -1,12 +1,6 @@
 #ifndef  API_PCH_H
 #define API_PCH_H
-#include<string>
-#include<string_view>
-#include<functional>
-#include<iostream>
-#include<cstdio>
-#include<memory>
-using std::string, std::string_view,std::shared_ptr,std::unique_ptr;
+
 #include"api/lightbase.h"
 #include"api/hash.h"
 #include"api/hook.h"

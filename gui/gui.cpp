@@ -1,6 +1,10 @@
-#include "pch.h"
+#include<lbpch.h>
 #include <api/gui/gui.h>
 #include <rapidjson/writer.h>
+#include<api\refl\playerMap.h>
+#include<stl\varint.h>
+#include<api\myPacket.h>
+#include<mcapi/Player.h>
 namespace GUI {
 	using rapidjson::Value;
 	LIGHTBASE_API unsigned int newFormID() {

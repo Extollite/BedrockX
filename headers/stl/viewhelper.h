@@ -1,5 +1,10 @@
 #pragma once
 #include<string_view>
+using std::string_view;
+template <typename T>
+inline string_view to_view(T& x) {
+	return string_view((const char*)&x, sizeof(T));
+}
 template<typename T=int>
 constexpr T atoi(std::string_view sv) {
     T res = 0;

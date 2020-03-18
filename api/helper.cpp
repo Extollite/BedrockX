@@ -1,4 +1,6 @@
-#include "pch.h"
+#include <lbpch.h>
+#include<api\types\types.h>
+class ServerLevel;
 namespace BDX {
 	using std::string;
 	static void dummy() {

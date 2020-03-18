@@ -1,4 +1,6 @@
-#include <pch.h>
+#include <lbpch.h>
+#include<api\types\types.h>
+#include<api\event\genericEvent.h>
 static uintptr_t icnt_off;
 static bool inMagic;
 unsigned char WItem::getCount() const {

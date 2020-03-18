@@ -1,11 +1,5 @@
 #pragma once
 #include <cstdint>
-#include <string_view>
-using std::string_view;
-template <typename T>
-inline string_view to_view(T& x) {
-	return string_view((const char*)&x, sizeof(T));
-}
 
 class split_view {
 private:

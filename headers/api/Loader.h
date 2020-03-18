@@ -42,17 +42,17 @@ public:
 	THookRegister(void* address, void* hook, void** org) {
 		auto ret = HookFunction(address, org, hook);
 		if (ret != 0) {
-			std::cerr << "FailedToHook: " << address << std::endl;
+			printf("FailedToHook: %p\n",address);
 		}
 	}
 	THookRegister(char const* sym, void* hook, void** org) {
 		auto found = dlsym_real(sym);
 		if (found == nullptr) {
-			std::cerr << "SymbolNotFound: " << sym << std::endl;
+			printf("FailedToHook: %p\n", sym);
 		}
 		auto ret = HookFunction(found, org, hook);
 		if (ret != 0) {
-			std::cerr << "FailedToHook: " << sym << std::endl;
+			printf("FailedToHook: %s\n", sym);
 		}
 	}
 	template <typename T>

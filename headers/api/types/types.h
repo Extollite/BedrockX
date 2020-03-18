@@ -1,6 +1,8 @@
 #pragma once
+#include<lbpch.h>
 #include <api/MC.h>
 #include <stl/views.h>
+#include<api/types/helper.h>
 #define LBAPI LIGHTBASE_API
 typedef unsigned long long xuid_t;
 typedef unsigned char permlvl_t;
@@ -15,6 +17,9 @@ struct Wrapped {
 	T* v;
 	Wrapped(T const& x) : v((T*)&x) {}
 	Wrapped(T* x) : v(x) {}
+	Wrapped() {
+		v = nullptr;
+	}
 	operator T&() {
 		return *v;
 	}
@@ -41,9 +46,10 @@ struct WDim : Wrapped<Dimension> {
 	LBAPI int getID();
 };
 struct WLevel : Wrapped<ServerLevel> {
+	WLevel() : Wrapped<ServerLevel>() {}
 	WLevel(ServerLevel& x) : Wrapped<ServerLevel>(x) {}
 	LBAPI array_view<WPlayer> getUsers();
-	LBAPI WPlayer getPlayer(string_view name);
+	LBAPI optionalV<WPlayer> getPlayer(string_view name);
 	LBAPI void broadcastText(string_view text, TextType type = RAW);
 };
 struct WActor : Wrapped<Actor> {
@@ -61,6 +67,7 @@ struct WMob : Wrapped<Mob> {
 };
 #include "helper.h"
 struct WPlayer : Wrapped<ServerPlayer> {
+	WPlayer() : Wrapped<ServerPlayer>() {}
 	WPlayer(ServerPlayer& x) : Wrapped<ServerPlayer>(x) {}
 	WActor* actor() {
 		return (WActor*)this;

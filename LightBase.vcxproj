@@ -66,7 +66,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <VCToolsVersion>14.24.28314</VCToolsVersion>
+    <VCToolsVersion>14.25.28610</VCToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='bds|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -208,11 +208,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;LIGHTBASE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>lbpch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <OmitFramePointers>true</OmitFramePointers>
-      <ExceptionHandling>false</ExceptionHandling>
       <ControlFlowGuard>false</ControlFlowGuard>
       <Optimization>MaxSpeed</Optimization>
       <DebugInformationFormat>None</DebugInformationFormat>
@@ -228,6 +227,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableUAC>false</EnableUAC>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='bds|x64'">
@@ -319,6 +319,7 @@
     <ClInclude Include="headers\api\types\types.h" />
     <ClInclude Include="headers\api\xuidreg\xuidreg.h" />
     <ClInclude Include="headers\api_pch.h" />
+    <ClInclude Include="headers\extra_pch.h" />
     <ClInclude Include="headers\mcapi\Actor.h" />
     <ClInclude Include="headers\mcapi\BlockSource.h" />
     <ClInclude Include="headers\mcapi\ChunkSource.h" />
@@ -330,10 +331,9 @@
     <ClInclude Include="headers\mcapi\Level.h" />
     <ClInclude Include="headers\mcapi\Player.h" />
     <ClInclude Include="headers\mcapi\VanillaBlocks.h" />
-    <ClInclude Include="headers\pch.h" />
+    <ClInclude Include="headers\lbpch.h" />
     <ClInclude Include="headers\rapidjson\rapidjson.h" />
     <ClInclude Include="headers\stl\Bstream.h" />
-    <ClInclude Include="headers\stl\dbgassert.h" />
     <ClInclude Include="headers\stl\KVDB.h" />
     <ClInclude Include="headers\stl\langPack.h" />
     <ClInclude Include="headers\stl\varint.h" />
