@@ -3,6 +3,7 @@
 #include <api/MC.h>
 #include <stl/views.h>
 #include<api/types/helper.h>
+#include<stl/optional.h>
 #define LBAPI LIGHTBASE_API
 typedef unsigned long long xuid_t;
 typedef unsigned char permlvl_t;
@@ -49,7 +50,7 @@ struct WLevel : Wrapped<ServerLevel> {
 	WLevel() : Wrapped<ServerLevel>() {}
 	WLevel(ServerLevel& x) : Wrapped<ServerLevel>(x) {}
 	LBAPI array_view<WPlayer> getUsers();
-	LBAPI optionalV<WPlayer> getPlayer(string_view name);
+	LBAPI optional<WPlayer> getPlayer(string_view name);
 	LBAPI void broadcastText(string_view text, TextType type = RAW);
 };
 struct WActor : Wrapped<Actor> {

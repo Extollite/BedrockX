@@ -20,6 +20,7 @@ std::ifstream,std::ofstream,std::function;
 #include"api/Loader.h"
 #include<mcapi/Core.h>
 #include<api/serviceLocate.h>
+#include<stl/views.h>
 /*
 #ifdef JSON_SUPPORT
 #include<rapidjson/document.h>

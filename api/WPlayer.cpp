@@ -2,6 +2,7 @@
 #include<api\types\types.h>
 #include<api\myPacket.h>
 #include<stl\varint.h>
+#include<api\refl\playerMap.h>
 LBAPI void WPlayer::sendText(string_view text, TextType tp) {
 	WBStream txtpkws;
 	txtpkws.data.reserve(8 + text.size());
@@ -51,10 +52,22 @@ LBAPI void WPlayer::kick(const string& reason) {
 LBAPI void WPlayer::forceKick() {
 	LocateS<ServerNetworkHandler>()->onDisconnect(*_getNI());
 }
-
+static xuid_t getXuid_real(WPlayer wp) {
+	auto xuid = ExtendedCertificate::getXuid(*wp._getCert());
+	return xuid.size() > 1 ? std::stoull(xuid) : 114514;
+}
+struct xuidStorage {
+	xuid_t val;
+	xuidStorage(ServerPlayer& sp) {
+		val = getXuid_real({ sp });
+	}
+	operator xuid_t() {
+		return val;
+	}
+};
+static playerMap<xuidStorage> xuid_cache;
 LBAPI xuid_t WPlayer::getXuid() {
-	auto xuid = ExtendedCertificate::getXuid(*_getCert());
-	return xuid.size()>1?std::stoull(xuid):114514;
+	return xuid_cache[v];
 }
 LBAPI string WPlayer::getRealName() {
 	return ExtendedCertificate::getIdentityName(*_getCert());

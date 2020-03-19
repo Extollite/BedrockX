@@ -336,6 +336,8 @@
     <ClInclude Include="headers\stl\Bstream.h" />
     <ClInclude Include="headers\stl\KVDB.h" />
     <ClInclude Include="headers\stl\langPack.h" />
+    <ClInclude Include="headers\stl\LRUMap.h" />
+    <ClInclude Include="headers\stl\optional.h" />
     <ClInclude Include="headers\stl\varint.h" />
     <ClInclude Include="headers\stl\viewhelper.h" />
     <ClInclude Include="headers\stl\views.h" />

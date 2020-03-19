@@ -1,10 +1,13 @@
 #pragma once
 #include<string>
 #include<mcapi/Core.h>
+#include<stl/optional.h>
+#include<functional>
 typedef unsigned long long xuid_t;
 using std::string;
 namespace XIDREG {
-	LBAPI bool id2str(xuid_t xid,string& val);
-	LBAPI bool str2id(string const& name,xuid_t& val);
+	LBAPI optional<string> id2str(xuid_t xid);
+	LBAPI optional<xuid_t> str2id(string const& name);
+	LBAPI void foreach (std::function<bool(xuid_t, string_view)>&&);
 	void initAll();
 }

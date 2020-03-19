@@ -1,6 +1,7 @@
 #pragma once
 #include <tuple>
 #include <mcapi/Command/CommandReg.h>
+#include <stl/optional.h>
 namespace CMDREG {
 	template <typename T>
 	inline typeid_t<CommandRegistry> getTPID();
@@ -60,13 +61,9 @@ namespace CMDREG {
 	template <typename T>
 	string CEnum<T>::name;
 
-	struct Ioptional {};
 	struct IMyEnum {};
-	template <typename T>
-	struct optional : Ioptional {
-		T val;
-		bool set;
-	};
+	
+
 	template <typename E>
 	struct MyEnum : IMyEnum {
 		E val;
@@ -75,11 +72,9 @@ namespace CMDREG {
 		}
 	};
 
-	struct MakeCommand {
-		MakeCommand(string const& name, const char* desc, int lvl) {
+		void MakeCommand(string const& name, const char* desc, int lvl) {
 			LocateS<CommandRegistry>()->registerCommand(name, desc, (CommandPermissionLevel)lvl, { CommandFlagValue(0) }, { CommandFlagValue(0) });
 		}
-	};
 
 	template <typename T>
 	typeid_t<CommandRegistry> typeid_getter() {
@@ -88,7 +83,7 @@ namespace CMDREG {
 		}
 		else {
 			if constexpr (std::is_base_of_v<Ioptional, T>) {
-				return typeid_getter<decltype(T::val)>();
+				return typeid_getter<typename T::val>();
 			}
 			else {
 				return getTPID<T>();
@@ -118,12 +113,12 @@ namespace CMDREG {
 		inline void reg_impl_sub(uintptr_t off, string const& desc, std::vector<CommandParameterData>& vc) {
 			off += offsetof(sub, data);
 			if constexpr (std::is_base_of_v<Ioptional, TX>) {
-				using TXX = decltype(TX::val);
+				using TXX = typename TX::val;
 				if constexpr (std::is_base_of_v<IMyEnum, TXX>) {
-					vc.emplace_back(typeid_getter<TXX>(), &CommandRegistry::parseEnumInt, desc, CommandParameterDataType::ENUM, CEnum<decltype(TXX::val)>::name.c_str(), int(off + offsetof(TX, val) + offsetof(TXX, val)), true, int(off + offsetof(TX, set)));
+					vc.emplace_back(typeid_getter<TXX>(), &CommandRegistry::parseEnumInt, desc, CommandParameterDataType::ENUM, CEnum<decltype(TXX::val)>::name.c_str(), int(off + offsetof(TX, filler) + offsetof(TXX, val)), true, int(off + offsetof(TX, set)));
 				}
 				else {
-					vc.emplace_back(typeid_getter<TXX>(), CommandRegistry::getParseFn<TXX>(), desc, CommandParameterDataType::NORMAL, nullptr, int(off + offsetof(TX, val)), true, int(off + offsetof(TX, set)));
+					vc.emplace_back(typeid_getter<TXX>(), CommandRegistry::getParseFn<TXX>(), desc, CommandParameterDataType::NORMAL, nullptr, int(off + offsetof(TX, filler)), true, int(off + offsetof(TX, set)));
 				}
 			}
 			else {
@@ -178,7 +173,7 @@ namespace CMDREG {
 	template <typename Dummy, typename... TP>
 	std::function<void(std::tuple<std::remove_reference_t<TP>...>&)> MakeOverload<Dummy, TP...>::new_cb = [](auto&) {};
 };
-using CMDREG::CEnum, CMDREG::MakeCommand, CMDREG::MakeOverload, CMDREG::MyEnum, CMDREG::optional;
+using CMDREG::CEnum, CMDREG::MakeCommand, CMDREG::MakeOverload, CMDREG::MyEnum;
 static_assert(sizeof(MakeOverload<void,int>) ==1);
 #define CmdOverload(name2, cb, ...) \
 	{ MakeOverload __ov1((struct name2*)0, string(#name2), cb, __VA_ARGS__); }

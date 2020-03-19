@@ -125,24 +125,4 @@ public:
 	int x, z;
 };
 
-template<typename TP>
-struct optionalV {
-	TP val;
-	bool set;
-	optionalV(TP&& t) : val(std::forward<TP>(t)) {
-		set = true;
-	}
-	optionalV(TP const& t) : val(t) {
-		set = true;
-	}
-	optionalV() {
-		set = false;
-	}
-	operator bool() {
-		return set;
-	}
-	operator TP() {
-		return val;
-	}
-};
 constexpr const int SAFE_PADDING = 0;

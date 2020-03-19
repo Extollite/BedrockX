@@ -1,8 +1,9 @@
 #include<lbpch.h>
 #include<stl\KVDB.h>
-KVDBImpl::KVDBImpl(const char* path, bool read_cache, int cache_sz) {
+KVDBImpl::KVDBImpl(const char* path, bool read_cache, int cache_sz,int Bfilter_bit) {
 	rdopt = leveldb::ReadOptions();
 	wropt = leveldb::WriteOptions();
+	options = leveldb::Options();
 	rdopt.fill_cache = read_cache;
 	rdopt.verify_checksums = false;
 	wropt.sync = false;
@@ -11,6 +12,8 @@ KVDBImpl::KVDBImpl(const char* path, bool read_cache, int cache_sz) {
 	}
 	options.reuse_logs = true; //WARN:EXPERIMENTAL
 	options.create_if_missing = true;
+	if (Bfilter_bit)
+		options.filter_policy = leveldb::NewBloomFilterPolicy(Bfilter_bit);
 	leveldb::Status status = leveldb::DB::Open(options, path, &db);
 	if (!status.ok()) {
 		printf("cannot load %s reason: %s", path, status.ToString().c_str());
@@ -18,6 +21,8 @@ KVDBImpl::KVDBImpl(const char* path, bool read_cache, int cache_sz) {
 	assert(status.ok());
 }
 KVDBImpl::~KVDBImpl() {
+	if (options.filter_policy)
+		delete options.filter_policy;
 	delete db;
 }
 bool KVDBImpl::get(string_view key, string& val) {

@@ -264,6 +264,12 @@
     <ClInclude Include="headers\lbpch.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="headers\stl\optional.h">
+      <Filter>头文件\stl</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\stl\LRUMap.h">
+      <Filter>头文件\stl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Lib\Chakra.lib" />

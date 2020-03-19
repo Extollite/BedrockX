@@ -5,20 +5,32 @@
 #include<api\xuidreg\xuidreg.h>
 namespace XIDREG {
 	static KVDBImpl xuiddb("xuiddb");
-	LBAPI bool str2id(string const& str, xuid_t& val) {
+	/*	LBAPI optional<string> id2str(xuid_t xid);
+	LBAPI optional<xuid_t> str2id(string const& name);
+	LBAPI void foreach (std::function<bool(xuid_t, string_view)>&&);*/
+	LBAPI optional<xuid_t> str2id(string const& str) {
 		string rv;
 		if (xuiddb.get(str, rv) && rv.size() == 8) {
-			val = *(xuid_t*)(rv.data());
-			return true;
+			return { *(xuid_t*)(rv.data()) };
 		}
-		return false;
+		return {};
 	}
-	LBAPI bool id2str(xuid_t id, string& val) {
+	LBAPI optional<string> id2str(xuid_t id) {
 		if (id == 0) {
-			val = "system";
-			return true;
+			return { "system" };
 		}
-		return xuiddb.get(to_view(id), val);
+		string val;
+		if (xuiddb.get(to_view(id), val))
+			return { val };
+		return {};
+	}
+	LBAPI void foreach(std::function<bool(xuid_t, string_view)>&&x) {
+		xuiddb.iter([&](string_view k, string_view v) -> bool {
+			if (k.size() == 8 && v.size() != 8) {
+				return x(*(xuid_t*)k.data(), v);
+			}
+			return true;
+		});
 	}
 	static void insert(xuid_t id, string const& name) {
 		string val;

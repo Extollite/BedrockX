@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-
+#include <algorithm>
 class split_view {
 private:
 	const char* now;
@@ -44,64 +44,100 @@ public:
 		return get();
 	}
 };
-template <typename T>
-class array_view {
-private:
-	T* view_start;
-	T* view_end;
+#define CINLINE constexpr inline
 
-public:
-	array_view(string_view sv) {
-		view_start = (T*)sv.data();
-		view_end = (T*)(sv.data() + sv.size());
-		//dbg_assert(((uintptr_t)view_end - (uintptr_t)view_start) % sizeof(T) == 0);
-	}
-	array_view(T* start, T* end) {
-		view_start = start;
-		view_end = end;
-	}
-	array_view(T& first) {
-		view_start = &first;
-		view_end = view_start + 1;
-	}
-	size_t size() {
-		return ((uintptr_t)view_end - (uintptr_t)view_start) / sizeof(T);
-	}
-	T& operator[](size_t idx) {
-		//        dbg_assert(idx < size());
-		return view_start[idx];
-	}
-	void operator++() {
-		view_start++;
-	}
-	bool isend() {
-		return view_start == view_end;
-	}
-	operator bool() {
-		return !isend();
-	}
-	T& operator*() {
-		return operator[](0);
-	}
-	struct iterator {
-		T* now;
-		T* operator->() {
-			return now;
-		}
-		T& operator*() {
-			return *now;
-		}
-		void operator++() {
-			now++;
-		}
-		bool operator!=(iterator y) {
-			return now != y.now;
-		}
-	};
-	iterator begin() {
-		return {view_start};
-	}
-	iterator end() {
-		return { view_end };
-	}
+template<typename T>
+constexpr bool is_sval = std::is_pod_v<T> && (sizeof(T)<=8);
+template<typename T=char>
+struct array_view {
+    using ARGTP = std::conditional_t<is_sval<T>, T, const T&>;
+    static constexpr size_t npos = std::numeric_limits<long long>::max();
+    T* data;
+    size_t siz;
+    CINLINE size_t size() const {
+        return siz;
+    }
+    CINLINE array_view<T> slice(size_t startidx,size_t _endidx=npos) const{ //[start,end)
+        auto endidx = std::min(siz,_endidx);
+        return array_view<T>{data + startidx, endidx-startidx};
+    }
+    CINLINE array_view<T> subview(size_t startidx, size_t _count = npos) const {
+        auto count = std::min(siz-startidx,_count);
+        return array_view<T>{data + startidx, count};
+    }
+    CINLINE T const& operator [](int idx) const{
+        return data[idx];
+    }
+    CINLINE T& operator [](int idx) {
+        return data[idx];
+    }
+    struct iterator {
+        T* now;
+        size_t remain;
+        CINLINE bool operator!=(const iterator& r) {
+            return remain != r.remain;
+        }
+        CINLINE bool operator==(const iterator& r) {
+            return remain == r.remain;
+        }
+        inline void operator++() {
+            now++;
+            remain--;
+        }
+        inline void operator--() {
+            now--;
+            remain++;
+        }
+        CINLINE T& operator*() {
+            return *now;
+        }
+        CINLINE T& operator->() {
+            return *now;
+        }
+    };
+    CINLINE iterator begin() {
+        return { data,size() };
+    }
+    CINLINE iterator end() const{
+        return { data,0 };
+    }
+    bool has(ARGTP x) const{
+        for (size_t i = 0; i < siz; ++i) {
+            if (data[i] == x) return true;
+        }
+        return false;
+    }
+    size_t count(ARGTP x) const{
+        size_t rv = 0;
+        for (size_t i = 0; i < siz; ++i) if (data[i] == x) rv++;
+        return rv;
+    }
+    size_t find(ARGTP x,size_t start=0) const{
+        for (size_t i = start; i < siz; ++i) if (data[i] == x) return i;
+        return npos;
+    }
+    bool toBack_Pop(ARGTP x) {
+        auto pos = find(x);
+        if (pos != npos) {
+            std::swap(data[pos], data[siz - 1]);
+            siz--;
+            return true;
+        }
+        return false;
+    }
+    CINLINE operator string_view() const{
+        return { (const char*)data,siz * sizeof(T) };
+    }
+    array_view(string_view v) {
+        data = (T*)v.data();
+        siz = v.size() / sizeof(T);
+    }
+    array_view(T* s, T* e){
+        data = s;
+        siz=std::distance(s, e);
+    }
+    array_view(T* s, size_t sz) {
+        data = s;
+        siz = sz;
+    }
 };
