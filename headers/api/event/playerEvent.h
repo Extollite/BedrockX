@@ -48,9 +48,7 @@ public:
 		INTERACT=0,
 		ATTACK=1
 	} type;
-	PlayerUseItemOnEntityEvent(ServerPlayer& sp, ActorRuntimeID rti,int _type) : IGenericPlayerEvent<PlayerUseItemOnEntityEvent>(sp), rtid(rti),type((TransType)_type) {
-		victim = LocateS<ServerLevel>()->getRuntimeEntity(rtid, false);
-	}
+	LBAPI PlayerUseItemOnEntityEvent(ServerPlayer& sp, ActorRuntimeID rti, int _type);
 	bool isAttack() {
 		return type == ATTACK;
 	}

@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <fstream>
 #include"framework.h"
+#include <detours\detours.h> 
 using std::list;
 using std::string, std::string_view;
 typedef unsigned long long hash_t;
@@ -91,4 +92,19 @@ LBAPI void* dlsym_real(const char* x) {
 	unsigned int rva;
 	pdb->read(&rva, rv, 4);
 	return (void*)(BaseAdr + rva);
+}
+void HookFunction__begin() {
+		DetourTransactionBegin();
+		DetourUpdateThread(GetCurrentThread());
+}
+long HookFunction__finalize() {
+	return DetourTransactionCommit();
+}
+LBAPI int HookFunction(void* oldfunc, void** poutold, void* newfunc) {
+	void* target = oldfunc;
+	HookFunction__begin();
+	int rv=DetourAttach(&target, newfunc);
+	HookFunction__finalize();
+	*poutold = target;
+	return rv;
 }

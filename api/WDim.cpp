@@ -1,5 +1,9 @@
 #include <lbpch.h>
 #include<api\types\types.h>
+#include<mcapi/Dimension.h>
+#include<mcapi/Level.h>
+#include<mcapi/BlockSource.h>
+
 static std::unordered_map<void*, int> dim_id;
 static uintptr_t bs_dim;
 LBAPI WDim WBlockSource::getDim() {

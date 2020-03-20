@@ -1,8 +1,11 @@
 #pragma once
 #include "Core.h"
-#include"Actor.h"
+#include "Actor.h"
 class Player : public Mob {
 public:
+	Player(const Player&) = delete;
+	Player& operator=(const Player&) = delete;
+	Player() = delete;
 	MCINLINE bool isPositionRelevant(class AutomaticID<class Dimension, int> a0, class BlockPos const& a1) {
 		bool (Player::*rv)(class AutomaticID<class Dimension, int>, class BlockPos const&);
 		*((void**)&rv) = dlsym("?isPositionRelevant@Player@@UEAA_NV?$AutomaticID@VDimension@@H@@AEBVBlockPos@@@Z");
@@ -13,8 +16,8 @@ public:
 		*((void**)&rv) = dlsym("?updateTeleportDestPos@Player@@QEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE class IMinecraftEventing* getEventing() {
-		class IMinecraftEventing* (Player::*rv)();
+	MCINLINE class IMinecraftEventing* getEventing() const {
+		class IMinecraftEventing* (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getEventing@Player@@UEBAPEAVIMinecraftEventing@@XZ");
 		return (this->*rv)();
 	}
@@ -28,8 +31,8 @@ public:
 		*((void**)&rv) = dlsym("?stopSleepInBed@Player@@UEAAX_N0@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE class ItemStack const& getCarriedItem() {
-		class ItemStack const& (Player::*rv)();
+	MCINLINE class ItemStack const& getCarriedItem() const {
+		class ItemStack const& (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getCarriedItem@Player@@UEBAAEBVItemStack@@XZ");
 		return (this->*rv)();
 	}
@@ -43,10 +46,10 @@ public:
 		*((void**)&rv) = dlsym("?take@Player@@QEAA_NAEAVActor@@HH@Z");
 		return (this->*rv)(a0, a1, a2);
 	}
-	MCINLINE void changeDimensionWithCredits() {
-		void (Player::*rv)();
+	MCINLINE void changeDimensionWithCredits(class AutomaticID<class Dimension, int> a0) {
+		void (Player::*rv)(class AutomaticID<class Dimension, int>);
 		*((void**)&rv) = dlsym("?changeDimensionWithCredits@Player@@UEAAXV?$AutomaticID@VDimension@@H@@@Z");
-		return (this->*rv)();
+		return (this->*rv)(a0);
 	}
 	MCINLINE void registerTrackedBoss(struct ActorUniqueID a0) {
 		void (Player::*rv)(struct ActorUniqueID);
@@ -68,8 +71,8 @@ public:
 		*((void**)&rv) = dlsym("?_handleCarriedItemInteractText@Player@@AEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE unsigned int getUserId() {
-		unsigned int (Player::*rv)();
+	MCINLINE unsigned int getUserId() const {
+		unsigned int (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getUserId@Player@@UEBAIXZ");
 		return (this->*rv)();
 	}
@@ -83,8 +86,8 @@ public:
 		*((void**)&rv) = dlsym("?setSpeed@Player@@UEAAXM@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE float getDestroyProgress(class Block const& a0) {
-		float (Player::*rv)(class Block const&);
+	MCINLINE float getDestroyProgress(class Block const& a0) const {
+		float (Player::*rv)(class Block const&) const;
 		*((void**)&rv) = dlsym("?getDestroyProgress@Player@@QEBAMAEBVBlock@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -93,8 +96,8 @@ public:
 		*((void**)&rv) = dlsym("?setSleeping@Player@@UEAAX_N@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE int getDirection() {
-		int (Player::*rv)();
+	MCINLINE int getDirection() const {
+		int (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getDirection@Player@@QEBAHXZ");
 		return (this->*rv)();
 	}
@@ -158,8 +161,8 @@ public:
 		*((void**)&rv) = dlsym("?openPortfolio@Player@@UEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE int getPortalCooldown() {
-		int (Player::*rv)();
+	MCINLINE int getPortalCooldown() const {
+		int (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getPortalCooldown@Player@@UEBAHXZ");
 		return (this->*rv)();
 	}
@@ -168,8 +171,8 @@ public:
 		*((void**)&rv) = dlsym("?openStructureEditor@Player@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE enum GameType getPlayerGameType() {
-		enum GameType (Player::*rv)();
+	MCINLINE enum GameType getPlayerGameType() const {
+		enum GameType (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getPlayerGameType@Player@@QEBA?AW4GameType@@XZ");
 		return (this->*rv)();
 	}
@@ -203,11 +206,6 @@ public:
 		*((void**)&rv) = dlsym("?isInTrialMode@Player@@UEAA_NXZ");
 		return (this->*rv)();
 	}
-	MCINLINE void setContainerManager() {
-		void (Player::*rv)();
-		*((void**)&rv) = dlsym("?setContainerManager@Player@@QEAAXV?$shared_ptr@VIContainerManager@@@std@@@Z");
-		return (this->*rv)();
-	}
 	MCINLINE void completeUsingItem() {
 		void (Player::*rv)();
 		*((void**)&rv) = dlsym("?completeUsingItem@Player@@UEAAXXZ");
@@ -223,13 +221,13 @@ public:
 		*((void**)&rv) = dlsym("?openStonecutter@Player@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isJumping() {
-		bool (Player::*rv)();
+	MCINLINE bool isJumping() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isJumping@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
-	MCINLINE enum ActorType getEntityTypeId() {
-		enum ActorType (Player::*rv)();
+	MCINLINE enum ActorType getEntityTypeId() const {
+		enum ActorType (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getEntityTypeId@Player@@UEBA?AW4ActorType@@XZ");
 		return (this->*rv)();
 	}
@@ -263,8 +261,8 @@ public:
 		*((void**)&rv) = dlsym("?resetPos@Player@@UEAAX_N@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isLocalPlayer() {
-		bool (Player::*rv)();
+	MCINLINE bool isLocalPlayer() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isLocalPlayer@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -288,8 +286,8 @@ public:
 		*((void**)&rv) = dlsym("?eat@Player@@QEAAXHM@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE bool useNewAi() {
-		bool (Player::*rv)();
+	MCINLINE bool useNewAi() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?useNewAi@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -298,8 +296,8 @@ public:
 		*((void**)&rv) = dlsym("?displayLocalizableMessage@Player@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@3@@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE bool canUseAbility(enum AbilitiesIndex a0) {
-		bool (Player::*rv)(enum AbilitiesIndex);
+	MCINLINE bool canUseAbility(enum AbilitiesIndex a0) const {
+		bool (Player::*rv)(enum AbilitiesIndex) const;
 		*((void**)&rv) = dlsym("?canUseAbility@Player@@QEBA_NW4AbilitiesIndex@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -308,8 +306,8 @@ public:
 		*((void**)&rv) = dlsym("?_blockUsingShield@Player@@AEAA_NAEBVActorDamageSource@@M@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE bool canUseOperatorBlocks() {
-		bool (Player::*rv)();
+	MCINLINE bool canUseOperatorBlocks() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?canUseOperatorBlocks@Player@@QEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -373,13 +371,13 @@ public:
 		*((void**)&rv) = dlsym("?useItem@Player@@UEAAXAEAVItemStack@@W4ItemUseMethod@@_N@Z");
 		return (this->*rv)(a0, a1, a2);
 	}
-	MCINLINE class ItemStack const& getCurrentActiveShield() {
-		class ItemStack const& (Player::*rv)();
+	MCINLINE class ItemStack const& getCurrentActiveShield() const {
+		class ItemStack const& (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getCurrentActiveShield@Player@@QEBAAEBVItemStack@@XZ");
 		return (this->*rv)();
 	}
-	MCINLINE bool canBePulledIntoVehicle() {
-		bool (Player::*rv)();
+	MCINLINE bool canBePulledIntoVehicle() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?canBePulledIntoVehicle@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -388,13 +386,13 @@ public:
 		*((void**)&rv) = dlsym("?setPermissions@Player@@UEAAXW4CommandPermissionLevel@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isAutoJumpEnabled() {
-		bool (Player::*rv)();
+	MCINLINE bool isAutoJumpEnabled() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isAutoJumpEnabled@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
-	MCINLINE void sendEventPacket(class EventPacket& a0) {
-		void (Player::*rv)(class EventPacket&);
+	MCINLINE void sendEventPacket(class EventPacket& a0) const {
+		void (Player::*rv)(class EventPacket&) const;
 		*((void**)&rv) = dlsym("?sendEventPacket@Player@@UEBAXAEAVEventPacket@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -413,8 +411,8 @@ public:
 		*((void**)&rv) = dlsym("?_updateInteraction@Player@@IEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE enum StructureFeatureType getCurrentStructureFeature() {
-		enum StructureFeatureType (Player::*rv)();
+	MCINLINE enum StructureFeatureType getCurrentStructureFeature() const {
+		enum StructureFeatureType (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getCurrentStructureFeature@Player@@UEBA?AW4StructureFeatureType@@XZ");
 		return (this->*rv)();
 	}
@@ -423,8 +421,8 @@ public:
 		*((void**)&rv) = dlsym("?displayChatMessage@Player@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE bool _validateSpawnPositionAvailability(class Vec3 const& a0, class BlockSource* a1, class Vec3 const* const a2) {
-		bool (Player::*rv)(class Vec3 const&, class BlockSource*, class Vec3 const* const);
+	MCINLINE bool _validateSpawnPositionAvailability(class Vec3 const& a0, class BlockSource* a1, class Vec3 const* const a2) const {
+		bool (Player::*rv)(class Vec3 const&, class BlockSource*, class Vec3 const* const) const;
 		*((void**)&rv) = dlsym("?_validateSpawnPositionAvailability@Player@@IEBA_NAEBVVec3@@PEAVBlockSource@@QEBV2@@Z");
 		return (this->*rv)(a0, a1, a2);
 	}
@@ -463,15 +461,10 @@ public:
 		*((void**)&rv) = dlsym("?prepareRegion@Player@@UEAAXAEAVChunkSource@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE float getCameraOffset() {
-		float (Player::*rv)();
+	MCINLINE float getCameraOffset() const {
+		float (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getCameraOffset@Player@@UEBAMXZ");
 		return (this->*rv)();
-	}
-	MCINLINE bool _aboveBlockHasCollisionShape(class BlockPos const& a0, int a1, class BlockSource& a2, class AABB& a3, class Actor& a4) {
-		bool (Player::*rv)(class BlockPos const&, int, class BlockSource&, class AABB&, class Actor&);
-		*((void**)&rv) = dlsym("?_aboveBlockHasCollisionShape@Player@@CA_NAEBVBlockPos@@HAEAVBlockSource@@AEAVAABB@@AEAVActor@@@Z");
-		return (this->*rv)(a0, a1, a2, a3, a4);
 	}
 	MCINLINE bool hasResource(int a0) {
 		bool (Player::*rv)(int);
@@ -488,8 +481,8 @@ public:
 		*((void**)&rv) = dlsym("?displayTextObjectMessage@Player@@UEAAXAEBVTextObjectRoot@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@1@Z");
 		return (this->*rv)(a0, a1, a2);
 	}
-	MCINLINE bool isCreative() {
-		bool (Player::*rv)();
+	MCINLINE bool isCreative() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isCreative@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -508,8 +501,8 @@ public:
 		*((void**)&rv) = dlsym("?openHorseInventory@Player@@UEAAXAEBUActorUniqueID@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isHiddenFrom(class Mob& a0) {
-		bool (Player::*rv)(class Mob&);
+	MCINLINE bool isHiddenFrom(class Mob& a0) const {
+		bool (Player::*rv)(class Mob&) const;
 		*((void**)&rv) = dlsym("?isHiddenFrom@Player@@QEBA_NAEAVMob@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -518,8 +511,8 @@ public:
 		*((void**)&rv) = dlsym("?addAdditionalSaveData@Player@@MEAAXAEAVCompoundTag@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isImmobile() {
-		bool (Player::*rv)();
+	MCINLINE bool isImmobile() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isImmobile@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -538,8 +531,8 @@ public:
 		*((void**)&rv) = dlsym("?die@Player@@UEAAXAEBVActorDamageSource@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isItemInCooldown(enum CooldownType a0) {
-		bool (Player::*rv)(enum CooldownType);
+	MCINLINE bool isItemInCooldown(enum CooldownType a0) const {
+		bool (Player::*rv)(enum CooldownType) const;
 		*((void**)&rv) = dlsym("?isItemInCooldown@Player@@UEBA_NW4CooldownType@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -568,13 +561,13 @@ public:
 		*((void**)&rv) = dlsym("?openHopper@Player@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE void adjustDamageAmount(int& a0) {
-		void (Player::*rv)(int&);
+	MCINLINE void adjustDamageAmount(int& a0) const {
+		void (Player::*rv)(int&) const;
 		*((void**)&rv) = dlsym("?adjustDamageAmount@Player@@UEBAXAEAH@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE float getSpeed() {
-		float (Player::*rv)();
+	MCINLINE float getSpeed() const {
+		float (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getSpeed@Player@@UEBAMXZ");
 		return (this->*rv)();
 	}
@@ -583,8 +576,8 @@ public:
 		*((void**)&rv) = dlsym("?openAnvil@Player@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isSurvival() {
-		bool (Player::*rv)();
+	MCINLINE bool isSurvival() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isSurvival@Player@@QEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -593,8 +586,8 @@ public:
 		*((void**)&rv) = dlsym("?drop@Player@@UEAA_NAEBVItemStack@@_N@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE bool isInRaid() {
-		bool (Player::*rv)();
+	MCINLINE bool isInRaid() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isInRaid@Player@@QEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -603,13 +596,13 @@ public:
 		*((void**)&rv) = dlsym("?openHopper@Player@@UEAAXAEBUActorUniqueID@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE int getPortalWaitTime() {
-		int (Player::*rv)();
+	MCINLINE int getPortalWaitTime() const {
+		int (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getPortalWaitTime@Player@@UEBAHXZ");
 		return (this->*rv)();
 	}
-	MCINLINE int getXpNeededForNextLevel() {
-		int (Player::*rv)();
+	MCINLINE int getXpNeededForNextLevel() const {
+		int (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getXpNeededForNextLevel@Player@@QEBAHXZ");
 		return (this->*rv)();
 	}
@@ -638,8 +631,8 @@ public:
 		*((void**)&rv) = dlsym("?updateAi@Player@@MEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE bool canAddRider(class Actor& a0) {
-		bool (Player::*rv)(class Actor&);
+	MCINLINE bool canAddRider(class Actor& a0) const {
+		bool (Player::*rv)(class Actor&) const;
 		*((void**)&rv) = dlsym("?canAddRider@Player@@UEBA_NAEAVActor@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -668,8 +661,8 @@ public:
 		*((void**)&rv) = dlsym("?checkNeedAutoJump@Player@@QEAA_NMM@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE bool isAdventure() {
-		bool (Player::*rv)();
+	MCINLINE bool isAdventure() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isAdventure@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -678,8 +671,8 @@ public:
 		*((void**)&rv) = dlsym("?updateGliding@Player@@UEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE bool _isDangerousSpawn(class BlockSource& a0, class AABB const& a1) {
-		bool (Player::*rv)(class BlockSource&, class AABB const&);
+	MCINLINE bool _isDangerousSpawn(class BlockSource& a0, class AABB const& a1) const {
+		bool (Player::*rv)(class BlockSource&, class AABB const&) const;
 		*((void**)&rv) = dlsym("?_isDangerousSpawn@Player@@IEBA_NAEAVBlockSource@@AEBVAABB@@@Z");
 		return (this->*rv)(a0, a1);
 	}
@@ -713,8 +706,8 @@ public:
 		*((void**)&rv) = dlsym("?openContainer@Player@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isInvulnerableTo(class ActorDamageSource const& a0) {
-		bool (Player::*rv)(class ActorDamageSource const&);
+	MCINLINE bool isInvulnerableTo(class ActorDamageSource const& a0) const {
+		bool (Player::*rv)(class ActorDamageSource const&) const;
 		*((void**)&rv) = dlsym("?isInvulnerableTo@Player@@UEBA_NAEBVActorDamageSource@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -723,8 +716,8 @@ public:
 		*((void**)&rv) = dlsym("?onMovePlayerPacketNormal@Player@@MEAAXAEBVVec3@@AEBVVec2@@M@Z");
 		return (this->*rv)(a0, a1, a2);
 	}
-	MCINLINE class Vec3 getAttachPos(enum ActorLocation a0, float a1) {
-		class Vec3 (Player::*rv)(enum ActorLocation, float);
+	MCINLINE class Vec3 getAttachPos(enum ActorLocation a0, float a1) const {
+		class Vec3 (Player::*rv)(enum ActorLocation, float) const;
 		*((void**)&rv) = dlsym("?getAttachPos@Player@@UEBA?AVVec3@@W4ActorLocation@@M@Z");
 		return (this->*rv)(a0, a1);
 	}
@@ -733,8 +726,8 @@ public:
 		*((void**)&rv) = dlsym("?openEnchanter@Player@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isSleeping() {
-		bool (Player::*rv)();
+	MCINLINE bool isSleeping() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isSleeping@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -768,8 +761,8 @@ public:
 		*((void**)&rv) = dlsym("?openSign@Player@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isLoading() {
-		bool (Player::*rv)();
+	MCINLINE bool isLoading() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isLoading@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -778,13 +771,13 @@ public:
 		*((void**)&rv) = dlsym("?_crit@Player@@UEAAXAEAVActor@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isBlocking() {
-		bool (Player::*rv)();
+	MCINLINE bool isBlocking() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isBlocking@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
-	MCINLINE bool isHostingPlayer() {
-		bool (Player::*rv)();
+	MCINLINE bool isHostingPlayer() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isHostingPlayer@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -808,8 +801,8 @@ public:
 		*((void**)&rv) = dlsym("?setName@Player@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE void sendNetworkPacket(class Packet& a0) {
-		void (Player::*rv)(class Packet&);
+	MCINLINE void sendNetworkPacket(class Packet& a0) const {
+		void (Player::*rv)(class Packet&) const;
 		*((void**)&rv) = dlsym("?sendNetworkPacket@Player@@UEBAXAEAVPacket@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -818,13 +811,13 @@ public:
 		*((void**)&rv) = dlsym("?openCompoundCreator@Player@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool getAlwaysShowNameTag() {
-		bool (Player::*rv)();
+	MCINLINE bool getAlwaysShowNameTag() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getAlwaysShowNameTag@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
-	MCINLINE bool isPlayerInitialized() {
-		bool (Player::*rv)();
+	MCINLINE bool isPlayerInitialized() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isPlayerInitialized@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -838,8 +831,8 @@ public:
 		*((void**)&rv) = dlsym("?_onSizeUpdated@Player@@EEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE bool canExistWhenDisallowMob() {
-		bool (Player::*rv)();
+	MCINLINE bool canExistWhenDisallowMob() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?canExistWhenDisallowMob@Player@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -858,8 +851,8 @@ public:
 		*((void**)&rv) = dlsym("?_registerElytraLoopSound@Player@@AEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE int getItemCooldownLeft(enum CooldownType a0) {
-		int (Player::*rv)(enum CooldownType);
+	MCINLINE int getItemCooldownLeft(enum CooldownType a0) const {
+		int (Player::*rv)(enum CooldownType) const;
 		*((void**)&rv) = dlsym("?getItemCooldownLeft@Player@@UEBAHW4CooldownType@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -868,8 +861,8 @@ public:
 		*((void**)&rv) = dlsym("?rideTick@Player@@UEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE float getMapDecorationRotation() {
-		float (Player::*rv)();
+	MCINLINE float getMapDecorationRotation() const {
+		float (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getMapDecorationRotation@Player@@UEBAMXZ");
 		return (this->*rv)();
 	}
@@ -908,18 +901,18 @@ public:
 		*((void**)&rv) = dlsym("?setCarriedItem@Player@@UEAAXAEBVItemStack@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE class ItemStack const& getEquippedTotem() {
-		class ItemStack const& (Player::*rv)();
+	MCINLINE class ItemStack const& getEquippedTotem() const {
+		class ItemStack const& (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getEquippedTotem@Player@@UEBAAEBVItemStack@@XZ");
 		return (this->*rv)();
 	}
-	MCINLINE bool canBeSeenOnMap() {
-		bool (Player::*rv)();
+	MCINLINE bool canBeSeenOnMap() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?canBeSeenOnMap@Player@@QEBA_NXZ");
 		return (this->*rv)();
 	}
-	MCINLINE bool isInCreativeMode() {
-		bool (Player::*rv)();
+	MCINLINE bool isInCreativeMode() const {
+		bool (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?isInCreativeMode@Player@@QEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -948,7 +941,11 @@ public:
 		*((void**)&rv) = dlsym("?openTrading@Player@@UEAAXAEBUActorUniqueID@@_N@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE class AnimationComponent& getAnimationComponent() {
+	MCINLINE class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> getFormattedNameTag() const {
+		class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> (Player::*rv)() const;
+		*((void**)&rv) = dlsym("?getFormattedNameTag@Player@@UEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ");
+		return (this->*rv)();
+	} MCINLINE class AnimationComponent& getAnimationComponent() {
 		class AnimationComponent& (Player::*rv)();
 		*((void**)&rv) = dlsym("?getAnimationComponent@Player@@UEAAAEAVAnimationComponent@@XZ");
 		return (this->*rv)();
@@ -958,8 +955,8 @@ public:
 		*((void**)&rv) = dlsym("?actuallyHurt@Player@@UEAAXHPEBVActorDamageSource@@_N@Z");
 		return (this->*rv)(a0, a1, a2);
 	}
-	MCINLINE int getSleepTimer() {
-		int (Player::*rv)();
+	MCINLINE int getSleepTimer() const {
+		int (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getSleepTimer@Player@@UEBAHXZ");
 		return (this->*rv)();
 	}
@@ -973,8 +970,8 @@ public:
 		*((void**)&rv) = dlsym("?checkMovementStats@Player@@UEAAXAEBVVec3@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool canDestroy(class Block const& a0) {
-		bool (Player::*rv)(class Block const&);
+	MCINLINE bool canDestroy(class Block const& a0) const {
+		bool (Player::*rv)(class Block const&) const;
 		*((void**)&rv) = dlsym("?canDestroy@Player@@QEBA_NAEBVBlock@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -993,13 +990,13 @@ public:
 		*((void**)&rv) = dlsym("?resetPlayerLevel@Player@@QEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE int getPreviousTickSleepTimer() {
-		int (Player::*rv)();
+	MCINLINE int getPreviousTickSleepTimer() const {
+		int (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getPreviousTickSleepTimer@Player@@UEBAHXZ");
 		return (this->*rv)();
 	}
-	MCINLINE float getDestroySpeed(class Block const& a0) {
-		float (Player::*rv)(class Block const&);
+	MCINLINE float getDestroySpeed(class Block const& a0) const {
+		float (Player::*rv)(class Block const&) const;
 		*((void**)&rv) = dlsym("?getDestroySpeed@Player@@QEBAMAEBVBlock@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -1033,8 +1030,8 @@ public:
 		*((void**)&rv) = dlsym("?openGrindstone@Player@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isDamageBlocked(class ActorDamageSource const& a0) {
-		bool (Player::*rv)(class ActorDamageSource const&);
+	MCINLINE bool isDamageBlocked(class ActorDamageSource const& a0) const {
+		bool (Player::*rv)(class ActorDamageSource const&) const;
 		*((void**)&rv) = dlsym("?isDamageBlocked@Player@@UEBA_NAEBVActorDamageSource@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -1063,8 +1060,8 @@ public:
 		*((void**)&rv) = dlsym("?openMaterialReducer@Player@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE class Agent* getAgent() {
-		class Agent* (Player::*rv)();
+	MCINLINE class Agent* getAgent() const {
+		class Agent* (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getAgent@Player@@QEBAPEAVAgent@@XZ");
 		return (this->*rv)();
 	}
@@ -1078,17 +1075,17 @@ public:
 		*((void**)&rv) = dlsym("?setRespawnPosition@Player@@QEAAXAEBVBlockPos@@_N@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE class std::vector<class ChunkPos, class std::allocator<class ChunkPos>> const& getTickingOffsets() {
-		class std::vector<class ChunkPos, class std::allocator<class ChunkPos>> const& (Player::*rv)();
+	MCINLINE class std::vector<class ChunkPos, class std::allocator<class ChunkPos>> const& getTickingOffsets() const {
+		class std::vector<class ChunkPos, class std::allocator<class ChunkPos>> const& (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getTickingOffsets@Player@@UEBAAEBV?$vector@VChunkPos@@V?$allocator@VChunkPos@@@std@@@std@@XZ");
 		return (this->*rv)();
-	} MCINLINE enum CommandPermissionLevel getCommandPermissionLevel() {
-		enum CommandPermissionLevel (Player::*rv)();
+	} MCINLINE enum CommandPermissionLevel getCommandPermissionLevel() const {
+		enum CommandPermissionLevel (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getCommandPermissionLevel@Player@@UEBA?AW4CommandPermissionLevel@@XZ");
 		return (this->*rv)();
 	}
-	MCINLINE class ItemStack const& getSelectedItem() {
-		class ItemStack const& (Player::*rv)();
+	MCINLINE class ItemStack const& getSelectedItem() const {
+		class ItemStack const& (Player::*rv)() const;
 		*((void**)&rv) = dlsym("?getSelectedItem@Player@@QEBAAEBVItemStack@@XZ");
 		return (this->*rv)();
 	}
@@ -1104,20 +1101,20 @@ public:
 	}
 
 #if 0
-	MCINLINE class std::vector<class ItemStack const *,class std::allocator<class ItemStack const *> >  getAllEquipment(){
-class std::vector<class ItemStack const *,class std::allocator<class ItemStack const *> > (Player::*rv)(); *((void**)&rv) = dlsym("?getAllEquipment@Player@@UEBA?AV?$vector@PEBVItemStack@@V?$allocator@PEBVItemStack@@@std@@@std@@XZ"); return (this->*rv)();}
-	MCINLINE class std::vector<class ItemStack const *,class std::allocator<class ItemStack const *> >  getAllHand(){
-class std::vector<class ItemStack const *,class std::allocator<class ItemStack const *> > (Player::*rv)(); *((void**)&rv) = dlsym("?getAllHand@Player@@UEBA?AV?$vector@PEBVItemStack@@V?$allocator@PEBVItemStack@@@std@@@std@@XZ"); return (this->*rv)();}
-	MCINLINE class std::unique_ptr<class Packet,struct std::default_delete<class Packet> >  getAddPacket(){
-class std::unique_ptr<class Packet,struct std::default_delete<class Packet> > (Player::*rv)(); *((void**)&rv) = dlsym("?getAddPacket@Player@@UEAA?AV?$unique_ptr@VPacket@@U?$default_delete@VPacket@@@std@@@std@@XZ"); return (this->*rv)();}
-	MCINLINE bool  checkAndfixSpawnPosition(class Vec3 & a0,class std::vector<class BlockSource *,class std::allocator<class BlockSource *> > a1,bool a2,bool a3,bool a4,bool a5){
-bool (Player::*rv)(class Vec3 &,class std::vector<class BlockSource *,class std::allocator<class BlockSource *> >,bool,bool,bool,bool); *((void**)&rv) = dlsym("?checkAndfixSpawnPosition@Player@@IEBA_NAEAVVec3@@V?$vector@PEAVBlockSource@@V?$allocator@PEAVBlockSource@@@std@@@std@@_N222@Z"); return (this->*rv)(a0,a1,a2,a3,a4,a5);}
-	MCINLINE class std::unique_ptr<class BodyControl,struct std::default_delete<class BodyControl> >  initBodyControl(){
-class std::unique_ptr<class BodyControl,struct std::default_delete<class BodyControl> > (Player::*rv)(); *((void**)&rv) = dlsym("?initBodyControl@Player@@EEAA?AV?$unique_ptr@VBodyControl@@U?$default_delete@VBodyControl@@@std@@@std@@XZ"); return (this->*rv)();}
+	MCINLINE  class std::vector<class ItemStack const *,class std::allocator<class ItemStack const *> >  getAllEquipment()const {
+ class std::vector<class ItemStack const *,class std::allocator<class ItemStack const *> > (Player::*rv)()const ; *((void**)&rv) = dlsym("?getAllEquipment@Player@@UEBA?AV?$vector@PEBVItemStack@@V?$allocator@PEBVItemStack@@@std@@@std@@XZ"); return (this->*rv)();}
+	MCINLINE void  setContainerManager(class std::shared_ptr<class IContainerManager> a0){
+void (Player::*rv)(class std::shared_ptr<class IContainerManager>); *((void**)&rv) = dlsym("?setContainerManager@Player@@QEAAXV?$shared_ptr@VIContainerManager@@@std@@@Z"); return (this->*rv)(a0);}
+	MCINLINE  class std::vector<class ItemStack const *,class std::allocator<class ItemStack const *> >  getAllHand()const {
+ class std::vector<class ItemStack const *,class std::allocator<class ItemStack const *> > (Player::*rv)()const ; *((void**)&rv) = dlsym("?getAllHand@Player@@UEBA?AV?$vector@PEBVItemStack@@V?$allocator@PEBVItemStack@@@std@@@std@@XZ"); return (this->*rv)();}
+	MCINLINE  class std::unique_ptr<class Packet,struct std::default_delete<class Packet> >  getAddPacket(){
+ class std::unique_ptr<class Packet,struct std::default_delete<class Packet> > (Player::*rv)(); *((void**)&rv) = dlsym("?getAddPacket@Player@@UEAA?AV?$unique_ptr@VPacket@@U?$default_delete@VPacket@@@std@@@std@@XZ"); return (this->*rv)();}
+	MCINLINE bool  checkAndfixSpawnPosition(class Vec3 & a0,class std::vector<class BlockSource *,class std::allocator<class BlockSource *> > a1,bool a2,bool a3,bool a4,bool a5)const {
+bool (Player::*rv)(class Vec3 &,class std::vector<class BlockSource *,class std::allocator<class BlockSource *> >,bool,bool,bool,bool)const ; *((void**)&rv) = dlsym("?checkAndfixSpawnPosition@Player@@IEBA_NAEAVVec3@@V?$vector@PEAVBlockSource@@V?$allocator@PEAVBlockSource@@@std@@@std@@_N222@Z"); return (this->*rv)(a0,a1,a2,a3,a4,a5);}
+	MCINLINE  class std::unique_ptr<class BodyControl,struct std::default_delete<class BodyControl> >  initBodyControl(){
+ class std::unique_ptr<class BodyControl,struct std::default_delete<class BodyControl> > (Player::*rv)(); *((void**)&rv) = dlsym("?initBodyControl@Player@@EEAA?AV?$unique_ptr@VBodyControl@@U?$default_delete@VBodyControl@@@std@@@std@@XZ"); return (this->*rv)();}
 	MCINLINE bool  _findFallbackSpawnPosition(class Vec3 & a0,class std::vector<class BlockSource *,class std::allocator<class BlockSource *> > a1,unsigned int a2){
 bool (Player::*rv)(class Vec3 &,class std::vector<class BlockSource *,class std::allocator<class BlockSource *> >,unsigned int); *((void**)&rv) = dlsym("?_findFallbackSpawnPosition@Player@@AEAA_NAEAVVec3@@V?$vector@PEAVBlockSource@@V?$allocator@PEAVBlockSource@@@std@@@std@@I@Z"); return (this->*rv)(a0,a1,a2);}
-	MCINLINE class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >  getFormattedNameTag(){
-class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > (Player::*rv)(); *((void**)&rv) = dlsym("?getFormattedNameTag@Player@@UEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ"); return (this->*rv)();}
 //   bad fun  
 
 	// ??0Player@@QEAA@AEAVLevel@@AEAVPacketSender@@W4GameType@@AEBVNetworkIdentifier@@EVUUID@mce@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$unique_ptr@VCertificate@@U?$default_delete@VCertificate@@@std@@@8@55@Z
@@ -1128,13 +1125,16 @@ class std::basic_string<char,struct std::char_traits<char>,class std::allocator<
 #include "Core.h"
 class ServerPlayer : public Player {
 public:
+	ServerPlayer(const ServerPlayer&) = delete;
+	ServerPlayer& operator=(const ServerPlayer&) = delete;
+	ServerPlayer() = delete;
 	MCINLINE void openDispenser(class BlockPos const& a0, bool a1) {
 		void (ServerPlayer::*rv)(class BlockPos const&, bool);
 		*((void**)&rv) = dlsym("?openDispenser@ServerPlayer@@UEAAXAEBVBlockPos@@_N@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE bool isTeacher() {
-		bool (ServerPlayer::*rv)();
+	MCINLINE bool isTeacher() const {
+		bool (ServerPlayer::*rv)() const;
 		*((void**)&rv) = dlsym("?isTeacher@ServerPlayer@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -1158,8 +1158,8 @@ public:
 		*((void**)&rv) = dlsym("?openBeacon@ServerPlayer@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE enum ClientPlayMode getPlayMode() {
-		enum ClientPlayMode (ServerPlayer::*rv)();
+	MCINLINE enum ClientPlayMode getPlayMode() const {
+		enum ClientPlayMode (ServerPlayer::*rv)() const;
 		*((void**)&rv) = dlsym("?getPlayMode@ServerPlayer@@UEBA?AW4ClientPlayMode@@XZ");
 		return (this->*rv)();
 	}
@@ -1213,18 +1213,18 @@ public:
 		*((void**)&rv) = dlsym("?checkFallDamage@ServerPlayer@@UEAAXM_N@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE void changeDimensionWithCredits() {
-		void (ServerPlayer::*rv)();
+	MCINLINE void changeDimensionWithCredits(class AutomaticID<class Dimension, int> a0) {
+		void (ServerPlayer::*rv)(class AutomaticID<class Dimension, int>);
 		*((void**)&rv) = dlsym("?changeDimensionWithCredits@ServerPlayer@@UEAAXV?$AutomaticID@VDimension@@H@@@Z");
-		return (this->*rv)();
+		return (this->*rv)(a0);
 	}
 	MCINLINE void openBlastFurnace(class BlockPos const& a0) {
 		void (ServerPlayer::*rv)(class BlockPos const&);
 		*((void**)&rv) = dlsym("?openBlastFurnace@ServerPlayer@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isPlayerInitialized() {
-		bool (ServerPlayer::*rv)();
+	MCINLINE bool isPlayerInitialized() const {
+		bool (ServerPlayer::*rv)() const;
 		*((void**)&rv) = dlsym("?isPlayerInitialized@ServerPlayer@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -1258,8 +1258,8 @@ public:
 		*((void**)&rv) = dlsym("?sendMobEffectPackets@ServerPlayer@@QEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE bool isHostingPlayer() {
-		bool (ServerPlayer::*rv)();
+	MCINLINE bool isHostingPlayer() const {
+		bool (ServerPlayer::*rv)() const;
 		*((void**)&rv) = dlsym("?isHostingPlayer@ServerPlayer@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -1308,8 +1308,8 @@ public:
 		*((void**)&rv) = dlsym("?setPermissions@ServerPlayer@@UEAAXW4CommandPermissionLevel@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE bool isValidTarget(class Actor* a0) {
-		bool (ServerPlayer::*rv)(class Actor*);
+	MCINLINE bool isValidTarget(class Actor* a0) const {
+		bool (ServerPlayer::*rv)(class Actor*) const;
 		*((void**)&rv) = dlsym("?isValidTarget@ServerPlayer@@UEBA_NPEAVActor@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -1348,13 +1348,8 @@ public:
 		*((void**)&rv) = dlsym("?openPortfolio@ServerPlayer@@UEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE void _setContainerManager() {
-		void (ServerPlayer::*rv)();
-		*((void**)&rv) = dlsym("?_setContainerManager@ServerPlayer@@AEAAXV?$shared_ptr@VIContainerManager@@@std@@@Z");
-		return (this->*rv)();
-	}
-	MCINLINE bool canChangeDimensions() {
-		bool (ServerPlayer::*rv)();
+	MCINLINE bool canChangeDimensions() const {
+		bool (ServerPlayer::*rv)() const;
 		*((void**)&rv) = dlsym("?canChangeDimensions@ServerPlayer@@UEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -1363,8 +1358,8 @@ public:
 		*((void**)&rv) = dlsym("?openCommandBlock@ServerPlayer@@UEAAXAEBVBlockPos@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE void sendNetworkPacket(class Packet& a0) {
-		void (ServerPlayer::*rv)(class Packet&);
+	MCINLINE void sendNetworkPacket(class Packet& a0) const {
+		void (ServerPlayer::*rv)(class Packet&) const;
 		*((void**)&rv) = dlsym("?sendNetworkPacket@ServerPlayer@@UEBAXAEAVPacket@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -1378,8 +1373,8 @@ public:
 		*((void**)&rv) = dlsym("?suspendRegion@ServerPlayer@@UEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE enum InputMode getInputMode() {
-		enum InputMode (ServerPlayer::*rv)();
+	MCINLINE enum InputMode getInputMode() const {
+		enum InputMode (ServerPlayer::*rv)() const;
 		*((void**)&rv) = dlsym("?getInputMode@ServerPlayer@@UEBA?AW4InputMode@@XZ");
 		return (this->*rv)();
 	}
@@ -1403,8 +1398,8 @@ public:
 		*((void**)&rv) = dlsym("?knockback@ServerPlayer@@UEAAXPEAVActor@@HMMMMM@Z");
 		return (this->*rv)(a0, a1, a2, a3, a4, a5, a6);
 	}
-	MCINLINE void sendInventoryTransaction(class InventoryTransaction const& a0) {
-		void (ServerPlayer::*rv)(class InventoryTransaction const&);
+	MCINLINE void sendInventoryTransaction(class InventoryTransaction const& a0) const {
+		void (ServerPlayer::*rv)(class InventoryTransaction const&) const;
 		*((void**)&rv) = dlsym("?sendInventoryTransaction@ServerPlayer@@UEBAXAEBVInventoryTransaction@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -1468,13 +1463,13 @@ public:
 		*((void**)&rv) = dlsym("?setContainerData@ServerPlayer@@UEAAXAEAVIContainerManager@@HH@Z");
 		return (this->*rv)(a0, a1, a2);
 	}
-	MCINLINE bool isLoading() {
-		bool (ServerPlayer::*rv)();
+	MCINLINE bool isLoading() const {
+		bool (ServerPlayer::*rv)() const;
 		*((void**)&rv) = dlsym("?isLoading@ServerPlayer@@UEBA_NXZ");
 		return (this->*rv)();
 	}
-	MCINLINE struct ActorUniqueID getControllingPlayer() {
-		struct ActorUniqueID (ServerPlayer::*rv)();
+	MCINLINE struct ActorUniqueID getControllingPlayer() const {
+		struct ActorUniqueID (ServerPlayer::*rv)() const;
 		*((void**)&rv) = dlsym("?getControllingPlayer@ServerPlayer@@UEBA?AUActorUniqueID@@XZ");
 		return (this->*rv)();
 	}
@@ -1491,11 +1486,6 @@ public:
 	MCINLINE void _removeNearbyEntities() {
 		void (ServerPlayer::*rv)();
 		*((void**)&rv) = dlsym("?_removeNearbyEntities@ServerPlayer@@AEAAXXZ");
-		return (this->*rv)();
-	}
-	MCINLINE void sendComplexInventoryTransaction() {
-		void (ServerPlayer::*rv)();
-		*((void**)&rv) = dlsym("?sendComplexInventoryTransaction@ServerPlayer@@UEBAXV?$unique_ptr@VComplexInventoryTransaction@@U?$default_delete@VComplexInventoryTransaction@@@std@@@std@@@Z");
 		return (this->*rv)();
 	}
 	MCINLINE void die(class ActorDamageSource const& a0) {
@@ -1548,8 +1538,8 @@ public:
 		*((void**)&rv) = dlsym("?sendInventory@ServerPlayer@@UEAAX_N@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE unsigned int findClientChunkRadius(unsigned int a0) {
-		unsigned int (ServerPlayer::*rv)(unsigned int);
+	MCINLINE unsigned int findClientChunkRadius(unsigned int a0) const {
+		unsigned int (ServerPlayer::*rv)(unsigned int) const;
 		*((void**)&rv) = dlsym("?findClientChunkRadius@ServerPlayer@@QEBAII@Z");
 		return (this->*rv)(a0);
 	}
@@ -1565,6 +1555,10 @@ public:
 	}
 
 #if 0
+	MCINLINE void  _setContainerManager(class std::shared_ptr<class IContainerManager> a0){
+void (ServerPlayer::*rv)(class std::shared_ptr<class IContainerManager>); *((void**)&rv) = dlsym("?_setContainerManager@ServerPlayer@@AEAAXV?$shared_ptr@VIContainerManager@@@std@@@Z"); return (this->*rv)(a0);}
+	MCINLINE  void  sendComplexInventoryTransaction(class std::unique_ptr<class ComplexInventoryTransaction,struct std::default_delete<class ComplexInventoryTransaction> > a0)const {
+ void (ServerPlayer::*rv)(class std::unique_ptr<class ComplexInventoryTransaction,struct std::default_delete<class ComplexInventoryTransaction> >)const ; *((void**)&rv) = dlsym("?sendComplexInventoryTransaction@ServerPlayer@@UEBAXV?$unique_ptr@VComplexInventoryTransaction@@U?$default_delete@VComplexInventoryTransaction@@@std@@@std@@@Z"); return (this->*rv)(a0);}
 //   bad fun  
 
 	// ??0ServerPlayer@@QEAA@AEAVLevel@@AEAVPacketSender@@AEAVNetworkHandler@@AEAVActiveTransfersManager@Server@ClientBlobCache@@W4GameType@@AEBVNetworkIdentifier@@EV?$function@$$A6AXAEAVServerPlayer@@@Z@std@@VUUID@mce@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$unique_ptr@VCertificate@@U?$default_delete@VCertificate@@@std@@@std@@H@Z

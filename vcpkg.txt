@@ -2,3 +2,4 @@
 --triplet
 x64-windows
 leveldb
+detours

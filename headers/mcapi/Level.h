@@ -1,19 +1,62 @@
 #pragma once
 #include "Core.h"
+class LevelStorage {
+public:
+	LevelStorage(const LevelStorage&) = delete;
+	LevelStorage& operator=(const LevelStorage&) = delete;
+	LevelStorage() = delete;
+	MCINLINE void corruptLevel() {
+		void (LevelStorage::*rv)();
+		*((void**)&rv) = dlsym("?corruptLevel@LevelStorage@@UEAAXXZ");
+		return (this->*rv)();
+	}
+	MCINLINE void freeCaches() {
+		void (LevelStorage::*rv)();
+		*((void**)&rv) = dlsym("?freeCaches@LevelStorage@@UEAAXXZ");
+		return (this->*rv)();
+	}
+	MCINLINE class std::vector<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class std::allocator<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>> loadAllPlayerIDs(bool a0) const {
+		class std::vector<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class std::allocator<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>> (LevelStorage::*rv)(bool) const;
+		*((void**)&rv) = dlsym("?loadAllPlayerIDs@LevelStorage@@QEBA?AV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@_N@Z");
+		return (this->*rv)(a0);
+	} MCINLINE void save(class Actor& a0) {
+		void (LevelStorage::*rv)(class Actor&);
+		*((void**)&rv) = dlsym("?save@LevelStorage@@QEAAXAEAVActor@@@Z");
+		return (this->*rv)(a0);
+	}
+	MCINLINE class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> getServerId(class Player const& a0, bool a1) {
+		class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> (LevelStorage::*rv)(class Player const&, bool);
+		*((void**)&rv) = dlsym("?getServerId@LevelStorage@@QEAA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBVPlayer@@_N@Z");
+		return (this->*rv)(a0, a1);
+	}
+
+#if 0
+	MCINLINE  class std::unique_ptr<class LevelStorage::Batch,struct std::default_delete<class LevelStorage::Batch> >  createWriteBatch(){
+ class std::unique_ptr<class LevelStorage::Batch,struct std::default_delete<class LevelStorage::Batch> > (LevelStorage::*rv)(); *((void**)&rv) = dlsym("?createWriteBatch@LevelStorage@@UEAA?AV?$unique_ptr@VBatch@LevelStorage@@U?$default_delete@VBatch@LevelStorage@@@std@@@std@@XZ"); return (this->*rv)();}
+	MCINLINE class std::unique_ptr<class CompoundTag,struct std::default_delete<class CompoundTag> >  loadLostPlayerData(class Player const & a0,bool a1){
+class std::unique_ptr<class CompoundTag,struct std::default_delete<class CompoundTag> > (LevelStorage::*rv)(class Player const &,bool); *((void**)&rv) = dlsym("?loadLostPlayerData@LevelStorage@@QEAA?AV?$unique_ptr@VCompoundTag@@U?$default_delete@VCompoundTag@@@std@@@std@@AEBVPlayer@@_N@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE class std::shared_ptr<class Bedrock::Threading::IAsyncResult<void> >  saveData(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const & a0,class CompoundTag const & a1){
+class std::shared_ptr<class Bedrock::Threading::IAsyncResult<void> > (LevelStorage::*rv)(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class CompoundTag const &); *((void**)&rv) = dlsym("?saveData@LevelStorage@@QEAA?AV?$shared_ptr@V?$IAsyncResult@X@Threading@Bedrock@@@std@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@3@AEBVCompoundTag@@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE class std::unique_ptr<class CompoundTag,struct std::default_delete<class CompoundTag> >  loadServerPlayerData(class Player const & a0,bool a1){
+class std::unique_ptr<class CompoundTag,struct std::default_delete<class CompoundTag> > (LevelStorage::*rv)(class Player const &,bool); *((void**)&rv) = dlsym("?loadServerPlayerData@LevelStorage@@QEAA?AV?$unique_ptr@VCompoundTag@@U?$default_delete@VCompoundTag@@@std@@@std@@AEBVPlayer@@_N@Z"); return (this->*rv)(a0,a1);}
+//   bad fun
+
+#endif
+};
+#pragma once
+#include "Core.h"
 class Level {
 public:
+	Level(const Level&) = delete;
+	Level& operator=(const Level&) = delete;
+	Level() = delete;
 	MCINLINE void runCommand(class HashedString const& a0, class CommandOrigin& a1, enum CommandOriginSystem a2, enum CurrentCmdVersion a3) {
 		void (Level::*rv)(class HashedString const&, class CommandOrigin&, enum CommandOriginSystem, enum CurrentCmdVersion);
 		*((void**)&rv) = dlsym("?runCommand@Level@@UEAAXAEBVHashedString@@AEAVCommandOrigin@@W4CommandOriginSystem@@W4CurrentCmdVersion@@@Z");
 		return (this->*rv)(a0, a1, a2, a3);
 	}
-	MCINLINE void addPlayer() {
-		void (Level::*rv)();
-		*((void**)&rv) = dlsym("?addPlayer@Level@@UEAAXV?$unique_ptr@VPlayer@@U?$default_delete@VPlayer@@@std@@@std@@@Z");
-		return (this->*rv)();
-	}
-	MCINLINE class Actor* fetchEntity(struct ActorUniqueID a0, bool a1) {
-		class Actor* (Level::*rv)(struct ActorUniqueID, bool);
+	MCINLINE class Actor* fetchEntity(struct ActorUniqueID a0, bool a1) const {
+		class Actor* (Level::*rv)(struct ActorUniqueID, bool)const;
 		*((void**)&rv) = dlsym("?fetchEntity@Level@@QEBAPEAVActor@@UActorUniqueID@@_N@Z");
 		return (this->*rv)(a0, a1);
 	}
@@ -25,6 +68,11 @@ public:
 	MCINLINE class FeatureRegistry& getFeatureRegistry() {
 		class FeatureRegistry& (Level::*rv)();
 		*((void**)&rv) = dlsym("?getFeatureRegistry@Level@@UEAAAEAVFeatureRegistry@@XZ");
+		return (this->*rv)();
+	}
+	MCINLINE class FeatureRegistry const& getFeatureRegistry() const {
+		class FeatureRegistry const& (Level::*rv)() const;
+		*((void**)&rv) = dlsym("?getFeatureRegistry@Level@@UEBAAEBVFeatureRegistry@@XZ");
 		return (this->*rv)();
 	}
 	MCINLINE void broadcastEntityEvent(class Actor* a0, enum ActorEvent a1, int a2) {
@@ -62,8 +110,8 @@ public:
 		*((void**)&rv) = dlsym("?potionSplash@Level@@QEAAXAEBVVec3@@AEBVColor@@_N@Z");
 		return (this->*rv)(a0, a1, a2);
 	}
-	MCINLINE class Player* getPrimaryLocalPlayer() {
-		class Player* (Level::*rv)();
+	MCINLINE class Player* getPrimaryLocalPlayer() const {
+		class Player* (Level::*rv)() const;
 		*((void**)&rv) = dlsym("?getPrimaryLocalPlayer@Level@@QEBAPEAVPlayer@@XZ");
 		return (this->*rv)();
 	}
@@ -82,13 +130,13 @@ public:
 		*((void**)&rv) = dlsym("?playSound@Level@@QEAAXAEAVBlockSource@@W4LevelSoundEvent@@AEBVVec3@@HAEBUActorDefinitionIdentifier@@_N4@Z");
 		return (this->*rv)(a0, a1, a2, a3, a4, a5, a6);
 	}
-	MCINLINE bool hasExperimentalGameplayEnabled() {
-		bool (Level::*rv)();
+	MCINLINE bool hasExperimentalGameplayEnabled() const {
+		bool (Level::*rv)() const;
 		*((void**)&rv) = dlsym("?hasExperimentalGameplayEnabled@Level@@QEBA_NXZ");
 		return (this->*rv)();
 	}
-	MCINLINE class ResourcePackManager* getServerResourcePackManager() {
-		class ResourcePackManager* (Level::*rv)();
+	MCINLINE class ResourcePackManager* getServerResourcePackManager() const {
+		class ResourcePackManager* (Level::*rv)() const;
 		*((void**)&rv) = dlsym("?getServerResourcePackManager@Level@@UEBAPEAVResourcePackManager@@XZ");
 		return (this->*rv)();
 	}
@@ -97,9 +145,19 @@ public:
 		*((void**)&rv) = dlsym("?getBiomeRegistry@Level@@UEAAAEAVBiomeRegistry@@XZ");
 		return (this->*rv)();
 	}
+	MCINLINE class BiomeRegistry const& getBiomeRegistry() const {
+		class BiomeRegistry const& (Level::*rv)() const;
+		*((void**)&rv) = dlsym("?getBiomeRegistry@Level@@UEBAAEBVBiomeRegistry@@XZ");
+		return (this->*rv)();
+	}
 	MCINLINE class JigsawStructureRegistry& getJigsawStructureRegistry() {
 		class JigsawStructureRegistry& (Level::*rv)();
 		*((void**)&rv) = dlsym("?getJigsawStructureRegistry@Level@@UEAAAEAVJigsawStructureRegistry@@XZ");
+		return (this->*rv)();
+	}
+	MCINLINE class JigsawStructureRegistry const& getJigsawStructureRegistry() const {
+		class JigsawStructureRegistry const& (Level::*rv)() const;
+		*((void**)&rv) = dlsym("?getJigsawStructureRegistry@Level@@UEBAAEBVJigsawStructureRegistry@@XZ");
 		return (this->*rv)();
 	}
 	MCINLINE void saveGameData() {
@@ -125,11 +183,6 @@ public:
 	MCINLINE class MapItemSavedData* getMapSavedData(struct ActorUniqueID a0) {
 		class MapItemSavedData* (Level::*rv)(struct ActorUniqueID);
 		*((void**)&rv) = dlsym("?getMapSavedData@Level@@QEAAPEAVMapItemSavedData@@UActorUniqueID@@@Z");
-		return (this->*rv)(a0);
-	}
-	MCINLINE class Actor* addEntity(class BlockSource& a0) {
-		class Actor* (Level::*rv)(class BlockSource&);
-		*((void**)&rv) = dlsym("?addEntity@Level@@UEAAPEAVActor@@AEAVBlockSource@@V?$unique_ptr@VActor@@U?$default_delete@VActor@@@std@@@std@@@Z");
 		return (this->*rv)(a0);
 	}
 	MCINLINE void onSourceDestroyed(class BlockSource& a0) {
@@ -162,9 +215,19 @@ public:
 		*((void**)&rv) = dlsym("?getFeatureTypeFactory@Level@@UEAAAEAVFeatureTypeFactory@@XZ");
 		return (this->*rv)();
 	}
+	MCINLINE class FeatureTypeFactory const& getFeatureTypeFactory() const {
+		class FeatureTypeFactory const& (Level::*rv)() const;
+		*((void**)&rv) = dlsym("?getFeatureTypeFactory@Level@@UEBAAEBVFeatureTypeFactory@@XZ");
+		return (this->*rv)();
+	}
 	MCINLINE class SurfaceBuilderRegistry& getSurfaceBuilderRegistry() {
 		class SurfaceBuilderRegistry& (Level::*rv)();
 		*((void**)&rv) = dlsym("?getSurfaceBuilderRegistry@Level@@UEAAAEAVSurfaceBuilderRegistry@@XZ");
+		return (this->*rv)();
+	}
+	MCINLINE class SurfaceBuilderRegistry const& getSurfaceBuilderRegistry() const {
+		class SurfaceBuilderRegistry const& (Level::*rv)() const;
+		*((void**)&rv) = dlsym("?getSurfaceBuilderRegistry@Level@@UEBAAEBVSurfaceBuilderRegistry@@XZ");
 		return (this->*rv)();
 	}
 	MCINLINE void saveLevelData() {
@@ -192,17 +255,21 @@ public:
 		*((void**)&rv) = dlsym("?startLeaveGame@Level@@UEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE int getNewPlayerId() {
-		int (Level::*rv)();
+	MCINLINE int getNewPlayerId() const {
+		int (Level::*rv)() const;
 		*((void**)&rv) = dlsym("?getNewPlayerId@Level@@QEBAHXZ");
 		return (this->*rv)();
 	}
-	MCINLINE bool isPlayerSuspended(class Player& a0) {
-		bool (Level::*rv)(class Player&);
+	MCINLINE bool isPlayerSuspended(class Player& a0) const {
+		bool (Level::*rv)(class Player&) const;
 		*((void**)&rv) = dlsym("?isPlayerSuspended@Level@@QEBA_NAEAVPlayer@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE void onPlayerDeath(class Player& a0, class ActorDamageSource const& a1) {
+	MCINLINE class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> _getValidatedPlayerName(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& a0) {
+		class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> (Level::*rv)(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const&);
+		*((void**)&rv) = dlsym("?_getValidatedPlayerName@Level@@AEAA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV23@@Z");
+		return (this->*rv)(a0);
+	} MCINLINE void onPlayerDeath(class Player& a0, class ActorDamageSource const& a1) {
 		void (Level::*rv)(class Player&, class ActorDamageSource const&);
 		*((void**)&rv) = dlsym("?onPlayerDeath@Level@@UEAAXAEAVPlayer@@AEBVActorDamageSource@@@Z");
 		return (this->*rv)(a0, a1);
@@ -211,11 +278,6 @@ public:
 		void (Level::*rv)(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const&);
 		*((void**)&rv) = dlsym("?addEntryToTagCache@Level@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z");
 		return (this->*rv)(a0);
-	}
-	MCINLINE class Player* findPlayer() {
-		class Player* (Level::*rv)();
-		*((void**)&rv) = dlsym("?findPlayer@Level@@QEBAPEAVPlayer@@V?$function@$$A6A_NAEBVPlayer@@@Z@std@@@Z");
-		return (this->*rv)();
 	}
 	MCINLINE void removeListener(class LevelListener& a0) {
 		void (Level::*rv)(class LevelListener&);
@@ -236,11 +298,6 @@ public:
 		void (Level::*rv)(bool);
 		*((void**)&rv) = dlsym("?setCommandsEnabled@Level@@UEAAX_N@Z");
 		return (this->*rv)(a0);
-	}
-	MCINLINE void forEachPlayer() {
-		void (Level::*rv)();
-		*((void**)&rv) = dlsym("?forEachPlayer@Level@@QEAAXV?$function@$$A6A_NAEAVPlayer@@@Z@std@@@Z");
-		return (this->*rv)();
 	}
 	MCINLINE void broadcastLevelEvent(enum LevelEvent a0, class Vec3 const& a1, int a2, class Player* a3) {
 		void (Level::*rv)(enum LevelEvent, class Vec3 const&, int, class Player*);
@@ -312,8 +369,8 @@ public:
 		*((void**)&rv) = dlsym("?getTradeTables@Level@@UEAAPEAVTradeTables@@XZ");
 		return (this->*rv)();
 	}
-	MCINLINE class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& getPlayerPlatformOnlineId(class mce::UUID const& a0) {
-		class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& (Level::*rv)(class mce::UUID const&);
+	MCINLINE class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& getPlayerPlatformOnlineId(class mce::UUID const& a0) const {
+		class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& (Level::*rv)(class mce::UUID const&)const;
 		*((void**)&rv) = dlsym("?getPlayerPlatformOnlineId@Level@@QEBAAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBVUUID@mce@@@Z");
 		return (this->*rv)(a0);
 	} MCINLINE class MapItemSavedData* _loadMapData(struct ActorUniqueID const& a0) {
@@ -321,8 +378,8 @@ public:
 		*((void**)&rv) = dlsym("?_loadMapData@Level@@AEAAPEAVMapItemSavedData@@AEBUActorUniqueID@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE enum Difficulty getDifficulty() {
-		enum Difficulty (Level::*rv)();
+	MCINLINE enum Difficulty getDifficulty() const {
+		enum Difficulty (Level::*rv)() const;
 		*((void**)&rv) = dlsym("?getDifficulty@Level@@QEBA?AW4Difficulty@@XZ");
 		return (this->*rv)();
 	}
@@ -336,15 +393,20 @@ public:
 		*((void**)&rv) = dlsym("?initialize@Level@@UEAA_NAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBVLevelSettings@@PEAVLevelData@@PEBV23@@Z");
 		return (this->*rv)(a0, a1, a2, a3);
 	}
+	MCINLINE void queueEntityRemoval(class std::unique_ptr<class Actor, struct std::default_delete<class Actor>>&& a0, bool a1) {
+		void (Level::*rv)(class std::unique_ptr<class Actor, struct std::default_delete<class Actor>>&&, bool);
+		*((void**)&rv) = dlsym("?queueEntityRemoval@Level@@UEAAX$$QEAV?$unique_ptr@VActor@@U?$default_delete@VActor@@@std@@@std@@_N@Z");
+		return (this->*rv)(std::move(a0), a1);
+	}
 	MCINLINE void explode(class BlockSource& a0, class Actor* a1, class Vec3 const& a2, float a3, bool a4, bool a5, float a6, bool a7) {
 		void (Level::*rv)(class BlockSource&, class Actor*, class Vec3 const&, float, bool, bool, float, bool);
 		*((void**)&rv) = dlsym("?explode@Level@@QEAAXAEAVBlockSource@@PEAVActor@@AEBVVec3@@M_N3M3@Z");
 		return (this->*rv)(a0, a1, a2, a3, a4, a5, a6, a7);
 	}
-	MCINLINE float getSpecialMultiplier() {
-		float (Level::*rv)();
+	MCINLINE float getSpecialMultiplier(class AutomaticID<class Dimension, int> a0) {
+		float (Level::*rv)(class AutomaticID<class Dimension, int>);
 		*((void**)&rv) = dlsym("?getSpecialMultiplier@Level@@QEAAMV?$AutomaticID@VDimension@@H@@@Z");
-		return (this->*rv)();
+		return (this->*rv)(a0);
 	}
 	MCINLINE void decrementTagCache(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& a0, class TagRegistry& a1) {
 		void (Level::*rv)(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const&, class TagRegistry&);
@@ -361,30 +423,20 @@ public:
 		*((void**)&rv) = dlsym("?setWorldTemplateOptionsUnlocked@Level@@UEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE void entityChangeDimension(class Actor& a0) {
-		void (Level::*rv)(class Actor&);
+	MCINLINE void entityChangeDimension(class Actor& a0, class AutomaticID<class Dimension, int> a1) {
+		void (Level::*rv)(class Actor&, class AutomaticID<class Dimension, int>);
 		*((void**)&rv) = dlsym("?entityChangeDimension@Level@@QEAAXAEAVActor@@V?$AutomaticID@VDimension@@H@@@Z");
-		return (this->*rv)(a0);
+		return (this->*rv)(a0, a1);
 	}
 	MCINLINE class MapItemSavedData& createMapSavedData(struct ActorUniqueID const& a0, class BlockPos const& a1, class AutomaticID<class Dimension, int> a2, int a3) {
 		class MapItemSavedData& (Level::*rv)(struct ActorUniqueID const&, class BlockPos const&, class AutomaticID<class Dimension, int>, int);
 		*((void**)&rv) = dlsym("?createMapSavedData@Level@@QEAAAEAVMapItemSavedData@@AEBUActorUniqueID@@AEBVBlockPos@@V?$AutomaticID@VDimension@@H@@H@Z");
 		return (this->*rv)(a0, a1, a2, a3);
 	}
-	MCINLINE class Actor* addGlobalEntity(class BlockSource& a0) {
-		class Actor* (Level::*rv)(class BlockSource&);
-		*((void**)&rv) = dlsym("?addGlobalEntity@Level@@UEAAPEAVActor@@AEAVBlockSource@@V?$unique_ptr@VActor@@U?$default_delete@VActor@@@std@@@std@@@Z");
-		return (this->*rv)(a0);
-	}
 	MCINLINE void _saveAutonomousEntities() {
 		void (Level::*rv)();
 		*((void**)&rv) = dlsym("?_saveAutonomousEntities@Level@@AEAAXXZ");
 		return (this->*rv)();
-	}
-	MCINLINE void requestPlayerChangeDimension(class Player& a0) {
-		void (Level::*rv)(class Player&);
-		*((void**)&rv) = dlsym("?requestPlayerChangeDimension@Level@@QEAAXAEAVPlayer@@V?$unique_ptr@VChangeDimensionRequest@@U?$default_delete@VChangeDimensionRequest@@@std@@@std@@@Z");
-		return (this->*rv)(a0);
 	}
 	MCINLINE void saveAdditionalData() {
 		void (Level::*rv)();
@@ -406,8 +458,8 @@ public:
 		*((void**)&rv) = dlsym("?tickEntities@Level@@QEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE class ITickingArea* getTickingArea(class mce::UUID const& a0) {
-		class ITickingArea* (Level::*rv)(class mce::UUID const&);
+	MCINLINE class ITickingArea* getTickingArea(class mce::UUID const& a0) const {
+		class ITickingArea* (Level::*rv)(class mce::UUID const&)const;
 		*((void**)&rv) = dlsym("?getTickingArea@Level@@QEBAPEAVITickingArea@@AEBVUUID@mce@@@Z");
 		return (this->*rv)(a0);
 	}
@@ -421,15 +473,8 @@ public:
 		*((void**)&rv) = dlsym("?copyAndLockMap@Level@@QEAA_NUActorUniqueID@@0@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE bool isUsableLevel(class Level* a0) {
-		bool (Level::*rv)(class Level*);
-		*((void**)&rv) = dlsym("?isUsableLevel@Level@@SA_NPEAV1@@Z");
-		return (this->*rv)(a0);
-	}
-	MCINLINE class Actor* addAutonomousEntity(class BlockSource& a0) {
-		class Actor* (Level::*rv)(class BlockSource&);
-		*((void**)&rv) = dlsym("?addAutonomousEntity@Level@@UEAAPEAVActor@@AEAVBlockSource@@V?$unique_ptr@VActor@@U?$default_delete@VActor@@@std@@@std@@@Z");
-		return (this->*rv)(a0);
+	MCINLINE static bool isUsableLevel(class Level* a0) {
+		return ((bool (*)(class Level*))dlsym("?isUsableLevel@Level@@SA_NPEAV1@@Z"))(a0);
 	}
 	MCINLINE class GameRules& getGameRules() {
 		class GameRules& (Level::*rv)();
@@ -451,23 +496,18 @@ public:
 		*((void**)&rv) = dlsym("?unregisterTemporaryPointer@Level@@QEAAXAEAV_TickPtr@@@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE void forEachDimension() {
-		void (Level::*rv)();
-		*((void**)&rv) = dlsym("?forEachDimension@Level@@QEAAXV?$function@$$A6A_NAEAVDimension@@@Z@std@@@Z");
-		return (this->*rv)();
-	}
-	MCINLINE class Actor* getRuntimeEntity(class ActorRuntimeID a0, bool a1) {
-		class Actor* (Level::*rv)(class ActorRuntimeID, bool);
+	MCINLINE class Actor* getRuntimeEntity(class ActorRuntimeID a0, bool a1) const {
+		class Actor* (Level::*rv)(class ActorRuntimeID, bool)const;
 		*((void**)&rv) = dlsym("?getRuntimeEntity@Level@@QEBAPEAVActor@@VActorRuntimeID@@_N@Z");
 		return (this->*rv)(a0, a1);
 	}
-	MCINLINE class ResourcePackManager* getClientResourcePackManager() {
-		class ResourcePackManager* (Level::*rv)();
+	MCINLINE class ResourcePackManager* getClientResourcePackManager() const {
+		class ResourcePackManager* (Level::*rv)() const;
 		*((void**)&rv) = dlsym("?getClientResourcePackManager@Level@@UEBAPEAVResourcePackManager@@XZ");
 		return (this->*rv)();
 	}
-	MCINLINE class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& getPlayerXUID(class mce::UUID const& a0) {
-		class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& (Level::*rv)(class mce::UUID const&);
+	MCINLINE class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& getPlayerXUID(class mce::UUID const& a0) const {
+		class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& (Level::*rv)(class mce::UUID const&)const;
 		*((void**)&rv) = dlsym("?getPlayerXUID@Level@@QEBAAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBVUUID@mce@@@Z");
 		return (this->*rv)(a0);
 	} MCINLINE void _loadBiomeData() {
@@ -485,8 +525,8 @@ public:
 		*((void**)&rv) = dlsym("?addParticle@Level@@QEAAPEAVParticle@@W4ParticleType@@AEBVVec3@@1HPEBVCompoundTag@@_N@Z");
 		return (this->*rv)(a0, a1, a2, a3, a4, a5);
 	}
-	MCINLINE bool hasCommandsEnabled() {
-		bool (Level::*rv)();
+	MCINLINE bool hasCommandsEnabled() const {
+		bool (Level::*rv)() const;
 		*((void**)&rv) = dlsym("?hasCommandsEnabled@Level@@QEBA_NXZ");
 		return (this->*rv)();
 	}
@@ -500,24 +540,29 @@ public:
 		*((void**)&rv) = dlsym("?_syncTime@Level@@AEAAXH@Z");
 		return (this->*rv)(a0);
 	}
-	MCINLINE class Dimension* getDimension() {
-		class Dimension* (Level::*rv)();
+	MCINLINE class Dimension* getDimension(class AutomaticID<class Dimension, int> a0) const {
+		class Dimension* (Level::*rv)(class AutomaticID<class Dimension, int>)const;
 		*((void**)&rv) = dlsym("?getDimension@Level@@QEBAPEAVDimension@@V?$AutomaticID@VDimension@@H@@@Z");
-		return (this->*rv)();
+		return (this->*rv)(a0);
 	}
 	MCINLINE void _cleanupDisconnectedPlayers() {
 		void (Level::*rv)();
 		*((void**)&rv) = dlsym("?_cleanupDisconnectedPlayers@Level@@AEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE class Dimension& createDimension() {
-		class Dimension& (Level::*rv)();
+	MCINLINE class Dimension& createDimension(class AutomaticID<class Dimension, int> a0) {
+		class Dimension& (Level::*rv)(class AutomaticID<class Dimension, int>);
 		*((void**)&rv) = dlsym("?createDimension@Level@@QEAAAEAVDimension@@V?$AutomaticID@VDimension@@H@@@Z");
-		return (this->*rv)();
+		return (this->*rv)(a0);
 	}
 	MCINLINE class BiomeComponentFactory& getBiomeComponentFactory() {
 		class BiomeComponentFactory& (Level::*rv)();
 		*((void**)&rv) = dlsym("?getBiomeComponentFactory@Level@@UEAAAEAVBiomeComponentFactory@@XZ");
+		return (this->*rv)();
+	}
+	MCINLINE class BiomeComponentFactory const& getBiomeComponentFactory() const {
+		class BiomeComponentFactory const& (Level::*rv)() const;
+		*((void**)&rv) = dlsym("?getBiomeComponentFactory@Level@@UEBAAEBVBiomeComponentFactory@@XZ");
 		return (this->*rv)();
 	}
 	MCINLINE void playSound(enum LevelSoundEvent a0, class Vec3 const& a1, int a2, struct ActorDefinitionIdentifier const& a3, bool a4, bool a5) {
@@ -530,9 +575,19 @@ public:
 		*((void**)&rv) = dlsym("?getBlockPalette@Level@@UEAAAEAVBlockPalette@@XZ");
 		return (this->*rv)();
 	}
+	MCINLINE class BlockPalette const& getBlockPalette() const {
+		class BlockPalette const& (Level::*rv)() const;
+		*((void**)&rv) = dlsym("?getBlockPalette@Level@@UEBAAEBVBlockPalette@@XZ");
+		return (this->*rv)();
+	}
 	MCINLINE class StructureManager& getStructureManager() {
 		class StructureManager& (Level::*rv)();
 		*((void**)&rv) = dlsym("?getStructureManager@Level@@UEAAAEAVStructureManager@@XZ");
+		return (this->*rv)();
+	}
+	MCINLINE class StructureManager const& getStructureManager() const {
+		class StructureManager const& (Level::*rv)() const;
+		*((void**)&rv) = dlsym("?getStructureManager@Level@@UEBAAEBVStructureManager@@XZ");
 		return (this->*rv)();
 	}
 	MCINLINE class MapItemSavedData& _createMapSavedData(struct ActorUniqueID const& a0) {
@@ -557,26 +612,45 @@ public:
 	}
 
 #if 0
-	MCINLINE class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >  _getValidatedPlayerName(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const & a0){
-class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > (Level::*rv)(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &); *((void**)&rv) = dlsym("?_getValidatedPlayerName@Level@@AEAA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV23@@Z"); return (this->*rv)(a0);}
-	MCINLINE class std::unique_ptr<class Actor,struct std::default_delete<class Actor> >  takeEntity(struct ActorUniqueID a0){
-class std::unique_ptr<class Actor,struct std::default_delete<class Actor> > (Level::*rv)(struct ActorUniqueID); *((void**)&rv) = dlsym("?takeEntity@Level@@UEAA?AV?$unique_ptr@VActor@@U?$default_delete@VActor@@@std@@@std@@UActorUniqueID@@@Z"); return (this->*rv)(a0);}
-	MCINLINE class std::unique_ptr<class Actor,struct std::default_delete<class Actor> >  borrowEntity(struct ActorUniqueID a0,class LevelChunk * a1){
-class std::unique_ptr<class Actor,struct std::default_delete<class Actor> > (Level::*rv)(struct ActorUniqueID,class LevelChunk *); *((void**)&rv) = dlsym("?borrowEntity@Level@@UEAA?AV?$unique_ptr@VActor@@U?$default_delete@VActor@@@std@@@std@@UActorUniqueID@@PEAVLevelChunk@@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE  void  addPlayer(class std::unique_ptr<class Player,struct std::default_delete<class Player> > a0){
+ void (Level::*rv)(class std::unique_ptr<class Player,struct std::default_delete<class Player> >); *((void**)&rv) = dlsym("?addPlayer@Level@@UEAAXV?$unique_ptr@VPlayer@@U?$default_delete@VPlayer@@@std@@@std@@@Z"); return (this->*rv)(a0);}
+	MCINLINE  class Actor *  addEntity(class BlockSource & a0,class std::unique_ptr<class Actor,struct std::default_delete<class Actor> > a1){
+ class Actor * (Level::*rv)(class BlockSource &,class std::unique_ptr<class Actor,struct std::default_delete<class Actor> >); *((void**)&rv) = dlsym("?addEntity@Level@@UEAAPEAVActor@@AEAVBlockSource@@V?$unique_ptr@VActor@@U?$default_delete@VActor@@@std@@@std@@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE  class std::unique_ptr<class Actor,struct std::default_delete<class Actor> >  takeEntity(struct ActorUniqueID a0){
+ class std::unique_ptr<class Actor,struct std::default_delete<class Actor> > (Level::*rv)(struct ActorUniqueID); *((void**)&rv) = dlsym("?takeEntity@Level@@UEAA?AV?$unique_ptr@VActor@@U?$default_delete@VActor@@@std@@@std@@UActorUniqueID@@@Z"); return (this->*rv)(a0);}
+	MCINLINE  class Actor *  addGlobalEntity(class BlockSource & a0,class std::unique_ptr<class Actor,struct std::default_delete<class Actor> > a1){
+ class Actor * (Level::*rv)(class BlockSource &,class std::unique_ptr<class Actor,struct std::default_delete<class Actor> >); *((void**)&rv) = dlsym("?addGlobalEntity@Level@@UEAAPEAVActor@@AEAVBlockSource@@V?$unique_ptr@VActor@@U?$default_delete@VActor@@@std@@@std@@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE void  requestPlayerChangeDimension(class Player & a0,class std::unique_ptr<class ChangeDimensionRequest,struct std::default_delete<class ChangeDimensionRequest> > a1){
+void (Level::*rv)(class Player &,class std::unique_ptr<class ChangeDimensionRequest,struct std::default_delete<class ChangeDimensionRequest> >); *((void**)&rv) = dlsym("?requestPlayerChangeDimension@Level@@QEAAXAEAVPlayer@@V?$unique_ptr@VChangeDimensionRequest@@U?$default_delete@VChangeDimensionRequest@@@std@@@std@@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE  class Actor *  addAutonomousEntity(class BlockSource & a0,class std::unique_ptr<class Actor,struct std::default_delete<class Actor> > a1){
+ class Actor * (Level::*rv)(class BlockSource &,class std::unique_ptr<class Actor,struct std::default_delete<class Actor> >); *((void**)&rv) = dlsym("?addAutonomousEntity@Level@@UEAAPEAVActor@@AEAVBlockSource@@V?$unique_ptr@VActor@@U?$default_delete@VActor@@@std@@@std@@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE  class std::unique_ptr<class Actor,struct std::default_delete<class Actor> >  borrowEntity(struct ActorUniqueID a0,class LevelChunk * a1){
+ class std::unique_ptr<class Actor,struct std::default_delete<class Actor> > (Level::*rv)(struct ActorUniqueID,class LevelChunk *); *((void**)&rv) = dlsym("?borrowEntity@Level@@UEAA?AV?$unique_ptr@VActor@@U?$default_delete@VActor@@@std@@@std@@UActorUniqueID@@PEAVLevelChunk@@@Z"); return (this->*rv)(a0,a1);}
 //   bad fun  
 
-	MCINLINE struct Tick const  getCurrentServerTick(){
-struct Tick const (Level::*rv)(); *((void**)&rv) = dlsym("?getCurrentServerTick@Level@@UEBA?BUTick@@XZ"); return (this->*rv)();}
+	MCINLINE  struct Tick const  getCurrentServerTick()const {
+ struct Tick const (Level::*rv)()const ; *((void**)&rv) = dlsym("?getCurrentServerTick@Level@@UEBA?BUTick@@XZ"); return (this->*rv)();}
 	// ??0Level@@QEAA@AEAVSoundPlayer@@V?$unique_ptr@VLevelStorage@@U?$default_delete@VLevelStorage@@@std@@@std@@AEAVIMinecraftEventing@@_NAEAVScheduler@@AEAVStructureManager@@AEAVResourcePackManager@@AEAVIEntityRegistryOwner@@V?$unique_ptr@VBlockComponentFactory@@U?$default_delete@VBlockComponentFactory@@@std@@@3@V?$unique_ptr@VBlockDefinitionGroup@@U?$default_delete@VBlockDefinitionGroup@@@std@@@3@@Z
 	// Level::Level(class SoundPlayer &,class std::unique_ptr<class LevelStorage,struct std::default_delete<class LevelStorage> >,class IMinecraftEventing &,bool,class Scheduler &,class StructureManager &,class ResourcePackManager &,class IEntityRegistryOwner &,class std::unique_ptr<class BlockComponentFactory,struct std::default_delete<class BlockComponentFactory> >,class std::unique_ptr<class BlockDefinitionGroup,struct std::default_delete<class BlockDefinitionGroup> >)
-	MCINLINE class Color  getPlayerColor(class Player const & a0){
-class Color (Level::*rv)(class Player const &); *((void**)&rv) = dlsym("?getPlayerColor@Level@@QEBA?AVColor@@AEBVPlayer@@@Z"); return (this->*rv)(a0);}
+	MCINLINE class Player *  findPlayer(class std::function<bool > a0)const {
+class Player * (Level::*rv)(class std::function<bool >)const ; *((void**)&rv) = dlsym("?findPlayer@Level@@QEBAPEAVPlayer@@V?$function@$$A6A_NAEBVPlayer@@@Z@std@@@Z"); return (this->*rv)(a0);}
+	MCINLINE void  forEachPlayer(class std::function<bool > a0){
+void (Level::*rv)(class std::function<bool >); *((void**)&rv) = dlsym("?forEachPlayer@Level@@QEAAXV?$function@$$A6A_NAEAVPlayer@@@Z@std@@@Z"); return (this->*rv)(a0);}
+	MCINLINE void  forEachPlayer(class std::function<bool > a0)const {
+void (Level::*rv)(class std::function<bool >)const ; *((void**)&rv) = dlsym("?forEachPlayer@Level@@QEBAXV?$function@$$A6A_NAEBVPlayer@@@Z@std@@@Z"); return (this->*rv)(a0);}
+	MCINLINE class Color  getPlayerColor(class Player const & a0)const {
+class Color (Level::*rv)(class Player const &)const ; *((void**)&rv) = dlsym("?getPlayerColor@Level@@QEBA?AVColor@@AEBVPlayer@@@Z"); return (this->*rv)(a0);}
+	MCINLINE void  forEachDimension(class std::function<bool > a0){
+void (Level::*rv)(class std::function<bool >); *((void**)&rv) = dlsym("?forEachDimension@Level@@QEAAXV?$function@$$A6A_NAEAVDimension@@@Z@std@@@Z"); return (this->*rv)(a0);}
 #endif
 };
 #pragma once
 #include "Core.h"
 class ServerLevel : public Level {
 public:
+	ServerLevel(const ServerLevel&) = delete;
+	ServerLevel& operator=(const ServerLevel&) = delete;
+	ServerLevel() = delete;
 	MCINLINE void incrementTagCache(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& a0, class TagRegistry& a1) {
 		void (ServerLevel::*rv)(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const&, class TagRegistry&);
 		*((void**)&rv) = dlsym("?incrementTagCache@ServerLevel@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAVTagRegistry@@@Z");
@@ -597,8 +671,8 @@ public:
 		*((void**)&rv) = dlsym("?tick@ServerLevel@@UEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE class ResourcePackManager* getClientResourcePackManager() {
-		class ResourcePackManager* (ServerLevel::*rv)();
+	MCINLINE class ResourcePackManager* getClientResourcePackManager() const {
+		class ResourcePackManager* (ServerLevel::*rv)() const;
 		*((void**)&rv) = dlsym("?getClientResourcePackManager@ServerLevel@@UEBAPEAVResourcePackManager@@XZ");
 		return (this->*rv)();
 	}
@@ -617,8 +691,8 @@ public:
 		*((void**)&rv) = dlsym("?saveAdditionalData@ServerLevel@@UEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE class ResourcePackManager* getServerResourcePackManager() {
-		class ResourcePackManager* (ServerLevel::*rv)();
+	MCINLINE class ResourcePackManager* getServerResourcePackManager() const {
+		class ResourcePackManager* (ServerLevel::*rv)() const;
 		*((void**)&rv) = dlsym("?getServerResourcePackManager@ServerLevel@@UEBAPEAVResourcePackManager@@XZ");
 		return (this->*rv)();
 	}
@@ -687,42 +761,162 @@ public:
 };
 #pragma once
 #include "Core.h"
-class LevelStorage {
+class ChunkSource {
 public:
-	MCINLINE void corruptLevel() {
-		void (LevelStorage::*rv)();
-		*((void**)&rv) = dlsym("?corruptLevel@LevelStorage@@UEAAXXZ");
+	ChunkSource(const ChunkSource&) = delete;
+	ChunkSource& operator=(const ChunkSource&) = delete;
+	ChunkSource() = delete;
+	MCINLINE void clearDeletedEntities() {
+		void (ChunkSource::*rv)();
+		*((void**)&rv) = dlsym("?clearDeletedEntities@ChunkSource@@UEAAXXZ");
 		return (this->*rv)();
 	}
-	MCINLINE void freeCaches() {
-		void (LevelStorage::*rv)();
-		*((void**)&rv) = dlsym("?freeCaches@LevelStorage@@UEAAXXZ");
-		return (this->*rv)();
+	MCINLINE void checkAndReplaceChunk(class ChunkViewSource& a0, class LevelChunk& a1) {
+		void (ChunkSource::*rv)(class ChunkViewSource&, class LevelChunk&);
+		*((void**)&rv) = dlsym("?checkAndReplaceChunk@ChunkSource@@UEAAXAEAVChunkViewSource@@AEAVLevelChunk@@@Z");
+		return (this->*rv)(a0, a1);
 	}
-	MCINLINE void save(class Actor& a0) {
-		void (LevelStorage::*rv)(class Actor&);
-		*((void**)&rv) = dlsym("?save@LevelStorage@@QEAAXAEAVActor@@@Z");
+	MCINLINE void checkAndLaunchChunkGenerationTasks(bool a0) {
+		void (ChunkSource::*rv)(bool);
+		*((void**)&rv) = dlsym("?checkAndLaunchChunkGenerationTasks@ChunkSource@@QEAAX_N@Z");
 		return (this->*rv)(a0);
+	}
+	MCINLINE void _spawnChunkGenerationTasks(int a0, bool a1) {
+		void (ChunkSource::*rv)(int, bool);
+		*((void**)&rv) = dlsym("?_spawnChunkGenerationTasks@ChunkSource@@IEAAXH_N@Z");
+		return (this->*rv)(a0, a1);
+	}
+	MCINLINE void _freeChunkGenerationGridMap(class ChunkPos const& a0) {
+		void (ChunkSource::*rv)(class ChunkPos const&);
+		*((void**)&rv) = dlsym("?_freeChunkGenerationGridMap@ChunkSource@@IEAAXAEBVChunkPos@@@Z");
+		return (this->*rv)(a0);
+	}
+	MCINLINE void hintDiscardBatchBegin() {
+		void (ChunkSource::*rv)();
+		*((void**)&rv) = dlsym("?hintDiscardBatchBegin@ChunkSource@@UEAAXXZ");
+		return (this->*rv)();
+	}
+	MCINLINE void _launchGenerationTask(class std::shared_ptr<class LevelChunk>& a0, bool a1) {
+		void (ChunkSource::*rv)(class std::shared_ptr<class LevelChunk>&, bool);
+		*((void**)&rv) = dlsym("?_launchGenerationTask@ChunkSource@@IEAAXAEAV?$shared_ptr@VLevelChunk@@@std@@_N@Z");
+		return (this->*rv)(a0, a1);
+	}
+	MCINLINE void _checkForUnblockingChunks(class LevelChunk& a0) {
+		void (ChunkSource::*rv)(class LevelChunk&);
+		*((void**)&rv) = dlsym("?_checkForUnblockingChunks@ChunkSource@@IEAAXAEAVLevelChunk@@@Z");
+		return (this->*rv)(a0);
+	}
+	MCINLINE bool isWithinWorldLimit(class ChunkPos const& a0) const {
+		bool (ChunkSource::*rv)(class ChunkPos const&) const;
+		*((void**)&rv) = dlsym("?isWithinWorldLimit@ChunkSource@@UEBA_NAEBVChunkPos@@@Z");
+		return (this->*rv)(a0);
+	}
+	MCINLINE bool saveLiveChunk(class LevelChunk& a0) {
+		bool (ChunkSource::*rv)(class LevelChunk&);
+		*((void**)&rv) = dlsym("?saveLiveChunk@ChunkSource@@UEAA_NAEAVLevelChunk@@@Z");
+		return (this->*rv)(a0);
+	}
+	MCINLINE void postProcessMobsAt(class BlockSource* a0, int a1, int a2, class Random& a3) {
+		void (ChunkSource::*rv)(class BlockSource*, int, int, class Random&);
+		*((void**)&rv) = dlsym("?postProcessMobsAt@ChunkSource@@UEAAXPEAVBlockSource@@HHAEAVRandom@@@Z");
+		return (this->*rv)(a0, a1, a2, a3);
+	}
+	MCINLINE bool isShutdownDone() {
+		bool (ChunkSource::*rv)();
+		*((void**)&rv) = dlsym("?isShutdownDone@ChunkSource@@UEAA_NXZ");
+		return (this->*rv)();
+	}
+	MCINLINE void loadChunk(class LevelChunk& a0, bool a1) {
+		void (ChunkSource::*rv)(class LevelChunk&, bool);
+		*((void**)&rv) = dlsym("?loadChunk@ChunkSource@@UEAAXAEAVLevelChunk@@_N@Z");
+		return (this->*rv)(a0, a1);
+	}
+	MCINLINE void hintDiscardBatchEnd() {
+		void (ChunkSource::*rv)();
+		*((void**)&rv) = dlsym("?hintDiscardBatchEnd@ChunkSource@@UEAAXXZ");
+		return (this->*rv)();
+	}
+	MCINLINE class std::unordered_map<class ChunkPos, class std::weak_ptr<class LevelChunk>, struct std::hash<class ChunkPos>, struct std::equal_to<class ChunkPos>, class std::allocator<struct std::pair<class ChunkPos const, class std::weak_ptr<class LevelChunk>>>> const& getStorage() const {
+		class std::unordered_map<class ChunkPos, class std::weak_ptr<class LevelChunk>, struct std::hash<class ChunkPos>, struct std::equal_to<class ChunkPos>, class std::allocator<struct std::pair<class ChunkPos const, class std::weak_ptr<class LevelChunk>>>> const& (ChunkSource::*rv)() const;
+		*((void**)&rv) = dlsym("?getStorage@ChunkSource@@UEBAAEBV?$unordered_map@VChunkPos@@V?$weak_ptr@VLevelChunk@@@std@@U?$hash@VChunkPos@@@3@U?$equal_to@VChunkPos@@@3@V?$allocator@U?$pair@$$CBVChunkPos@@V?$weak_ptr@VLevelChunk@@@std@@@std@@@3@@std@@XZ");
+		return (this->*rv)();
+	} MCINLINE bool postProcess(class ChunkViewSource& a0) {
+		bool (ChunkSource::*rv)(class ChunkViewSource&);
+		*((void**)&rv) = dlsym("?postProcess@ChunkSource@@UEAA_NAEAVChunkViewSource@@@Z");
+		return (this->*rv)(a0);
+	}
+	MCINLINE void flushPendingWrites() {
+		void (ChunkSource::*rv)();
+		*((void**)&rv) = dlsym("?flushPendingWrites@ChunkSource@@UEAAXXZ");
+		return (this->*rv)();
+	}
+	MCINLINE void compact() {
+		void (ChunkSource::*rv)();
+		*((void**)&rv) = dlsym("?compact@ChunkSource@@UEAAXXZ");
+		return (this->*rv)();
+	}
+	MCINLINE class std::unordered_map<class ChunkPos, class std::weak_ptr<class LevelChunk>, struct std::hash<class ChunkPos>, struct std::equal_to<class ChunkPos>, class std::allocator<struct std::pair<class ChunkPos const, class std::weak_ptr<class LevelChunk>>>> const* getChunkMap() {
+		class std::unordered_map<class ChunkPos, class std::weak_ptr<class LevelChunk>, struct std::hash<class ChunkPos>, struct std::equal_to<class ChunkPos>, class std::allocator<struct std::pair<class ChunkPos const, class std::weak_ptr<class LevelChunk>>>> const* (ChunkSource::*rv)();
+		*((void**)&rv) = dlsym("?getChunkMap@ChunkSource@@UEAAPEBV?$unordered_map@VChunkPos@@V?$weak_ptr@VLevelChunk@@@std@@U?$hash@VChunkPos@@@3@U?$equal_to@VChunkPos@@@3@V?$allocator@U?$pair@$$CBVChunkPos@@V?$weak_ptr@VLevelChunk@@@std@@@std@@@3@@std@@XZ");
+		return (this->*rv)();
+	} MCINLINE bool _loadChunkTask(class LevelChunk& a0) {
+		bool (ChunkSource::*rv)(class LevelChunk&);
+		*((void**)&rv) = dlsym("?_loadChunkTask@ChunkSource@@IEAA_NAEAVLevelChunk@@@Z");
+		return (this->*rv)(a0);
+	}
+	MCINLINE bool _checkAndDispatchTaskForLevelChunk(class ChunkPos const& a0, bool a1) {
+		bool (ChunkSource::*rv)(class ChunkPos const&, bool);
+		*((void**)&rv) = dlsym("?_checkAndDispatchTaskForLevelChunk@ChunkSource@@IEAA_NAEBVChunkPos@@_N@Z");
+		return (this->*rv)(a0, a1);
+	}
+	MCINLINE void shutdown() {
+		void (ChunkSource::*rv)();
+		*((void**)&rv) = dlsym("?shutdown@ChunkSource@@UEAAXXZ");
+		return (this->*rv)();
 	}
 
 #if 0
-	MCINLINE bool  loadData(class gsl::basic_string_span<char const ,-1> a0,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > & a1){
-bool (LevelStorage::*rv)(class gsl::basic_string_span<char const ,-1>,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &); *((void**)&rv) = dlsym("?loadData@LevelStorage@@UEBA_NV?$basic_string_span@$$CBD$0?0@gsl@@AEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z"); return (this->*rv)(a0,a1);}
-	MCINLINE class std::unique_ptr<class LevelStorage::Batch,struct std::default_delete<class LevelStorage::Batch> >  createWriteBatch(){
-class std::unique_ptr<class LevelStorage::Batch,struct std::default_delete<class LevelStorage::Batch> > (LevelStorage::*rv)(); *((void**)&rv) = dlsym("?createWriteBatch@LevelStorage@@UEAA?AV?$unique_ptr@VBatch@LevelStorage@@U?$default_delete@VBatch@LevelStorage@@@std@@@std@@XZ"); return (this->*rv)();}
-	MCINLINE class std::unique_ptr<class CompoundTag,struct std::default_delete<class CompoundTag> >  loadLostPlayerData(class Player const & a0,bool a1){
-class std::unique_ptr<class CompoundTag,struct std::default_delete<class CompoundTag> > (LevelStorage::*rv)(class Player const &,bool); *((void**)&rv) = dlsym("?loadLostPlayerData@LevelStorage@@QEAA?AV?$unique_ptr@VCompoundTag@@U?$default_delete@VCompoundTag@@@std@@@std@@AEBVPlayer@@_N@Z"); return (this->*rv)(a0,a1);}
-	MCINLINE class std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > >  loadAllPlayerIDs(bool a0){
-class std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > > (LevelStorage::*rv)(bool); *((void**)&rv) = dlsym("?loadAllPlayerIDs@LevelStorage@@QEBA?AV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@_N@Z"); return (this->*rv)(a0);}
-	MCINLINE class std::shared_ptr<class Bedrock::Threading::IAsyncResult<void> >  saveData(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const & a0,class CompoundTag const & a1){
-class std::shared_ptr<class Bedrock::Threading::IAsyncResult<void> > (LevelStorage::*rv)(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class CompoundTag const &); *((void**)&rv) = dlsym("?saveData@LevelStorage@@QEAA?AV?$shared_ptr@V?$IAsyncResult@X@Threading@Bedrock@@@std@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@3@AEBVCompoundTag@@@Z"); return (this->*rv)(a0,a1);}
-	MCINLINE class std::unique_ptr<class CompoundTag,struct std::default_delete<class CompoundTag> >  loadServerPlayerData(class Player const & a0,bool a1){
-class std::unique_ptr<class CompoundTag,struct std::default_delete<class CompoundTag> > (LevelStorage::*rv)(class Player const &,bool); *((void**)&rv) = dlsym("?loadServerPlayerData@LevelStorage@@QEAA?AV?$unique_ptr@VCompoundTag@@U?$default_delete@VCompoundTag@@@std@@@std@@AEBVPlayer@@_N@Z"); return (this->*rv)(a0,a1);}
-	MCINLINE class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >  getServerId(class Player const & a0,bool a1){
-class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > (LevelStorage::*rv)(class Player const &,bool); *((void**)&rv) = dlsym("?getServerId@LevelStorage@@QEAA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBVPlayer@@_N@Z"); return (this->*rv)(a0,a1);}
-	MCINLINE bool  clonePlayerData(class gsl::basic_string_span<char const ,-1> a0){
-bool (LevelStorage::*rv)(class gsl::basic_string_span<char const ,-1>); *((void**)&rv) = dlsym("?clonePlayerData@LevelStorage@@UEAA_NV?$basic_string_span@$$CBD$0?0@gsl@@0@Z"); return (this->*rv)(a0);}
-//   bad fun
+	MCINLINE void  _launchLightingTask(class std::shared_ptr<class LevelChunk> & a0,class std::shared_ptr<class ChunkViewSource> a1,bool a2){
+void (ChunkSource::*rv)(class std::shared_ptr<class LevelChunk> &,class std::shared_ptr<class ChunkViewSource>,bool); *((void**)&rv) = dlsym("?_launchLightingTask@ChunkSource@@IEAAXAEAV?$shared_ptr@VLevelChunk@@@std@@V?$shared_ptr@VChunkViewSource@@@3@_N@Z"); return (this->*rv)(a0,a1,a2);}
+	MCINLINE  class std::shared_ptr<class LevelChunk>  createNewChunk(class ChunkPos const & a0,enum ChunkSource::LoadMode a1){
+ class std::shared_ptr<class LevelChunk> (ChunkSource::*rv)(class ChunkPos const &,enum ChunkSource::LoadMode); *((void**)&rv) = dlsym("?createNewChunk@ChunkSource@@UEAA?AV?$shared_ptr@VLevelChunk@@@std@@AEBVChunkPos@@W4LoadMode@1@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE  class std::shared_ptr<class LevelChunk>  getRandomChunk(class Random & a0){
+ class std::shared_ptr<class LevelChunk> (ChunkSource::*rv)(class Random &); *((void**)&rv) = dlsym("?getRandomChunk@ChunkSource@@UEAA?AV?$shared_ptr@VLevelChunk@@@std@@AEAVRandom@@@Z"); return (this->*rv)(a0);}
+	MCINLINE void  _checkLevelChunkForNextStage(class std::shared_ptr<class LevelChunk> a0,class std::shared_ptr<class LevelChunkGridAreaElement<class std::weak_ptr<class LevelChunk> > > a1,enum ChunkState a2){
+void (ChunkSource::*rv)(class std::shared_ptr<class LevelChunk>,class std::shared_ptr<class LevelChunkGridAreaElement<class std::weak_ptr<class LevelChunk> > >,enum ChunkState); *((void**)&rv) = dlsym("?_checkLevelChunkForNextStage@ChunkSource@@IEAAXV?$shared_ptr@VLevelChunk@@@std@@V?$shared_ptr@V?$LevelChunkGridAreaElement@V?$weak_ptr@VLevelChunk@@@std@@@@@3@W4ChunkState@@@Z"); return (this->*rv)(a0,a1,a2);}
+	MCINLINE class std::shared_ptr<class LevelChunk>  getGeneratedChunk(class ChunkPos const & a0){
+class std::shared_ptr<class LevelChunk> (ChunkSource::*rv)(class ChunkPos const &); *((void**)&rv) = dlsym("?getGeneratedChunk@ChunkSource@@QEAA?AV?$shared_ptr@VLevelChunk@@@std@@AEBVChunkPos@@@Z"); return (this->*rv)(a0);}
+	MCINLINE void  _launchPostProcessingTask(class std::shared_ptr<class LevelChunk> & a0,class std::shared_ptr<class ChunkViewSource> a1,bool a2){
+void (ChunkSource::*rv)(class std::shared_ptr<class LevelChunk> &,class std::shared_ptr<class ChunkViewSource>,bool); *((void**)&rv) = dlsym("?_launchPostProcessingTask@ChunkSource@@IEAAXAEAV?$shared_ptr@VLevelChunk@@@std@@V?$shared_ptr@VChunkViewSource@@@3@_N@Z"); return (this->*rv)(a0,a1,a2);}
+	MCINLINE void  _checkSpecificLevelChunkForUnblocking(class std::shared_ptr<class LevelChunk> a0,class std::shared_ptr<class LevelChunkGridAreaElement<class std::weak_ptr<class LevelChunk> > > a1){
+void (ChunkSource::*rv)(class std::shared_ptr<class LevelChunk>,class std::shared_ptr<class LevelChunkGridAreaElement<class std::weak_ptr<class LevelChunk> > >); *((void**)&rv) = dlsym("?_checkSpecificLevelChunkForUnblocking@ChunkSource@@IEAAXV?$shared_ptr@VLevelChunk@@@std@@V?$shared_ptr@V?$LevelChunkGridAreaElement@V?$weak_ptr@VLevelChunk@@@std@@@@@3@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE void  _dispatchTaskForLevelChunk(class std::shared_ptr<class LevelChunk> & a0,class std::shared_ptr<class ChunkViewSource> a1,bool a2){
+void (ChunkSource::*rv)(class std::shared_ptr<class LevelChunk> &,class std::shared_ptr<class ChunkViewSource>,bool); *((void**)&rv) = dlsym("?_dispatchTaskForLevelChunk@ChunkSource@@IEAAXAEAV?$shared_ptr@VLevelChunk@@@std@@V?$shared_ptr@VChunkViewSource@@@3@_N@Z"); return (this->*rv)(a0,a1,a2);}
+	MCINLINE bool  _chunkAtStage(class std::weak_ptr<class LevelChunk> a0,enum ChunkState a1){
+bool (ChunkSource::*rv)(class std::weak_ptr<class LevelChunk>,enum ChunkState); *((void**)&rv) = dlsym("?_chunkAtStage@ChunkSource@@IEAA_NV?$weak_ptr@VLevelChunk@@@std@@W4ChunkState@@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE  class std::shared_ptr<class LevelChunk>  getExistingChunk(class ChunkPos const & a0){
+ class std::shared_ptr<class LevelChunk> (ChunkSource::*rv)(class ChunkPos const &); *((void**)&rv) = dlsym("?getExistingChunk@ChunkSource@@UEAA?AV?$shared_ptr@VLevelChunk@@@std@@AEBVChunkPos@@@Z"); return (this->*rv)(a0);}
+	MCINLINE  class std::shared_ptr<class LevelChunk>  getOrLoadChunk(class ChunkPos const & a0,enum ChunkSource::LoadMode a1){
+ class std::shared_ptr<class LevelChunk> (ChunkSource::*rv)(class ChunkPos const &,enum ChunkSource::LoadMode); *((void**)&rv) = dlsym("?getOrLoadChunk@ChunkSource@@UEAA?AV?$shared_ptr@VLevelChunk@@@std@@AEBVChunkPos@@W4LoadMode@1@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE void  _checkLevelChunkForPostProcessing(class std::shared_ptr<class LevelChunk> a0,class std::shared_ptr<class LevelChunkGridAreaElement<class std::weak_ptr<class LevelChunk> > > a1){
+void (ChunkSource::*rv)(class std::shared_ptr<class LevelChunk>,class std::shared_ptr<class LevelChunkGridAreaElement<class std::weak_ptr<class LevelChunk> > >); *((void**)&rv) = dlsym("?_checkLevelChunkForPostProcessing@ChunkSource@@IEAAXV?$shared_ptr@VLevelChunk@@@std@@V?$shared_ptr@V?$LevelChunkGridAreaElement@V?$weak_ptr@VLevelChunk@@@std@@@@@3@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE bool  _lightingTask(class std::shared_ptr<class LevelChunk> a0,class std::shared_ptr<class ChunkViewSource> a1){
+bool (ChunkSource::*rv)(class std::shared_ptr<class LevelChunk>,class std::shared_ptr<class ChunkViewSource>); *((void**)&rv) = dlsym("?_lightingTask@ChunkSource@@IEAA_NV?$shared_ptr@VLevelChunk@@@std@@V?$shared_ptr@VChunkViewSource@@@3@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE class std::shared_ptr<class LevelChunk>  getAvailableChunk(class ChunkPos const & a0){
+class std::shared_ptr<class LevelChunk> (ChunkSource::*rv)(class ChunkPos const &); *((void**)&rv) = dlsym("?getAvailableChunk@ChunkSource@@QEAA?AV?$shared_ptr@VLevelChunk@@@std@@AEBVChunkPos@@@Z"); return (this->*rv)(a0);}
+	MCINLINE bool  _postProcessingTask(class LevelChunk & a0,class std::shared_ptr<class ChunkViewSource> a1){
+bool (ChunkSource::*rv)(class LevelChunk &,class std::shared_ptr<class ChunkViewSource>); *((void**)&rv) = dlsym("?_postProcessingTask@ChunkSource@@IEAA_NAEAVLevelChunk@@V?$shared_ptr@VChunkViewSource@@@std@@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE void  _launchReplacementDataTask(class std::shared_ptr<class LevelChunk> & a0,class std::shared_ptr<class ChunkViewSource> a1,bool a2){
+void (ChunkSource::*rv)(class std::shared_ptr<class LevelChunk> &,class std::shared_ptr<class ChunkViewSource>,bool); *((void**)&rv) = dlsym("?_launchReplacementDataTask@ChunkSource@@IEAAXAEAV?$shared_ptr@VLevelChunk@@@std@@V?$shared_ptr@VChunkViewSource@@@3@_N@Z"); return (this->*rv)(a0,a1,a2);}
+	MCINLINE bool  _checkForReplacementDataTask(class LevelChunk & a0,class std::shared_ptr<class ChunkViewSource> a1){
+bool (ChunkSource::*rv)(class LevelChunk &,class std::shared_ptr<class ChunkViewSource>); *((void**)&rv) = dlsym("?_checkForReplacementDataTask@ChunkSource@@IEAA_NAEAVLevelChunk@@V?$shared_ptr@VChunkViewSource@@@std@@@Z"); return (this->*rv)(a0,a1);}
+	MCINLINE  void  acquireDiscarded(class std::unique_ptr<class LevelChunk,struct LevelChunkFinalDeleter> a0){
+ void (ChunkSource::*rv)(class std::unique_ptr<class LevelChunk,struct LevelChunkFinalDeleter>); *((void**)&rv) = dlsym("?acquireDiscarded@ChunkSource@@UEAAXV?$unique_ptr@VLevelChunk@@ULevelChunkFinalDeleter@@@std@@@Z"); return (this->*rv)(a0);}
+//   bad fun  
 
+	// ??0ChunkSource@@QEAA@V?$unique_ptr@VChunkSource@@U?$default_delete@VChunkSource@@@std@@@std@@@Z
+	// ChunkSource::ChunkSource(class std::unique_ptr<class ChunkSource,struct std::default_delete<class ChunkSource> >)
+	MCINLINE class GridArea<class std::shared_ptr<class LevelChunk> >  createEmptyView(enum ChunkSource::LoadMode a0,bool a1,class std::function<void > a2){
+class GridArea<class std::shared_ptr<class LevelChunk> > (ChunkSource::*rv)(enum ChunkSource::LoadMode,bool,class std::function<void >); *((void**)&rv) = dlsym("?createEmptyView@ChunkSource@@QEAA?AV?$GridArea@V?$shared_ptr@VLevelChunk@@@std@@@@W4LoadMode@1@_NV?$function@$$A6AXV?$buffer_span_mut@V?$shared_ptr@VLevelChunk@@@std@@@@V?$buffer_span@I@@@Z@std@@@Z"); return (this->*rv)(a0,a1,a2);}
 #endif
 };

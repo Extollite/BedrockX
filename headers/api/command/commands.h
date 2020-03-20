@@ -72,7 +72,7 @@ namespace CMDREG {
 		}
 	};
 
-		void MakeCommand(string const& name, const char* desc, int lvl) {
+		static inline void MakeCommand(string const& name, const char* desc, int lvl) {
 			LocateS<CommandRegistry>()->registerCommand(name, desc, (CommandPermissionLevel)lvl, { CommandFlagValue(0) }, { CommandFlagValue(0) });
 		}
 
@@ -141,7 +141,7 @@ namespace CMDREG {
 		}
 		template <typename... TP2>
 		MakeOverload(Dummy*, std::function<void(container&)>&& _new_cb, string const& cname, bool (*__cb)(CommandOrigin const&, CommandOutput&, TP...), TP2... argns) {
-			static_assert(sizeof...(TP2) == sizeof...(TP));
+			static_assert(sizeof...(TP2) == sizeof...(TP),"every command arg should have a description");
 			new_cb = std::forward<decltype(new_cb)>(_new_cb);
 			sub::cb = (decltype(sub::cb))__cb;
 			std::vector<CommandParameterData> vc;
@@ -153,7 +153,7 @@ namespace CMDREG {
 		}
 		template <typename... TP2>
 		inline MakeOverload(Dummy*, string const& cname, bool (*__cb)(CommandOrigin const&, CommandOutput&, TP...), TP2... argns) {
-			static_assert(sizeof...(TP2) == sizeof...(TP));
+			static_assert(sizeof...(TP2) == sizeof...(TP), "every command arg should have a description");
 			sub::cb = (decltype(sub::cb))__cb;
 			std::vector<CommandParameterData> vc;
 			std::vector<string> argn;

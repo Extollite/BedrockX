@@ -4,7 +4,8 @@
 #include<mcapi/Level.h>
 #include<mcapi/BlockSource.h>
 #include<mcapi/Dimension.h>
-#include<mcapi/Item_Block.h>
+#include<mcapi/Block.h>
+#include<mcapi/Item.h>
 #include<mcapi/Actor.h>
 #include<mcapi/Command/Command.h>
 #include<mcapi/VanillaBlocks.h>

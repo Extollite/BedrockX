@@ -2,6 +2,7 @@
 #include<unordered_map>
 #include<api/hash.h>
 #include<string>
+#include<iostream>
 namespace LangPack {
 	using std::string;
 	static std::unordered_map<CHash, string> TMAP;

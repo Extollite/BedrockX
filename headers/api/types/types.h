@@ -1,6 +1,6 @@
 #pragma once
 #include<lbpch.h>
-#include <api/MC.h>
+//#include <api/MC.h>
 #include <stl/views.h>
 #include<api/types/helper.h>
 #include<stl/optional.h>
@@ -39,6 +39,16 @@ struct Wrapped {
 };
 struct WPlayer;
 struct WActor;
+class Dimension;
+class BlockSource;
+class Block;
+class Level;
+class ServerLevel;
+class Actor;
+class Mob;
+class Player;
+class BlockActor;
+class ItemStack;
 struct WDim : Wrapped<Dimension> {
 	WDim(Dimension& x) : Wrapped<Dimension>(x) {}
 	LBAPI std::unique_ptr<BlockSource> makeSource();
@@ -66,9 +76,9 @@ struct WMob : Wrapped<Mob> {
 	}
 	LBAPI void kill();
 };
-#include "helper.h"
 struct WPlayer : Wrapped<ServerPlayer> {
 	WPlayer() : Wrapped<ServerPlayer>() {}
+	WPlayer(Player& x) : Wrapped<ServerPlayer>(*(ServerPlayer*)&x) {}
 	WPlayer(ServerPlayer& x) : Wrapped<ServerPlayer>(x) {}
 	WActor* actor() {
 		return (WActor*)this;
@@ -76,9 +86,7 @@ struct WPlayer : Wrapped<ServerPlayer> {
 	WMob* mob() {
 		return (WMob*)this;
 	}
-	string const& getName() {
-		return v->getNameTag();
-	}
+	LBAPI string const& getName();
 	LBAPI xuid_t getXuid();
 	LBAPI string getRealName();
 	LBAPI permlvl_t getPermLvl();
@@ -102,7 +110,7 @@ struct WPlayer : Wrapped<ServerPlayer> {
 		return BDX::runcmdAs(*this, str);
 	}
 	LBAPI NetworkIdentifier* _getNI();
-	LBAPI Certificate* _getCert();
+	LBAPI class Certificate* _getCert();
 };
 struct WItem : Wrapped<ItemStack> {
 	WItem(ItemStack& is) : Wrapped<ItemStack>(is) {}
@@ -128,6 +136,7 @@ struct WExplosion {
 };
 
 /*
+?setAllowOffhand@Item@@QEAAAEAV1@_N@Z
 struct Item *__fastcall Item::setAllowOffhand(Item *this)
 {
   *((_BYTE *)this + 258) |= 0x40u;

@@ -222,9 +222,6 @@
     <ClInclude Include="headers\mcapi\Dimension.h">
       <Filter>头文件\mcapi</Filter>
     </ClInclude>
-    <ClInclude Include="headers\mcapi\Item_Block.h">
-      <Filter>头文件\mcapi</Filter>
-    </ClInclude>
     <ClInclude Include="headers\mcapi\Level.h">
       <Filter>头文件\mcapi</Filter>
     </ClInclude>
@@ -239,9 +236,6 @@
     </ClInclude>
     <ClInclude Include="headers\api\types\helper.h">
       <Filter>头文件\types</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\mcapi\ChunkSource.h">
-      <Filter>头文件\mcapi</Filter>
     </ClInclude>
     <ClInclude Include="headers\mcapi\Command\Command.h">
       <Filter>头文件\mcapi\command</Filter>
@@ -270,8 +264,17 @@
     <ClInclude Include="headers\stl\LRUMap.h">
       <Filter>头文件\stl</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="Lib\Chakra.lib" />
+    <ClInclude Include="headers\mcapi\LevelChunk.h">
+      <Filter>头文件\mcapi</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\Certificate.h">
+      <Filter>头文件\mcapi</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\Item.h">
+      <Filter>头文件\mcapi</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\mcapi\Block.h">
+      <Filter>头文件\mcapi</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

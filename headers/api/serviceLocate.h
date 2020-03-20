@@ -13,6 +13,7 @@ struct LocateS {
 		return *_srv;
 	}
 	static void assign(const T& srv) {
+		printf("[LocateService] located %s -> %p\n", typeid(decltype(_srv)).name(), &srv);
 		_srv = (T*)&srv;
 	}
 };

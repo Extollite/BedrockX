@@ -2,6 +2,7 @@
 #include<api\types\types.h>
 #include<api\myPacket.h>
 #include<stl\varint.h>
+#include<mcapi\Player.h>
 LBAPI array_view<WPlayer> WLevel::getUsers() {
 	uintptr_t ptr = (uintptr_t)this->v;
 	return array_view<WPlayer>(*(WPlayer**)(ptr + 88), *(WPlayer**)(ptr + 96));

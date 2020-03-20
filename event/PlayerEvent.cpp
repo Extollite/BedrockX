@@ -1,5 +1,6 @@
 #include <lbpch.h>
 #include<api\event\playerEvent.h>
+#include<mcapi/Level.h>
 /*
 EXPORT_EVENT(PlayerPreJoinEvent);
 EXPORT_EVENT(PlayerJoinEvent);
@@ -12,6 +13,9 @@ EXPORT_EVENT(PlayerDestroyEvent);
 EXPORT_EVENT(PlayerUseItemOnEvent);
 EXPORT_EVENT(PlayerUseItemOnEntityEvent);
 */
+LBAPI PlayerUseItemOnEntityEvent::PlayerUseItemOnEntityEvent(ServerPlayer& sp, ActorRuntimeID rti, int _type): IGenericPlayerEvent<PlayerUseItemOnEntityEvent>(sp), rtid(rti),type((TransType)_type) {
+	victim = LocateS<ServerLevel>()->getRuntimeEntity(rtid, false);
+}
 THook(void, "?_onClientAuthenticated@ServerNetworkHandler@@AEAAXAEBVNetworkIdentifier@@AEBVCertificate@@@Z", void* snh, NetworkIdentifier& neti, Certificate& cert) {
 	original(snh, neti, cert);
 	PlayerPreJoinEvent::_call(cert, neti);

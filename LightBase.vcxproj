@@ -210,7 +210,6 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>lbpch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <OmitFramePointers>true</OmitFramePointers>
       <ControlFlowGuard>false</ControlFlowGuard>
       <Optimization>MaxSpeed</Optimization>
@@ -220,6 +219,9 @@
       <CompileAsWinRT>false</CompileAsWinRT>
       <StringPooling>true</StringPooling>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <CompileAsManaged>false</CompileAsManaged>
+      <MinimalRebuild>false</MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -321,14 +323,16 @@
     <ClInclude Include="headers\api_pch.h" />
     <ClInclude Include="headers\extra_pch.h" />
     <ClInclude Include="headers\mcapi\Actor.h" />
+    <ClInclude Include="headers\mcapi\Block.h" />
     <ClInclude Include="headers\mcapi\BlockSource.h" />
-    <ClInclude Include="headers\mcapi\ChunkSource.h" />
+    <ClInclude Include="headers\mcapi\Certificate.h" />
     <ClInclude Include="headers\mcapi\Command\Command.h" />
     <ClInclude Include="headers\mcapi\Command\CommandReg.h" />
     <ClInclude Include="headers\mcapi\Core.h" />
     <ClInclude Include="headers\mcapi\Dimension.h" />
-    <ClInclude Include="headers\mcapi\Item_Block.h" />
+    <ClInclude Include="headers\mcapi\Item.h" />
     <ClInclude Include="headers\mcapi\Level.h" />
+    <ClInclude Include="headers\mcapi\LevelChunk.h" />
     <ClInclude Include="headers\mcapi\Player.h" />
     <ClInclude Include="headers\mcapi\VanillaBlocks.h" />
     <ClInclude Include="headers\lbpch.h" />
@@ -342,9 +346,6 @@
     <ClInclude Include="headers\stl\viewhelper.h" />
     <ClInclude Include="headers\stl\views.h" />
     <ClInclude Include="headers\stl_pch.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="Lib\Chakra.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

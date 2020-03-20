@@ -1,6 +1,8 @@
 #pragma once
 #include "Command.h"
-static unordered_map<string, void*> parse_ptr = {
+#include<unordered_map>
+
+static std::unordered_map<string, void*> parse_ptr = {
 	{ typeid(std::string).name(),dlsym_real("??$parse@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z")},
 	{ typeid(bool).name(), dlsym_real("??$parse@_N@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") },
 	{ typeid(float).name(), dlsym_real("??$parse@M@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") },
@@ -16,7 +18,7 @@ public:
 	typeid_t(typeid_t const& id) : value(id.value) {}
 	typeid_t(unsigned short value) : value(value) {}
 };
-enum CommandPermissionLevel {
+enum CommandPermissionLevel:char {
 	Normal = 0,
 	Privileged = 1,
 	AutomationPlayer = 2,

@@ -1,6 +1,5 @@
 #pragma once
 #include<lbpch.h>
-
 class CommandRegistry;
 class CommandOrigin;
 class CommandOutput;

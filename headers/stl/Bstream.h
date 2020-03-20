@@ -51,7 +51,7 @@ private:
             T2 local2;
             __get(local);
             __get(local2);
-            x.emplace(local, local2);
+            x.insert({ std::move(local), std::move(local2) });
         }
     }
     template <typename T1>
@@ -64,7 +64,7 @@ private:
         {
             T1 local;
             __get(local);
-            x.push_back(local);
+            x.push_back(std::move(local));
         }
     }
     template <typename T1>
@@ -76,7 +76,7 @@ private:
         {
             T1 local;
             __get(local);
-            x.push_back(local);
+            x.push_back(std::move(local));
         }
     }
     void __get(string& x)
@@ -106,9 +106,9 @@ private:
 
 public:
     template <typename... T>
-    void apply(T&&... args) noexcept
+    void apply(T&... args) noexcept
     {
-        (__get(std::forward<T>(args)), ...);
+        (__get(args), ...);
     }
     void read(void* dst, size_t n)
     {
@@ -125,8 +125,8 @@ public:
 
 private:
     template<typename T1, typename T2>
-    void __put(const std::unordered_map<T1, T2>& x) {
-        bsize_t sz = x.size();
+    void __put(std::unordered_map<T1, T2> const& x) {
+        bsize_t sz = (bsize_t)x.size();
         __put(sz);
         for (auto& [k, v] : x) {
             __put(k);
@@ -134,7 +134,7 @@ private:
         }
     }
     template <typename T2>
-    void __put(const std::vector<T2>& x)
+    void __put(std::vector<T2> const& x)
     {
         bsize_t sz = x.size();
         __put(sz);
@@ -144,27 +144,27 @@ private:
         }
     }
     template <typename T2>
-    void __put(const std::list<T2>& x)
+    void __put(std::list<T2> const& x)
     {
-        bsize_t sz = x.size();
+        bsize_t sz = (bsize_t)x.size();
         __put(sz);
         for (auto i = x.begin(); i != x.end(); ++i)
         {
             __put(*i);
         }
     }
-    void __put(const string& x)
+    void __put(string const& x)
     {
         __put((bsize_t)x.size());
         data.append(x);
     }
-    void __put(const string_view x)
+    void __put(string_view const& x)
     {
         __put((bsize_t)x.size());
         data.append(x);
     }
     template <typename T>
-    void __put(T&& x)
+    void __put(T const& x)
     {
         if constexpr (is_safe_obj<T>())
         {
@@ -180,9 +180,9 @@ public:
     WBStreamImpl() {}
     WBStreamImpl(container&& x) :data(x) {}
     template <typename... T>
-    void apply(T&&... args) noexcept
+    void apply(T const&... args) noexcept
     {
-        (__put(std::forward<T>(args)), ...);
+        (__put(args), ...);
     }
     void write(const void* src, size_t n)
     {

@@ -3,6 +3,8 @@
 #include<api\myPacket.h>
 #include<stl\varint.h>
 #include<api\refl\playerMap.h>
+#include<mcapi/Player.h>
+#include<mcapi/Certificate.h>
 LBAPI void WPlayer::sendText(string_view text, TextType tp) {
 	WBStream txtpkws;
 	txtpkws.data.reserve(8 + text.size());
@@ -68,6 +70,9 @@ struct xuidStorage {
 static playerMap<xuidStorage> xuid_cache;
 LBAPI xuid_t WPlayer::getXuid() {
 	return xuid_cache[v];
+}
+LBAPI const string& WPlayer::getName() {
+	return v->getNameTag();
 }
 LBAPI string WPlayer::getRealName() {
 	return ExtendedCertificate::getIdentityName(*_getCert());

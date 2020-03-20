@@ -7,7 +7,8 @@
 #include "framework.h"
 #include<api/xuidreg/xuidreg.h>
 #include<api/event/genericEvent.h>
-/*
+
+	/*
 THook(
 	void,
 	"?registerCommand@CommandRegistry@@QEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@"

@@ -8,7 +8,6 @@ LIGHTBASE_API T* LocateS<T>::_srv;
 
 THook(void, "?initAsDedicatedServer@Minecraft@@QEAAXXZ", Minecraft* mc) {
 	LocateS<Minecraft>::assign(*mc);
-	printf("MC %p\n", mc);
 	original(mc);
 }
 static WLevel wl;
@@ -19,7 +18,6 @@ THook(void, "?startServerThread@ServerInstance@@QEAAXXZ", void* a) {
 	LocateS<ServerLevel>::assign(*(ServerLevel*)LocateS<Minecraft>()->getLevel());
 	LocateS<WLevel>::assign(wl);
 	LocateS<ServerNetworkHandler>::assign(*LocateS<Minecraft>()->getServerNetworkHandler());
-	printf("level %p neth %p\n", LocateS<Level>()._srv, LocateS<ServerNetworkHandler>()._srv);
 	ServerStartedEvent::_call();
 	ServerStartedEvent::_removeall();
 }
@@ -33,12 +31,13 @@ THook(void*, "?loadServerPlayerData@LevelStorage@@QEAA?AV?$unique_ptr@VCompoundT
 	return original(a, b,c,d);
 }
 THook(void*, "??0ChunkSource@@QEAA@V?$unique_ptr@VChunkSource@@U?$default_delete@VChunkSource@@@std@@@std@@@Z", ChunkSource* a1, void** a2) {
-	printf("chunksource %p\n", a1);
 	LocateS<ChunkSource>::assign(*a1);
 	return original(a1, a2);
 }
 THook(void*, "?update@RakNetServerLocator@@QEAAXXZ", RakNetServerLocator* thi) {
-	LocateS<RakNetServerLocator>::assign(*thi);
+	static bool inited = false;
+	if (!inited)
+		LocateS<RakNetServerLocator>::assign(*thi),inited=true;
 	return original(thi);
 }
 

@@ -83,21 +83,6 @@ public:
 	}
 };
 
-class Certificate;
-class ExtendedCertificate {
-public:
-	static MCINLINE class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> getXuid(class Certificate const& a0) {
-		class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> (*rv)(class Certificate const&);
-		*((void**)&rv) = dlsym("?getXuid@ExtendedCertificate@@SA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBVCertificate@@@Z");
-		return (*rv)(a0);
-	} 
-	static MCINLINE class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> getIdentityName(class Certificate const& a0) {
-		class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> (*rv)(class Certificate const&);
-		*((void**)&rv) = dlsym("?getIdentityName@ExtendedCertificate@@SA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBVCertificate@@@Z");
-		return (*rv)(a0);
-	}
-};
-
 class ActorDamageSource {
 private:
 	char filler[0x10];

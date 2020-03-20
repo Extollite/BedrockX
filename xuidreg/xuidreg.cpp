@@ -3,14 +3,20 @@
 #include<stl\viewhelper.h>
 #include<api\event\playerEvent.h>
 #include<api\xuidreg\xuidreg.h>
+#include<mcapi/Certificate.h>
 namespace XIDREG {
 	static KVDBImpl xuiddb("xuiddb");
 	/*	LBAPI optional<string> id2str(xuid_t xid);
 	LBAPI optional<xuid_t> str2id(string const& name);
 	LBAPI void foreach (std::function<bool(xuid_t, string_view)>&&);*/
-	LBAPI optional<xuid_t> str2id(string const& str) {
+	LBAPI optional<xuid_t> str2id(string const& _name) {
+		char buf[512];
+		for (int i = 0; i < _name.size(); ++i) {
+			buf[i] = std::tolower(_name[i]);
+		}
+		string_view name(buf, _name.size());
 		string rv;
-		if (xuiddb.get(str, rv) && rv.size() == 8) {
+		if (xuiddb.get(name, rv) && rv.size() == 8) {
 			return { *(xuid_t*)(rv.data()) };
 		}
 		return {};
@@ -32,18 +38,23 @@ namespace XIDREG {
 			return true;
 		});
 	}
-	static void insert(xuid_t id, string const& name) {
+	static void insert(xuid_t id, string const& _name) {
+		char buf[512];
+		for (int i = 0; i < _name.size(); ++i) {
+			buf[i] = std::tolower(_name[i]);
+		}
+		string_view name(buf, _name.size());
 		string val;
 		if (xuiddb.get(name, val)) {
 			if (val != to_view(id)) {
-				printf("[BASE/XUID] update %s's xuid -> %I64u\n", name.c_str(), id);
+				printf("[BASE/XUID] update %s's xuid -> %I64u\n", _name.c_str(), id);
 				xuiddb.del(val);
 				xuiddb.put(name, to_view(id));
 				xuiddb.put(to_view(id), name);
 			}
 		}
 		else {
-			printf("[BASE/XUID]  insert %s's xuid %I64u\n", name.c_str(), id);
+			printf("[BASE/XUID]  insert %s's xuid %I64u\n", _name.c_str(), id);
 			xuiddb.put(name, to_view(id));
 			xuiddb.put(to_view(id), name);
 		}

@@ -1,5 +1,5 @@
-#ifndef  PCH_H
-#define PCH_H
+#ifndef  LBPCH_H
+#define LBPCH_H
 #include<cstdio>
 #include<cstring>
 #include<string>
@@ -21,6 +21,8 @@ std::ifstream,std::ofstream,std::function;
 #include<mcapi/Core.h>
 #include<api/serviceLocate.h>
 #include<stl/views.h>
+#include<api/types/types.h>
+#include<api/event/event_pch.h>
 /*
 #ifdef JSON_SUPPORT
 #include<rapidjson/document.h>

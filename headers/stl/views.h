@@ -140,4 +140,8 @@ struct array_view {
         data = s;
         siz = sz;
     }
+    array_view(T const& x) {
+        siz = 1;
+        data = (T*)&x;
+    }
 };
