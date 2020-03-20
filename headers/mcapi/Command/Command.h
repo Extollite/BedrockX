@@ -69,7 +69,7 @@ public:
 #endif
 	void addMessage(
 		std::string const& str) {
-		Call("?addMessage@CommandOutput@@AEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV?$vector@VCommandOutputParameter@@V?$allocator@VCommandOutputParameter@@@std@@@3@W4CommandOutputMessageType@@@Z", void, void*, string const&, std::vector<CommandOutputParameter> const&, int)(this, str, {}, 0);
+		SymCall("?addMessage@CommandOutput@@AEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV?$vector@VCommandOutputParameter@@V?$allocator@VCommandOutputParameter@@@std@@@3@W4CommandOutputMessageType@@@Z", void, void*, string const&, std::vector<CommandOutputParameter> const&, int)(this, str, {}, 0);
 	}
 };
 
@@ -260,7 +260,7 @@ public:
 	CommandSelectorBase() {}
 	protected:
 	CommandSelectorBase(bool isPlayer) {
-		Call("??0CommandSelectorBase@@IEAA@_N@Z", void, void*, bool)(this, isPlayer);
+			SymCall("??0CommandSelectorBase@@IEAA@_N@Z", void, void*, bool)(this, isPlayer);
 	}
 };
 static_assert(offsetof(CommandSelectorBase, explicitIdSelector) == 165);

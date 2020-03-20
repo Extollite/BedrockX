@@ -17,7 +17,7 @@ struct determine_off {
 			inMagic = true;
 			char filler[700];
 			memset(filler, 0xff, sizeof(filler));
-			Call("?init@ItemStackBase@@IEAAXHHH@Z", void, void*, int, int, int)(filler, 0, 125, 0);
+			SymCall("?init@ItemStackBase@@IEAAXHHH@Z", void, void*, int, int, int)(filler, 0, 125, 0);
 			inMagic = false;
 			for (int i = 0; i < 512; ++i) {
 				if (filler[i] == 125) {

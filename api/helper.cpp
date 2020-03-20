@@ -9,7 +9,7 @@ namespace BDX {
 		char filler[0x48];
 		void* fake_vtbl[26];
 		SCO() {
-			Call("??0ServerCommandOrigin@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAVServerLevel@@W4CommandPermissionLevel@@@Z", void, void*, string const&, ServerLevel*, int)(this, "Server", LocateS<ServerLevel>()._srv, 5);
+			SymCall("??0ServerCommandOrigin@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAVServerLevel@@W4CommandPermissionLevel@@@Z", void, void*, string const&, ServerLevel*, int)(this, "Server", LocateS<ServerLevel>()._srv, 5);
 			void** vtbl = (*(void***)filler) - 1;
 			memcpy(fake_vtbl, vtbl, sizeof(fake_vtbl));
 			//vtbl: 0x0:RTTI info,0x8 D2Ev
@@ -26,7 +26,7 @@ namespace BDX {
 	static void* FAKE_PORGVTBL[26];
 	LBAPI bool runcmdAs(WPlayer wp, const string& cmd) {
 		void** filler[5];
-		Call("??0PlayerCommandOrigin@@QEAA@AEAVPlayer@@@Z", void, void*, ServerPlayer*)(filler, wp);
+		SymCall("??0PlayerCommandOrigin@@QEAA@AEAVPlayer@@@Z", void, void*, ServerPlayer*)(filler, wp);
 		if (FAKE_PORGVTBL[1] == NULL) {
 			memcpy(FAKE_PORGVTBL, ((void**)filler[0])-1, sizeof(FAKE_PORGVTBL));
 			FAKE_PORGVTBL[1] = (void*)dummy;

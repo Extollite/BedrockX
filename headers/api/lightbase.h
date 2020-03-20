@@ -13,3 +13,4 @@
 #define MCAPI __declspec(dllimport)
 #define LBAPI LIGHTBASE_API
 typedef unsigned char uchar;
+#define V8_ENV

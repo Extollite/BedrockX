@@ -403,7 +403,7 @@ public:
 	/*??0BlockSource@@QEAA@AEAVLevel@@AEAVDimension@@AEAVChunkSource@@_N3@Z
 	// BlockSource::BlockSource(class Level &,class Dimension &,class ChunkSource &,bool,bool)*/
 	BlockSource(class Level& a, class Dimension& b, class ChunkSource& c, bool d, bool e) {
-		Call("??0BlockSource@@QEAA@AEAVLevel@@AEAVDimension@@AEAVChunkSource@@_N3@Z", void, void*, class Level&, class Dimension&, class ChunkSource&, bool, bool)(this, a, b, c, d, e);
+		SymCall("??0BlockSource@@QEAA@AEAVLevel@@AEAVDimension@@AEAVChunkSource@@_N3@Z", void, void*, class Level&, class Dimension&, class ChunkSource&, bool, bool)(this, a, b, c, d, e);
 	}
 #if 0
 	MCINLINE bool  setBlock(class BlockPos const & a0,class Block const & a1,int a2,class std::shared_ptr<class BlockActor> a3,struct ActorBlockSyncMessage const * a4){
