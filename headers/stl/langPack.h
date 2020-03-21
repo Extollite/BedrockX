@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<unordered_map>
 #include<api/hash.h>
 #include<string>

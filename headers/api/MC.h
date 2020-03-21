@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<mcapi/Core.h>
 #include<mcapi/Player.h>
 #include<mcapi/Level.h>

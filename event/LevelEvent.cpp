@@ -1,4 +1,4 @@
-#include <lbpch.h>
+﻿#include <lbpch.h>
 #include<api\event\levelEvent.h>
 THook(void, "?explode@Level@@QEAAXAEAVBlockSource@@PEAVActor@@AEBVVec3@@M_N3M3@Z", void* thi, class BlockSource* a1, class Actor* a2, class Vec3* a3, float a4, bool a5, bool a6, float a7, bool a8) {
 	WExplosion exp{ { *a1 } };

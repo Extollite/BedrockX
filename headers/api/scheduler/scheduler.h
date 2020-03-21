@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<lbpch.h>
 #include "../serviceLocate.h"
 #include <api/lightbase.h>

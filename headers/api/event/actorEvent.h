@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"eventBase.h"
 class MobDeathEvent : public IMobEvent, public IEventBase<MobDeathEvent> {
 	ActorDamageSource* src;

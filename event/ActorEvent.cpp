@@ -1,4 +1,4 @@
-#include <lbpch.h>
+﻿#include <lbpch.h>
 #include<api\event\actorEvent.h>
 THook(void, "?die@Mob@@UEAAXAEBVActorDamageSource@@@Z", Mob* thi, ActorDamageSource* src) {
 	MobDeathEvent::_call(*thi, src);

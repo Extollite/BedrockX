@@ -1,4 +1,4 @@
-#include<lbpch.h>
+﻿#include<lbpch.h>
 #include<api\refl\playerMap.h>
 //PlayerMap.h
 static std::vector<DePlayerCB> depcbs;

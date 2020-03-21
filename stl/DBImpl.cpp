@@ -1,4 +1,4 @@
-#include<lbpch.h>
+﻿#include<lbpch.h>
 #include<stl\KVDB.h>
 KVDBImpl::KVDBImpl(const char* path, bool read_cache, int cache_sz,int Bfilter_bit) {
 	rdopt = leveldb::ReadOptions();

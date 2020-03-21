@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"views.h"
 template<typename T,size_t CAP=256>
 class static_queue {

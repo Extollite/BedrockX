@@ -88,29 +88,23 @@ void PrintErrorMessage() {
 		std::wcerr << "wtf\n";
 		return;
 	}
-	std::wcerr << errorMessageID << std::endl;
-	LPWSTR messageBuffer = nullptr;
-	FormatMessage(
-		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, errorMessageID,
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&messageBuffer, 0, NULL);
-	std::wcerr << messageBuffer << std::endl;
-	LocalFree(messageBuffer);
+	std::cerr << errorMessageID << std::endl;
 }
-
+Logger<stdio_commit> LOG(stdio_commit{"[BDX] "});
 static void loadall() {
-	do_log(L"BedrockX Loaded!\n");
+	LOG("BedrockX Loaded!");
 	using namespace std::filesystem;
 	create_directory("bdxmod");
 	create_directory("data");
 	directory_iterator ent("bdxmod");
 	for (auto& i : ent) {
 		if (i.is_regular_file() && i.path().extension() == ".dll") {
-			auto lib = LoadLibrary(i.path().c_str());
+			auto lib = LoadLibraryW(i.path().c_str());
 			if (lib) {
-				do_log(L"loaded %s\n", canonical(i.path()).c_str());
+				LOG("loaded", canonical(i.path()));
 			}
 			else {
-				do_log(L"Error when loading %s\n", i.path().c_str());
+				LOG.p<LOGLVL::Error>("Error when loading", i.path());
 				PrintErrorMessage();
 			}
 		}

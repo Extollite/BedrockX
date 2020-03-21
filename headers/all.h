@@ -1,4 +1,4 @@
-#ifndef  ALL_H
+﻿#ifndef  ALL_H
 #define ALL_H
 #include"api_pch.h"
 #include"stl_pch.h"

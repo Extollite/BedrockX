@@ -1,4 +1,4 @@
-#include<lbpch.h>
+﻿#include<lbpch.h>
 #include<stl\KVDB.h>
 #include<stl\viewhelper.h>
 #include<api\event\playerEvent.h>
@@ -9,7 +9,9 @@ namespace XIDREG {
 	/*	LBAPI optional<string> id2str(xuid_t xid);
 	LBAPI optional<xuid_t> str2id(string const& name);
 	LBAPI void foreach (std::function<bool(xuid_t, string_view)>&&);*/
-	LBAPI optional<xuid_t> str2id(string const& _name) {
+	LBAPI optional<xuid_t> str2id(string_view _name) {
+		if (_name.size() >= 512)
+			return {};
 		char buf[512];
 		for (int i = 0; i < _name.size(); ++i) {
 			buf[i] = std::tolower(_name[i]);
@@ -38,7 +40,9 @@ namespace XIDREG {
 			return true;
 		});
 	}
-	static void insert(xuid_t id, string const& _name) {
+	static void insert(xuid_t id, string_view _name) {
+		if (_name.size() >= 512)
+			return;
 		char buf[512];
 		for (int i = 0; i < _name.size(); ++i) {
 			buf[i] = std::tolower(_name[i]);
@@ -47,14 +51,14 @@ namespace XIDREG {
 		string val;
 		if (xuiddb.get(name, val)) {
 			if (val != to_view(id)) {
-				printf("[BASE/XUID] update %s's xuid -> %I64u\n", _name.c_str(), id);
+				LOG("[BASE/XUID] update", _name, "'s xuid->", id);
 				xuiddb.del(val);
 				xuiddb.put(name, to_view(id));
 				xuiddb.put(to_view(id), name);
 			}
 		}
 		else {
-			printf("[BASE/XUID]  insert %s's xuid %I64u\n", _name.c_str(), id);
+			LOG("[BASE/XUID] insert", _name, "'s xuid", id);
 			xuiddb.put(name, to_view(id));
 			xuiddb.put(to_view(id), name);
 		}

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Core.h"
 #include "Actor.h"
 class Player : public Mob {

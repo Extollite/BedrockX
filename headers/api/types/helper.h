@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 struct WPlayer;
 #include<string>
 namespace BDX {

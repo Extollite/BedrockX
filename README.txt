@@ -1,4 +1,4 @@
-LICENCE:GPLv3
+﻿LICENCE:GPLv3
 WIP,FOR API PRIVIEW ONLY!
 tests:
 some events

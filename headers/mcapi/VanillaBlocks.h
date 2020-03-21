@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<api\Loader.h>
 class Block;
 #ifndef GetServerSymbol

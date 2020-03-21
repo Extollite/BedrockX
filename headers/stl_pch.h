@@ -1,4 +1,4 @@
-#ifndef  STL_PCH_H
+﻿#ifndef  STL_PCH_H
 #define STL_PCH_H
 #include"stl/dbgassert.h"
 #include"stl/Bstream.h"

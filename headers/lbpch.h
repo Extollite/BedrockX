@@ -1,5 +1,9 @@
-#ifndef  LBPCH_H
+﻿#ifndef  LBPCH_H
 #define LBPCH_H
+#include <stl/Logger.h>
+#ifdef LIGHTBASE_EXPORTS
+extern Logger<stdio_commit> LOG;
+#endif
 #include<cstdio>
 #include<cstring>
 #include<string>
@@ -12,8 +16,6 @@
 #include<type_traits>
 using std::string, std::string_view,std::shared_ptr,std::unique_ptr,std::vector,std::unordered_map,
 std::ifstream,std::ofstream,std::function;
-#define do_log wprintf
-#define do_dbg_log wprintf
 #include"api/hash.h"
 #include"api/lightbase.h"
 #include"api/hook.h"
@@ -23,6 +25,12 @@ std::ifstream,std::ofstream,std::function;
 #include<stl/views.h>
 #include<api/types/types.h>
 #include<api/event/event_pch.h>
+
+#include<streambuf>
+static inline string ifs2str(std::ifstream& ifs) {
+	return { (std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>() };
+}
+
 /*
 #ifdef JSON_SUPPORT
 #include<rapidjson/document.h>

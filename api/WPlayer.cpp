@@ -1,4 +1,4 @@
-#include <lbpch.h>
+﻿#include <lbpch.h>
 #include<api\types\types.h>
 #include<api\myPacket.h>
 #include<stl\varint.h>
@@ -23,6 +23,7 @@ THook(void*, "??0ServerPlayer@@QEAA@AEAVLevel@@AEAVPacketSender@@AEAVNetworkHand
 	for (uintptr_t off = 8; off <= 4000; off += 8) {
 		if (*(void**)(thi + off) == pCert) {
 			if (poff_pcert) {
+				LOG.p<LOGLVL::Error>("[WPlayer] wtf_cert", poff_pcert, off);
 				printf("wtf_cert %lld %lld\n", poff_pcert, off);
 			}
 			poff_pcert = off;
@@ -30,12 +31,12 @@ THook(void*, "??0ServerPlayer@@QEAA@AEAVLevel@@AEAVPacketSender@@AEAVNetworkHand
 		}
 		if (memcmp((void*)(thi + off), pNeti, 144) == 0) {
 			if (poff_neti) {
-				printf("wtf_neti %lld %lld\n", poff_neti, off);
+				LOG.p<LOGLVL::Error>("[WPlayer] wtf_neti", poff_neti, off);
 			}
 			poff_neti = off;
 		}
 	}
-	printf("get net %lld cert %lld\n", poff_neti, poff_pcert);
+	LOG("[WPlayer] get net",poff_neti,"cert", poff_pcert);
 	return rv;
 }
 LBAPI NetworkIdentifier* WPlayer::_getNI() {

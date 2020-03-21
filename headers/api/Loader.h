@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "hash.h"
 #include "hook.h"
 #include "lightbase.h"

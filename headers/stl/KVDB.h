@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<api/lightbase.h>
 #include<functional>
 #include<string_view>

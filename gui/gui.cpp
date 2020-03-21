@@ -1,4 +1,4 @@
-#include<lbpch.h>
+﻿#include<lbpch.h>
 #include <api/gui/gui.h>
 #include <rapidjson/writer.h>
 #include<api\refl\playerMap.h>

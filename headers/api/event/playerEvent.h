@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "eventBase.h"
 
 class PlayerChatEvent : public IGenericPlayerEvent<PlayerChatEvent> {

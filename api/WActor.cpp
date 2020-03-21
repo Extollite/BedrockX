@@ -1,4 +1,4 @@
-#include <lbpch.h>
+﻿#include <lbpch.h>
 #include<api\types\types.h>
 #include<mcapi/Actor.h>
 static uintptr_t poff_dim;

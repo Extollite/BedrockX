@@ -1,4 +1,4 @@
-#include <lbpch.h>
+﻿#include <lbpch.h>
 #include<api\event\genericEvent.h>
 #include<api\serviceLocate.h>
 class CommandRegistry;

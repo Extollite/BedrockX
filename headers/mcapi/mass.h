@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<api\serviceLocate.h>
 #include<api\Loader.h>
 struct MCRESULT {

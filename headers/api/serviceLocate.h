@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<api\lightbase.h>
 template<class T>
 struct LocateS {
@@ -13,7 +13,9 @@ struct LocateS {
 		return *_srv;
 	}
 	static void assign(const T& srv) {
-		printf("[LocateService] located %s -> %p\n", typeid(decltype(_srv)).name(), &srv);
+		#ifdef LIGHTBASE_EXPORTS
+		LOG("[LocateService] located",typeid(decltype(_srv)).name(),"->",(void*)&srv);
+		#endif
 		_srv = (T*)&srv;
 	}
 };

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"Loader.h"
 #include<string_view>
 #include<string>

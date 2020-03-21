@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Core.h"
 class ItemStackBase {
 	char filler[312];

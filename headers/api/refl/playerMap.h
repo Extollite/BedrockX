@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <lbpch.h>
 class ServerPlayer;
 struct DePlayerCB {

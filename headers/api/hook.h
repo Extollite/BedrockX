@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"lightbase.h"
 extern "C" {
 // The core api of the hook function

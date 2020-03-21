@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<lbpch.h>
 #include <rapidjson/document.h>
 #include <rapidjson/stringbuffer.h>
