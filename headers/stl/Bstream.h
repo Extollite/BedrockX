@@ -35,7 +35,7 @@ public:
         datamax += len;
 #endif
     }
-    RBStream(string_view x) noexcept {
+    RBStream(string_view x) {
         *this = { (void*)x.data(), (size_t)x.size() };
     }
 
@@ -106,7 +106,7 @@ private:
 
 public:
     template <typename... T>
-    void apply(T&... args) noexcept
+    void apply(T&... args)
     {
         (__get(args), ...);
     }
@@ -180,7 +180,7 @@ public:
     WBStreamImpl() {}
     WBStreamImpl(container&& x) :data(x) {}
     template <typename... T>
-    void apply(T const&... args) noexcept
+    void apply(T const&... args)
     {
         (__put(args), ...);
     }

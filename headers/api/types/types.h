@@ -109,7 +109,7 @@ struct WPlayer : Wrapped<ServerPlayer> {
 	LBAPI bool runcmd(string const& str) {
 		return BDX::runcmdAs(*this, str);
 	}
-	LBAPI NetworkIdentifier* _getNI();
+	LBAPI class NetworkIdentifier* _getNI();
 	LBAPI class Certificate* _getCert();
 };
 struct WItem : Wrapped<ItemStack> {

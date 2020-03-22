@@ -123,6 +123,7 @@
     <TargetName>LIGHTBASE</TargetName>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);headers;</IncludePath>
     <GenerateManifest>false</GenerateManifest>
+    <CodeAnalysisRuleSet>codechk.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='bds|x64'">
     <TargetName>LIGHTBASE</TargetName>

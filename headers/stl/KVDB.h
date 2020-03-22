@@ -26,7 +26,7 @@ public:
 	LIGHTBASE_API bool get(string_view key,string& val);
 	LIGHTBASE_API void put(string_view key, string_view val);
 	LIGHTBASE_API void del(string_view key);
-	LIGHTBASE_API void iter(std::function<bool(string_view key)>&&);
-	LIGHTBASE_API void iter(std::function<bool(string_view key, string_view val)>&&);
+	LIGHTBASE_API void iter(std::function<bool(string_view key, string_view val)> const&fn);
+	LIGHTBASE_API void iter(std::function<bool(string_view key)> const&);
 };
 

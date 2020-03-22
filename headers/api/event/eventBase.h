@@ -80,10 +80,11 @@ public:
 		for (auto it = listener.begin(); it != listener.end(); ++it) {
 			if (!(*it)) {
 				//flag
-				listener.emplace(it, std::forward< function<void(T&)>>(cb), lf);
+				listener.emplace(it, std::forward<function<void(T&)>>(cb), lf);
+				return lf;
 			}
 		}
-		return lf;
+		return { -1 };
 	}
 	static auto _remove(LInfo<T> lf) {
 		return listener.remove_if([lf](auto& elem)->bool {return elem.id.id == lf.id; });

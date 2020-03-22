@@ -34,7 +34,7 @@ void KVDBImpl::put(string_view key, string_view val) {
 void KVDBImpl::del(string_view key) {
 	db->Delete(wropt, leveldb::Slice(key.data(), key.size()));
 }
-void KVDBImpl::iter(std::function<bool(string_view key)>&& fn) {
+void KVDBImpl::iter(std::function<bool(string_view key)>const& fn) {
 	leveldb::Iterator* it = db->NewIterator(rdopt);
 	for (it->SeekToFirst(); it->Valid(); it->Next()) {
 		auto k = it->key();
@@ -42,7 +42,7 @@ void KVDBImpl::iter(std::function<bool(string_view key)>&& fn) {
 	}
 	delete it;
 }
-void KVDBImpl::iter(std::function<bool(string_view key, string_view val)>&& fn) {
+void KVDBImpl::iter(std::function<bool(string_view key, string_view val)>const& fn) {
 	leveldb::Iterator* it = db->NewIterator(rdopt);
 	for (it->SeekToFirst(); it->Valid(); it->Next()) {
 		auto k = it->key();

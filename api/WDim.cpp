@@ -21,7 +21,7 @@ THook(void*, "??0BlockSource@@QEAA@AEAVLevel@@AEAVDimension@@AEAVChunkSource@@_N
 				if (bs_dim) {
 					printf("bs_dim wtf %lld %d\n", bs_dim, poff * 8);
 				}
-				bs_dim = poff * 8;
+				bs_dim = (size_t)poff * 8;
 			}
 		}
 	}

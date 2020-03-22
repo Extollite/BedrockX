@@ -13,7 +13,7 @@ LBAPI WDim WActor::getDim() {
 				if (poff_dim) {
 					printf("wtf actor %lld %d\n", poff_dim, i * 8);
 				}
-				poff_dim = i * 8;
+				poff_dim = (size_t)i * 8;
 			}
 		}
 	}

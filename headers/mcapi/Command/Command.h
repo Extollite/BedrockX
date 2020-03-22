@@ -257,7 +257,7 @@ public:
 		*((void**)&rv) = dlsym("?matchName@CommandSelectorBase@@AEBA_NAEBVActor@@@Z");
 		return (this->*rv)(a0);
 	}
-	CommandSelectorBase() {}
+	//CommandSelectorBase() {}
 	protected:
 	CommandSelectorBase(bool isPlayer) {
 			SymCall("??0CommandSelectorBase@@IEAA@_N@Z", void, void*, bool)(this, isPlayer);

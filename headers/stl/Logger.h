@@ -8,7 +8,7 @@
 using std::string_view;
 struct stdio_commit {
 	const char* prefix;
-	void operator()(string_view extra, string_view content) const noexcept {
+	void operator()(string_view extra, string_view content) const {
 		std::cout << extra << prefix << content << "\n";
 	}
 	stdio_commit(const char* prefix_) : prefix(prefix_) {
@@ -17,9 +17,9 @@ struct stdio_commit {
 };
 struct file_commit {
 	std::ofstream dat;
-	file_commit(const char* fn) noexcept : dat(fn, std::ios::app) {
+	file_commit(const char* fn) : dat(fn, std::ios::app) {
 	}
-	void operator()(string_view extra, string_view content) noexcept {
+	void operator()(string_view extra, string_view content) {
 		dat << extra;
 		dat << content << "\n";
 	}

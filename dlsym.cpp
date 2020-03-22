@@ -22,7 +22,7 @@ struct hashval {
 	string key;
 	hash_t hash;
 	string data;
-	hashval() {}
+	hashval() { hash = 0; }
 	hashval(string&& a, hash_t b, string&& c) : key(std::forward<string>(a)), hash(b), data(std::forward<string>(c)) {}
 };
 struct RoDB_R {
@@ -35,7 +35,7 @@ struct RoDB_R {
 #define ppch(x) ((char*)&x)
 		fp.read(ppch(cnt_bucket), 4);
 		fp.read(ppch(data_off), 4);
-		fp.read(ppch(bucket[0]), 4 * cnt_bucket);
+		fp.read(ppch(bucket[0]), 4 * (size_t)cnt_bucket);
 	}
 	void read(void* buf, unsigned int off, size_t sz) {
 		fp.seekg(std::streampos(off));
