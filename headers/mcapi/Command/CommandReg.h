@@ -47,7 +47,7 @@ protected:
 
 public:
 	virtual ~Command() {
-		Call("??1Command@@UEAA@XZ", void, void*)(this);
+		SymCall("??1Command@@UEAA@XZ", void, void*)(this);
 	}
 	virtual void execute(CommandOrigin const&, CommandOutput&) = 0;
 	template <typename T>
@@ -111,10 +111,10 @@ public:
 
 	MCINLINE void registerCommand(
 		std::string const& a, char const* b, CommandPermissionLevel c, CommandFlag d, CommandFlag e) {
-		Call("?registerCommand@CommandRegistry@@QEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBDW4CommandPermissionLevel@@UCommandFlag@@3@Z", void, void*, std::string const&, char const*, CommandPermissionLevel, CommandFlag, CommandFlag)(this, a, b, c, d, e);
+		SymCall("?registerCommand@CommandRegistry@@QEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBDW4CommandPermissionLevel@@UCommandFlag@@3@Z", void, void*, std::string const&, char const*, CommandPermissionLevel, CommandFlag, CommandFlag)(this, a, b, c, d, e);
 	}
 	MCINLINE void registerAlias(std::string const& a, std::string const& b) {
-		Call("?registerAlias@CommandRegistry@@QEAAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z", void, void*, std::string const&, std::string const&)(this, a, b);
+		SymCall("?registerAlias@CommandRegistry@@QEAAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z", void, void*, std::string const&, std::string const&)(this, a, b);
 	}
 	MCINLINE Signature* findCommand(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const& a0) {
 		Signature* (CommandRegistry::*rv)(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const&);

@@ -3,11 +3,8 @@ struct Ioptional {};
 template <typename T>
 struct optional : Ioptional {
 	char filler[sizeof(T)];
-	using val = typename T;
+	using Tval = typename T;
 	bool set;
-	operator bool() {
-		return set;
-	}
 	T& value() {
 		if (!set) {
 			throw(std::exception("bad optional access"));
@@ -20,11 +17,14 @@ struct optional : Ioptional {
 		}
 		return *(T*)filler;
 	}
-	bool Set() {
-		return set;
-	}
-	operator T() {
+	const T& val() const{
 		return value();
+	}
+	T& val() {
+		return value();
+	}
+	inline bool Set() const{
+		return set;
 	}
 	optional(T const& v) {
 		new (filler) T(v);
@@ -55,6 +55,11 @@ struct optional : Ioptional {
 		if (set) {
 			new (filler) T(x.value());
 		}
-		return x;
+		return *this;
+	}
+	template<typename Callable>
+	void then(Callable const& x) {
+		if (set)
+		 x(val());
 	}
 };

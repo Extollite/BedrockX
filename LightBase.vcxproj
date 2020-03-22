@@ -322,7 +322,7 @@
     <ClInclude Include="headers\api\types\types.h" />
     <ClInclude Include="headers\api\xuidreg\xuidreg.h" />
     <ClInclude Include="headers\api_pch.h" />
-    <ClInclude Include="headers\extra_pch.h" />
+    <ClInclude Include="headers\JsonLoader.h" />
     <ClInclude Include="headers\mcapi\Actor.h" />
     <ClInclude Include="headers\mcapi\Block.h" />
     <ClInclude Include="headers\mcapi\BlockSource.h" />

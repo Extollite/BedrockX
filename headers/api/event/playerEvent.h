@@ -25,11 +25,15 @@ public:
 };
 class PlayerJoinEvent : public IEventBase<PlayerJoinEvent>, public IPlayerEvent {
 public:
-	PlayerJoinEvent(ServerPlayer& sp) : IPlayerEvent(sp) {}
+	using IPlayerEvent::IPlayerEvent;
 };
 class PlayerLeftEvent : public IEventBase<PlayerLeftEvent>, public IPlayerEvent {
 public:
-	PlayerLeftEvent(ServerPlayer& sp) : IPlayerEvent(sp) {}
+	using IPlayerEvent::IPlayerEvent;
+};
+class PlayerDeathEvent : public IEventBase<PlayerDeathEvent>, public IPlayerEvent {
+public:
+	using IPlayerEvent::IPlayerEvent;
 };
 
 class PlayerDestroyEvent : public IGenericPlayerEvent<PlayerDestroyEvent> {
@@ -44,13 +48,13 @@ class PlayerUseItemOnEntityEvent : public IGenericPlayerEvent<PlayerUseItemOnEnt
 public:
 	class ActorRuntimeID rtid;
 	Actor* victim;
-	enum TransType:char {
+	enum class TransType:char {
 		INTERACT=0,
 		ATTACK=1
 	} type;
 	LBAPI PlayerUseItemOnEntityEvent(ServerPlayer& sp, ActorRuntimeID rti, int _type);
 	bool isAttack() {
-		return type == ATTACK;
+		return type == TransType::ATTACK;
 	}
 };
 class PlayerUseItemOnEvent : public IGenericPlayerEvent<PlayerUseItemOnEvent> {

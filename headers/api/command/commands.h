@@ -113,7 +113,7 @@ namespace CMDREG {
 		inline void reg_impl_sub(uintptr_t off, string const& desc, std::vector<CommandParameterData>& vc) {
 			off += offsetof(sub, data);
 			if constexpr (std::is_base_of_v<Ioptional, TX>) {
-				using TXX = typename TX::val;
+				using TXX = typename TX::Tval;
 				if constexpr (std::is_base_of_v<IMyEnum, TXX>) {
 					vc.emplace_back(typeid_getter<TXX>(), &CommandRegistry::parseEnumInt, desc, CommandParameterDataType::ENUM, CEnum<decltype(TXX::val)>::name.c_str(), int(off + offsetof(TX, filler) + offsetof(TXX, val)), true, int(off + offsetof(TX, set)));
 				}
@@ -179,3 +179,10 @@ static_assert(sizeof(MakeOverload<void,int>) ==1);
 	{ MakeOverload __ov1((struct name2*)0, string(#name2), cb, __VA_ARGS__); }
 #define CmdOverload2(name2, cb, cb2, ...) \
 	{ MakeOverload __ov2((struct name2*)0, cb2, #name2, cb, __VA_ARGS__); }
+#include<api/types/types.h>
+inline static optional<WPlayer> MakeWP(CommandOrigin const& ori) {
+	if (ori.getOriginType() == OriginType::Player) {
+		return { { *(ServerPlayer*)ori.getEntity() } };
+	}
+	return {};
+}

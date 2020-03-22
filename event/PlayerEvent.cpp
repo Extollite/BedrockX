@@ -66,3 +66,7 @@ THook(int, "?handle@ItemUseOnActorInventoryTransaction@@UEBA?AW4InventoryTransac
 		return original(thi, sp, unk);
 	return 0;
 }
+THook(void*, "?die@Player@@UEAAXAEBVActorDamageSource@@@Z", ServerPlayer& thi, void* src) {
+	PlayerDeathEvent::_call(thi);
+	return original(thi, src);
+}

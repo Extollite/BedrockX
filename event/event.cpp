@@ -16,6 +16,7 @@ EXPORT_EVENT(PlayerDestroyEvent);
 EXPORT_EVENT(PlayerUseItemOnEvent);
 EXPORT_EVENT(PlayerUseItemOnEntityEvent);
 EXPORT_EVENT(PlayerUseItemEvent);
+EXPORT_EVENT(PlayerDeathEvent);
 
 EXPORT_EVENT(RegisterCommandEvent);
 
@@ -40,8 +41,7 @@ static struct exec_now {
 			OPTIMIZE_EVENT(PlayerUseItemOnEvent);
 			OPTIMIZE_EVENT(PlayerUseItemOnEntityEvent);
 			OPTIMIZE_EVENT(PlayerUseItemEvent);
-
-			OPTIMIZE_EVENT(RegisterCommandEvent);
+			OPTIMIZE_EVENT(PlayerDeathEvent);
 
 			OPTIMIZE_EVENT(MobDeathEvent);
 			OPTIMIZE_EVENT(MobHurtedEvent);
