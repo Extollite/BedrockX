@@ -12,7 +12,10 @@ namespace CMDREG {
 		auto& id = *((unsigned short*)SYM("?count@?$typeid_t@VCommandRegistry@@@@2GA"));
 		return { id++ };
 	}
-
+	template <>
+	inline typeid_t<CommandRegistry> getTPID<CommandMessage>() {
+		return GETID("?id@?1???$type_id@VCommandRegistry@@VCommandMessage@@@@YA?AV?$typeid_t@VCommandRegistry@@@@XZ@4V1@A");
+	}
 	template <>
 	inline typeid_t<CommandRegistry> getTPID<bool>() {
 		return GETID("?id@?1???$type_id@VCommandRegistry@@_N@@YA?AV?$typeid_t@VCommandRegistry@@@@XZ@4V1@A");
@@ -92,7 +95,7 @@ namespace CMDREG {
 	}
 	template <typename Dummy, typename... TP>
 	struct MakeOverload {
-		using container = std::tuple<std::remove_reference_t<TP>...>;
+		using container = std::tuple<std::remove_cv_t<std::remove_reference_t <TP>>...>;
 		class sub : public Command {
 		public:
 			container data;
@@ -104,7 +107,7 @@ namespace CMDREG {
 			void execute(CommandOrigin const& a, CommandOutput& b) {
 				constexpr auto size = std::tuple_size<container>::value;
 				if (invoke_impl(a, b, std::make_index_sequence<size>{}))
-					b.success("", {});
+					b.success("success", {});
 			}
 			sub() {}
 		};
@@ -134,7 +137,7 @@ namespace CMDREG {
 		inline void reg_helper(std::vector<CommandParameterData>& vc,
 		std::vector<string>& argn,std::index_sequence<Index...>) {
 			container& cter = *(container*)0;
-			(reg_impl_sub<std::remove_reference_t<decltype(std::get<Index>(cter))>>((uintptr_t)std::addressof(std::get<Index>(cter)) - (uintptr_t)std::addressof(cter), argn[Index],vc), ...);
+			(reg_impl_sub<std::remove_cv_t<std::remove_reference_t <decltype(std::get<Index>(cter))>>>((uintptr_t)std::addressof(std::get<Index>(cter)) - (uintptr_t)std::addressof(cter), argn[Index],vc), ...);
 		}
 		inline void regMe(string const& cname, std::vector<CommandParameterData>&& vc) {
 			LocateS<CommandRegistry>()->registerOverload(cname, &factory, std::forward< std::vector<CommandParameterData>>(vc));
@@ -171,7 +174,7 @@ namespace CMDREG {
 	template <typename Dummy, typename... TP>
 	uintptr_t MakeOverload<Dummy, TP...>::sub::cb;
 	template <typename Dummy, typename... TP>
-	std::function<void(std::tuple<std::remove_reference_t<TP>...>&)> MakeOverload<Dummy, TP...>::new_cb = [](auto&) {};
+	std::function<void(std::tuple<std::remove_cv_t<std::remove_reference_t <TP>>...>&)> MakeOverload<Dummy, TP...>::new_cb = [](auto&) {};
 };
 using CMDREG::CEnum, CMDREG::MakeCommand, CMDREG::MakeOverload, CMDREG::MyEnum;
 static_assert(sizeof(MakeOverload<void,int>) ==1);
@@ -185,4 +188,16 @@ inline static optional<WPlayer> MakeWP(CommandOrigin const& ori) {
 		return { { *(ServerPlayer*)ori.getEntity() } };
 	}
 	return {};
+}
+inline static ServerPlayer* MakeSP(CommandOrigin const& ori) {
+	if (ori.getOriginType() == OriginType::Player) {
+		return {  (ServerPlayer*)ori.getEntity() };
+	}
+	return nullptr;
+}
+inline static ServerPlayer* MakeSP(void* x) {
+	if (dAccess<void*, 0>(x) == SYM("??_7ServerPlayer@@6B@")) {
+		return (ServerPlayer*)x;
+	}
+	return nullptr;
 }

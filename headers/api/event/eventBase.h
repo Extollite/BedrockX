@@ -3,7 +3,7 @@
 #include<variant>
 #include<api/types/types.h>
 using std::string, std::function,std::variant;
-enum EvPrio:int
+enum class EvPrio:int
 {
 	LOW = 0,
 	MEDUIM = 1,
@@ -69,11 +69,11 @@ public:
 	static LInfo<T> _reg(function<void(T&)>&& cb, EvPrio prio) {
 		LInfo<T> lf;
 		lf.id = newListenerID();
-		if (prio == HIGH) {
+		if (prio == EvPrio::HIGH) {
 			listener.emplace_front(std::forward< function<void(T&)>>(cb),lf);
 			return lf;
 		}
-		if (prio == LOW) {
+		if (prio == EvPrio::LOW) {
 			listener.emplace_back(std::forward< function<void(T&)>>(cb), lf);
 			return lf;
 		}
@@ -160,7 +160,7 @@ public:
 
 
 template<class T>
-LInfo<T> addListener(function<void(T&)>&& fn, EvPrio prio = MEDUIM) {
+LInfo<T> addListener(function<void(T&)>&& fn, EvPrio prio = EvPrio::MEDUIM) {
 	return T::_reg(std::forward<function<void(T&)>>(fn), prio);
 }
 template<class T>
@@ -168,6 +168,6 @@ void removeListener(LInfo<T> lf) {
 	T::_remove(lf);
 }
 template<typename T>
-auto addListener(T&& fn, EvPrio prio = MEDUIM) {
+auto addListener(T&& fn, EvPrio prio = EvPrio::MEDUIM) {
 	return addListener(function(std::forward<T>(fn)), prio);
 }

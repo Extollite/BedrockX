@@ -17,6 +17,9 @@ public:
 	bool full() {
 		return size() == CAP;
 	}
+	void clear() {
+		while (!empty()) pop_back();
+	}
 	template<typename... P>
 	T& emplace_back(P&&... arg) {
 		T* dst = (T*)(data + count*sizeof(T));
@@ -49,5 +52,30 @@ public:
 	}
 	operator array_view<T>() {
 		return asView();
+	}
+	struct iterator {
+		static_queue& thi;
+		size_t now;
+		bool operator==(const iterator& x) const{
+			return now == x.now;
+		}
+		bool operator!=(const iterator& x) const {
+			return now!=x.now;
+		}
+		T& operator->() {
+			return thi[now];
+		}
+		T& operator*() {
+			return thi[now];
+		}
+		void operator++() {
+			now++;
+		}
+	};
+	iterator begin() {
+		return { *this,0 };
+	}
+	iterator end() {
+		return { *this,size() };
 	}
 };

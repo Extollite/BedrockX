@@ -30,6 +30,10 @@ std::ifstream,std::ofstream,std::function;
 static inline string ifs2str(std::ifstream& ifs) {
 	return { (std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>() };
 }
+template<typename T>
+static inline auto S(T&& x) {
+	return std::to_string(std::forward<T>(x));
+}
 
 /*
 #ifdef JSON_SUPPORT

@@ -1,8 +1,18 @@
 ﻿#pragma once
 #include "Command.h"
 #include<unordered_map>
+class CommandMessage {
+	char filler[32];
+	string get(CommandOrigin const& x) {
+		string (CommandMessage::*rv)(CommandOrigin const&);
+		*(void**)&rv = SYM("?getMessage@CommandMessage@@QEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBVCommandOrigin@@@Z");
+		return (this->*rv)(x);
+	}
+};
 
 static std::unordered_map<string, void*> parse_ptr = {
+	{ typeid(CommandMessage).name(), dlsym_real("??$parse@VCommandMessage@@@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") }
+	, 
 	{ typeid(std::string).name(),dlsym_real("??$parse@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z")},
 	{ typeid(bool).name(), dlsym_real("??$parse@_N@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") },
 	{ typeid(float).name(), dlsym_real("??$parse@M@CommandRegistry@@AEBA_NPEAXAEBUParseToken@0@AEBVCommandOrigin@@HAEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z") },
@@ -179,6 +189,10 @@ public:
 	inline void registerOverload(
 		std::string const& name, Overload::FactoryFn factory, std::vector<CommandParameterData>&& args) {
 		Signature* signature = const_cast<Signature*>(findCommand(name));
+		if (!signature) {
+			 printf("no command found %s", name.c_str());
+			 exit(0);
+		}
 		auto& overload = signature->overloads.emplace_back(CommandVersion{}, factory, std::forward<std::vector<CommandParameterData>>(args));
 		registerOverloadInternal(*signature, overload);
 	}

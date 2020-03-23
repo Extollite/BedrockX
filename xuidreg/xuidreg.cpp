@@ -12,6 +12,8 @@ namespace XIDREG {
 	LBAPI optional<xuid_t> str2id(string_view _name) {
 		if (_name.size() >= 512)
 			return {};
+		if (_name == "system")
+			return { 0 };
 		char buf[512];
 		for (int i = 0; i < _name.size(); ++i) {
 			buf[i] = std::tolower(_name[i]);

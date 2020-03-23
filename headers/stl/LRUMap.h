@@ -140,7 +140,7 @@ struct U64LRUmap {
 		return nullptr;
 	}
 	template <typename... P>
-	void insert(key_t key, P&&... val) {
+	TP* insert(key_t key, P&&... val) {
 		auto& bk = bucket[key % buksz];
 		auto& nd = alloc.buy();
 		nd.detach();
@@ -148,5 +148,6 @@ struct U64LRUmap {
 		nd.val.val.~TP();
 		new (&nd.val.val) TP(std::forward<P>(val)...);
 		bk.ins_back(nd);
+		return &nd.val.val;
 	}
 };

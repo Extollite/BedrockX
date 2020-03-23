@@ -132,12 +132,12 @@ struct array_view {
         data = (T*)v.data();
         siz = v.size() / sizeof(T);
     }
-    array_view(T* s, T* e){
-        data = s;
+    array_view(const T* s, const T* e){
+        data = (T*)s;
         siz=std::distance(s, e);
     }
-    array_view(T* s, size_t sz) {
-        data = s;
+    array_view(const T* s, size_t sz) {
+        data = (T*)s;
         siz = sz;
     }
     array_view(T const& x) {
