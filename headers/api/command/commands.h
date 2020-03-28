@@ -106,8 +106,13 @@ namespace CMDREG {
 			}
 			void execute(CommandOrigin const& a, CommandOutput& b) {
 				constexpr auto size = std::tuple_size<container>::value;
-				if (invoke_impl(a, b, std::make_index_sequence<size>{}))
-					b.success("success", {});
+				try {
+					if (invoke_impl(a, b, std::make_index_sequence<size>{}))
+						b.success("success", {});
+				}
+				catch (std::exception e) {
+					b.error("exception during command:\""s + e.what()+"\" please check your args");
+				}
 			}
 			sub() {}
 		};

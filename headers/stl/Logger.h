@@ -7,11 +7,11 @@
 #include <iostream>
 using std::string_view;
 struct stdio_commit {
-	const char* prefix;
+	string_view prefix;
 	void operator()(string_view extra, string_view content) const {
-		std::cout << extra << prefix << content << "\n";
+		std::cout << extra << prefix << content << '\n';
 	}
-	stdio_commit(const char* prefix_) : prefix(prefix_) {
+	stdio_commit(string_view prefix_) : prefix(prefix_) {
 
 	}
 };

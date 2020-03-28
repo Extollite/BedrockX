@@ -27,6 +27,7 @@ struct List_node {
 		prev->next = next;
 		next->prev = prev;
 	}
+#if 0
 	struct iterator {
 		List_node<_TP>* val;
 		void operator++() {
@@ -51,6 +52,7 @@ struct List_node {
 	iterator end() {
 		return iterator{ (List_node<_TP, false>*)this };
 	}
+#endif
 	void ins_back(List_node<_TP>& t) {
 		t.next = next;
 		t.prev = (List_node<_TP, false>*)this;
@@ -80,7 +82,7 @@ struct LRUList {
 	List_node<TP, true> head;
 	node* data;
 	LRUList(size_t _sz) : sz(_sz) {
-		data = new node[_sz];
+		data = new node[_sz]();
 		for (int i = 0; i < _sz; ++i) {
 			head.ins_front(data[i]);
 		}
@@ -114,10 +116,14 @@ struct U64LRUmap {
 	U64LRUmap(size_t sz) : alloc(sz) {}
 	void clear() {
 		for (int i = 0; i < buksz; ++i) {
-			for (auto& j : bucket[i]) {
-				j.detach();
-				j.val.val.~TP();
-				new (&j.val.val) TP();
+			List_node<_P, false>* END = (List_node<_P, false> *)&bucket[i];
+			auto NOW=bucket[i].next;
+			while(NOW!=END) {
+				auto NEXT = NOW->next;
+				NOW->detach();
+				NOW->val.val.~TP();
+				new (&NOW->val.val) TP();
+				NOW = NEXT;
 			}
 		}
 	}
@@ -130,13 +136,17 @@ struct U64LRUmap {
 	}
 	TP* find(key_t key) {
 		auto& bk = bucket[key % buksz];
-		for (auto& i : bk) {
-			if (i.val.hash == key) {
-				i.detach();
-				bk.ins_back(i);
-				return &i.val.val;
-			}
-		}
+		auto NOW = bk.next;
+		auto END = (decltype(NOW))&bk;
+		while (NOW!=END)
+		{
+				if (NOW->val.hash == key) {
+					NOW->detach();
+					bk.ins_back(*NOW);
+					return &NOW->val.val;
+				}
+				NOW = NOW->next;
+		} 
 		return nullptr;
 	}
 	template <typename... P>

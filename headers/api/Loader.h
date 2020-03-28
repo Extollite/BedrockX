@@ -10,6 +10,14 @@ template <typename T, int off>
 inline T const& dAccess(void const* ptr) {
 	return *(T*)(((uintptr_t)ptr) + off);
 }
+template <typename T>
+inline T& dAccess(void* ptr,uintptr_t off) {
+	return *(T*)(((uintptr_t)ptr) + off);
+}
+template <typename T>
+inline const T& dAccess(void const* ptr, uintptr_t off) {
+	return *(T*)(((uintptr_t)ptr) + off);
+}
 #define __WEAK __declspec(selectany)
 //#define GetServerSymbol(x) dlsym_real(x)
 template <CHash,CHash>

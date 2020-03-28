@@ -2,22 +2,23 @@
 #include<lbpch.h>
 #include "framework.h"
 #include<iostream>
-void entry();
+#include<filesystem>
+LBAPI string GetDataPath(const string& myname) {
+	using namespace std::filesystem;
+	create_directory("data");
+	return "data/" + myname;
+}
 LBAPI void WaitForDebugger() {
 	while (!IsDebuggerPresent())
 		Sleep(200);
 }
-void HookFunction__begin();
-long HookFunction__finalize();
+
 BOOL APIENTRY DllMain(HMODULE hModule,
 	DWORD ul_reason_for_call,
 	LPVOID lpReserved) { 
 	switch (ul_reason_for_call) { 
 	case DLL_PROCESS_ATTACH: {
-		DisableThreadLibraryCalls(hModule);
 		system("chcp 65001");
-		std::ios::sync_with_stdio(false);
-		entry();
 	}
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:

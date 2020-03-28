@@ -6,28 +6,27 @@
 #include<api\myPacket.h>
 #include<mcapi/Player.h>
 namespace GUI {
+	LIGHTBASE_API std::vector<string> getPlayerList() {
+		std::vector<string> rv;
+		auto p = LocateS<WLevel>()->getUsers();
+		for (auto i : p) {
+			rv.emplace_back(i.getName());
+		}
+		return rv;
+	}
 	using rapidjson::Value;
 	LIGHTBASE_API unsigned int newFormID() {
 		static int fid;
 		return ++fid;
 	}
 	static playerMap<std::unique_ptr<IFormBinder>> formMap;
-	LIGHTBASE_API void sendForm(ServerPlayer& sp, FormBinder<FullForm>&& form) {
-		auto payload = form.seralize();
+	LIGHTBASE_API void _sendForm2(ServerPlayer& sp, std::unique_ptr<IFormBinder>&& form) {
+		auto payload = form->seralize();
 		WBStream ws;
-		ws.apply(VarUInt(form.formid), MCString(payload));
+		ws.apply(VarUInt(form->formid), MCString(payload));
 		MyPkt<100, false> guipk{ ws.data };
 		sp.sendNetworkPacket(guipk);
-		formMap._map.emplace(&sp, std::make_unique<FormBinder<FullForm>>(std::forward<FormBinder<FullForm>>(form)));
-	}
-
-	LIGHTBASE_API void sendForm(ServerPlayer& sp, FormBinder<SimpleForm>&& form) {
-		auto payload = form.seralize();
-		WBStream ws;
-		ws.apply(VarUInt(form.formid), MCString(payload));
-		MyPkt<100, false> guipk{ std::move(ws.data) };
-		sp.sendNetworkPacket(guipk);
-		formMap._map.emplace(&sp, std::make_unique<FormBinder<SimpleForm>>(std::forward<FormBinder<SimpleForm>>(form)));
+		formMap._map.emplace(&sp, std::forward<std::unique_ptr<IFormBinder>>(form));
 	}
 #define strval(x) Value(x.data(), (rapidjson::SizeType)x.size())
 #define addmem(k, val) v.AddMember(#k, val, ac)

@@ -34,7 +34,7 @@ THook(void*, "??0ChunkSource@@QEAA@V?$unique_ptr@VChunkSource@@U?$default_delete
 	LocateS<ChunkSource>::assign(*a1);
 	return original(a1, a2);
 }
-THook(void*, "?update@RakNetServerLocator@@QEAAXXZ", RakNetServerLocator* thi) {
+THook(void*, "?activate@RakNetServerLocator@@AEAAXXZ", RakNetServerLocator* thi) {
 	static bool inited = false;
 	if (!inited)
 		LocateS<RakNetServerLocator>::assign(*thi),inited=true;

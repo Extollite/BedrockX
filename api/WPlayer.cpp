@@ -59,13 +59,21 @@ static xuid_t getXuid_real(WPlayer wp) {
 	auto xuid = ExtendedCertificate::getXuid(*wp._getCert());
 	return xuid.size() > 1 ? std::stoull(xuid) : 114514;
 }
+static string getName_real(WPlayer wp) {
+	return ExtendedCertificate::getIdentityName(*wp._getCert());
+}
 struct xuidStorage {
 	xuid_t val;
+	string name;
 	xuidStorage(ServerPlayer& sp) {
 		val = getXuid_real({ sp });
+		name = getName_real({ sp });
 	}
 	operator xuid_t() {
 		return val;
+	}
+	operator const string&() {
+		return name;
 	}
 };
 static playerMap<xuidStorage> xuid_cache;
@@ -73,7 +81,7 @@ LBAPI xuid_t WPlayer::getXuid() {
 	return xuid_cache[v];
 }
 LBAPI const string& WPlayer::getName() {
-	return v->getNameTag();
+	return xuid_cache[v];
 }
 LBAPI string WPlayer::getRealName() {
 	return ExtendedCertificate::getIdentityName(*_getCert());

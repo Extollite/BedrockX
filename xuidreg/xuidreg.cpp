@@ -5,7 +5,8 @@
 #include<api\xuidreg\xuidreg.h>
 #include<mcapi/Certificate.h>
 namespace XIDREG {
-	static KVDBImpl xuiddb("xuiddb");
+	static std::unique_ptr<KVDBImpl> xuiddb;
+
 	/*	LBAPI optional<string> id2str(xuid_t xid);
 	LBAPI optional<xuid_t> str2id(string const& name);
 	LBAPI void foreach (std::function<bool(xuid_t, string_view)>&&);*/
@@ -20,7 +21,7 @@ namespace XIDREG {
 		}
 		string_view name(buf, _name.size());
 		string rv;
-		if (xuiddb.get(name, rv) && rv.size() == 8) {
+		if (xuiddb->get(name, rv) && rv.size() == 8) {
 			return { *(xuid_t*)(rv.data()) };
 		}
 		return {};
@@ -30,12 +31,12 @@ namespace XIDREG {
 			return { "system" };
 		}
 		string val;
-		if (xuiddb.get(to_view(id), val))
+		if (xuiddb->get(to_view(id), val))
 			return { val };
 		return {};
 	}
 	LBAPI void foreach(std::function<bool(xuid_t, string_view)>&&x) {
-		xuiddb.iter([&](string_view k, string_view v) -> bool {
+		xuiddb->iter([&](string_view k, string_view v) -> bool {
 			if (k.size() == 8 && v.size() != 8) {
 				return x(*(xuid_t*)k.data(), v);
 			}
@@ -51,21 +52,24 @@ namespace XIDREG {
 		}
 		string_view name(buf, _name.size());
 		string val;
-		if (xuiddb.get(name, val)) {
+		if (xuiddb->get(name, val)) {
 			if (val != to_view(id)) {
 				LOG("[BASE/XUID] update", _name, "'s xuid->", id);
-				xuiddb.del(val);
-				xuiddb.put(name, to_view(id));
-				xuiddb.put(to_view(id), name);
+				xuiddb->del(val);
+				xuiddb->put(name, to_view(id));
+				xuiddb->put(to_view(id), name);
 			}
 		}
 		else {
 			LOG("[BASE/XUID] insert", _name, "'s xuid", id);
-			xuiddb.put(name, to_view(id));
-			xuiddb.put(to_view(id), name);
+			xuiddb->put(name, to_view(id));
+			xuiddb->put(to_view(id), name);
 		}
 	}
 	void initAll() {
+		addListener([](ServerStartedEvent&) {
+			xuiddb = MakeKVDB(GetDataPath("xuiddb"),true,2);
+		});
 		addListener([](PlayerPreJoinEvent& ev) {
 			auto& cert = ev.cert;
 			auto name = ExtendedCertificate::getIdentityName(cert);

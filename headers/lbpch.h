@@ -35,13 +35,7 @@ static inline auto S(T&& x) {
 	return std::to_string(std::forward<T>(x));
 }
 
-/*
-#ifdef JSON_SUPPORT
-#include<rapidjson/document.h>
-#include<rapidjson/error/en.h>
-#ifdef JSON_WRTIE
-#include<rapidjson/writer.h>
-#include<rapidjson/stringbuffer.h>
-#endif
-#endif*/
+using namespace std::string_literals;
+using std::make_shared, std::make_unique;
+
 #endif

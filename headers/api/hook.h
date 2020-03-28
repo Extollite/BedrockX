@@ -8,3 +8,4 @@ extern "C" {
 	LBAPI void* dlsym_real(char const* name);
 	LBAPI void WaitForDebugger();
 }
+LBAPI string GetDataPath(const string& myname);

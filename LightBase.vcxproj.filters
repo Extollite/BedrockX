@@ -76,9 +76,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="stl\DBImpl.cpp">
-      <Filter>源文件\stl</Filter>
-    </ClCompile>
     <ClCompile Include="event\event.cpp">
       <Filter>源文件\event</Filter>
     </ClCompile>
@@ -133,6 +130,9 @@
     <ClCompile Include="WItem.cpp">
       <Filter>源文件\api</Filter>
     </ClCompile>
+    <ClCompile Include="stl\dbimpl.cpp">
+      <Filter>源文件\stl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\api\hash.h">
@@ -166,9 +166,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="headers\stl\Bstream.h">
-      <Filter>头文件\stl</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\stl\KVDB.h">
       <Filter>头文件\stl</Filter>
     </ClInclude>
     <ClInclude Include="headers\stl\varint.h">
@@ -278,6 +275,9 @@
     </ClInclude>
     <ClInclude Include="headers\JsonLoader.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\stl\KVDB.h">
+      <Filter>头文件\stl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
