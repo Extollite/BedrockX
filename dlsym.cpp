@@ -119,6 +119,8 @@ LBAPI int HookFunction(void* oldfunc, void** poutold, void* newfunc) {
 		return 0;
 	}
 	else {
+		//printf("%p %p->%p\n", it->second,*it->second,newfunc );
+		*poutold = *it->second;
 		*it->second = newfunc;
 		return 0;
 	}
