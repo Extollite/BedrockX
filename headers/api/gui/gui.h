@@ -244,4 +244,5 @@ namespace GUI {
 		_sendForm2(sp, std::make_unique<T>(std::forward<T>(form)));
 	}
 	LIGHTBASE_API std::vector<string> getPlayerList();
+	LIGHTBASE_API const string& getPlayerListView();
 }

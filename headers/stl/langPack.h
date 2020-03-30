@@ -32,7 +32,7 @@ static void load(const string& path) {
 	void load2(std::unordered_map<string, string>& mp) {
 		for (auto& i : mp) {
 			if (TMAP.count(do_hash(i.first))) {
-				std::cerr << "[LANGPACK] !!! hash coll detected for " << i.first<<std::endl;
+				std::cerr << "[LANGPACK/ERROR] !!! hash coll detected for " << i.first<<std::endl;
 			}
 			TMAP.emplace(do_hash(i.first), i.second);
 		}
@@ -43,7 +43,7 @@ static void load(const string& path) {
 		if (cache == NULL) {
 			auto it = TMAP.find(HASH);
 			if (it == TMAP.end()) {
-				std::cerr << "[Error] Cannot find trans for " << x << "!!!\n";
+				std::cerr << "[LANGPACK/ERROR] Cannot find trans for " << x << "!!!\n";
 				return EMPTY;
 			}
 			cache = &TMAP[HASH];

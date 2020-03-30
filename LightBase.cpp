@@ -32,8 +32,8 @@ static void fixupLIBDIR() {
 	SetEnvironmentVariableW(TEXT("PATH"), (CWD + L"\\bdxmod;" + PATH).c_str());
 	delete[] buffer;
 }
-static std::vector<HMODULE> libs;
 static void loadall() {
+	static std::vector<std::pair<std::wstring, HMODULE>> libs;
 	using namespace std::filesystem;
 	create_directory("bdxmod");
 	LOG("BedrockX Loaded!");
@@ -44,7 +44,7 @@ static void loadall() {
 			auto lib = LoadLibrary(i.path().c_str());
 			if (lib) {
 				LOG("loaded", canonical(i.path()));
-				libs.push_back(lib);
+				libs.push_back({ std::wstring{ i.path().c_str() }, lib });
 			}
 			else {
 				LOG.p<LOGLVL::Error>("Error when loading", i.path());
@@ -52,29 +52,30 @@ static void loadall() {
 			}
 		}
 	}
-}
-static void CallPostInit() {
-	for (auto i : libs) {
-		auto ptr = GetProcAddress(i, "onPostInit");
-		if (ptr) {
-			((void (*)())ptr)();
+	for (auto& [name, h] : libs) {
+		auto FN = GetProcAddress(h, "onPostInit");
+		if (!FN) {
+			std::wcerr << "Warning!!! mod" << name << " doesnt have a onPostInit\n";
+		}
+		else {
+			((void (*)()) FN)();
 		}
 	}
 	libs.clear();
 }
+namespace GUI {
+	void INIT();
+};
 void entry() {
 	XIDREG::initAll();
+	GUI::INIT();
 	loadall();
-	CallPostInit();
 	PostInitEvent::_call();
 	PostInitEvent::_removeall();
 }
 THook(int, "main", void* a, void* b) {
 	std::ios::sync_with_stdio(false);
+	system("chcp 65001");
 	entry();
 	return original(a, b);
 }
-	/*
-THook(void, "?handle@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@AEBVItemFrameDropItemPacket@@@Z") {
-
-}*/

@@ -54,8 +54,19 @@ public:
 	static auto _call(P&&... args) {
 		//printf("call event %s\n", typeid(T).name());
 		T ev(std::forward<P>(args)...);
-		for (auto& i : EventCaller<T>::listener) {
-				i(ev);
+			for (auto& i : EventCaller<T>::listener) {
+				try {
+					i(ev);
+				}
+				catch (std::exception e) {
+					printf("error [%s] in event %s\n", e.what(), typeid(T).name());
+				}
+				catch (string e) {
+					printf("error [%s] in event %s\n", e.c_str(), typeid(T).name());
+				}
+				catch (...) {
+					printf("error [unknow error] in event %s\n", typeid(T).name());
+				}
 				if (ev.isAborted()) break;
 			}
 		if constexpr (std::is_base_of<ICancellableEvent, T>())

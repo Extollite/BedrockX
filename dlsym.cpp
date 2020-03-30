@@ -74,9 +74,9 @@ struct RoDB_R {
 		return 0;
 	}
 };
-static RoDB_R* pdb = nullptr;
-static uintptr_t BaseAdr;
 LBAPI void* dlsym_real(const char* x) {
+	static RoDB_R* pdb = nullptr;
+	static uintptr_t BaseAdr;
 	if (pdb == nullptr) {
 		if (!std::filesystem::exists("bedrock_server.symdb")) {
 			printf("SymDB not found\ntry rerun gensymdb.exe\n");
@@ -93,18 +93,33 @@ LBAPI void* dlsym_real(const char* x) {
 	pdb->read(&rva, rv, 4);
 	return (void*)(BaseAdr + rva);
 }
-void HookFunction__begin() {
+inline static void HookFunction__begin() {
 		DetourTransactionBegin();
 		DetourUpdateThread(GetCurrentThread());
 }
-long HookFunction__finalize() {
+inline static long HookFunction__finalize() {
 	return DetourTransactionCommit();
 }
-LBAPI int HookFunction(void* oldfunc, void** poutold, void* newfunc) {
+static inline int realHook(void* oldfunc, void** poutold, void* newfunc) {
 	void* target = oldfunc;
 	HookFunction__begin();
-	int rv=DetourAttach(&target, newfunc);
+	int rv = DetourAttach(&target, newfunc);
 	HookFunction__finalize();
 	*poutold = target;
 	return rv;
+}
+LBAPI int HookFunction(void* oldfunc, void** poutold, void* newfunc) {
+	static unordered_map<void*, void**> ptr_pori;
+	auto it = ptr_pori.find(oldfunc);
+	if (it == ptr_pori.end()) {
+		int rv = realHook(oldfunc, poutold, newfunc);
+		if (rv != 0)
+			return rv;
+		ptr_pori[oldfunc] = poutold;
+		return 0;
+	}
+	else {
+		*it->second = newfunc;
+		return 0;
+	}
 }

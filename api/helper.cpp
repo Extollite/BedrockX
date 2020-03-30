@@ -34,4 +34,8 @@ namespace BDX {
 		filler[0] = FAKE_PORGVTBL+1;
 		return MinecraftCommands::_runcmd(filler, cmd, 4, 1);
 	}
+	LBAPI string getIP(class NetworkIdentifier& ni) {
+		string rv = LocateS<RakPeer_t>()->getAdr(ni).toString();
+		return rv.substr(0,rv.find('|'));
+	}
 };

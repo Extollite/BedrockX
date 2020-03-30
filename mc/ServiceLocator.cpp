@@ -27,13 +27,17 @@ THook(void, "?initCoreEnums@MinecraftCommands@@QEAAX_NAEBVBaseGameVersion@@@Z", 
 }
 
 THook(void*, "?loadServerPlayerData@LevelStorage@@QEAA?AV?$unique_ptr@VCompoundTag@@U?$default_delete@VCompoundTag@@@std@@@std@@AEBVPlayer@@_N@Z", LevelStorage* a, void* b,void* c,void* d) {
-	LocateS<LevelStorage>::assign(*a);
+	static bool inited = false;
+	if (!inited)
+		LocateS<LevelStorage>::assign(*a), inited = true;
 	return original(a, b,c,d);
 }
+#if 0
 THook(void*, "??0ChunkSource@@QEAA@V?$unique_ptr@VChunkSource@@U?$default_delete@VChunkSource@@@std@@@std@@@Z", ChunkSource* a1, void** a2) {
 	LocateS<ChunkSource>::assign(*a1);
 	return original(a1, a2);
 }
+#endif
 THook(void*, "?activate@RakNetServerLocator@@AEAAXXZ", RakNetServerLocator* thi) {
 	static bool inited = false;
 	if (!inited)

@@ -32,16 +32,13 @@ THook(void*, "??0Dimension@@QEAA@AEAVLevel@@V?$AutomaticID@VDimension@@H@@FAEAVS
 	dim_id[a0_dim] = a2_id;
 	return rv;
 }
-
-LBAPI std::unique_ptr<BlockSource> WDim::makeSource() {
-	return std::make_unique<BlockSource>(LocateS<ServerLevel>(), *v, LocateS<ChunkSource>(), 1, 0);
+LBAPI BlockSource& WDim::getBlockSource_() {
+	return *dAccess<BlockSource*, 72>(v);
 }
 LBAPI void WDim::setBlock(int x, int y, int z, Block const& blk) {
-	BlockSource bs(LocateS<ServerLevel>(), *v, LocateS<ChunkSource>(), 1, 0);
-	bs.setBlock({ x, y, z }, blk, 3, nullptr);
+	getBlockSource_().setBlock({ x, y, z }, blk, 3, nullptr);
 	//stub
 }
 LBAPI struct WBlock WDim::getBlock(int x, int y, int z) {
-	BlockSource bs(LocateS<ServerLevel>(), *v, LocateS<ChunkSource>(), 1, 0);
-	return WBlock(bs.getBlock(x, y, z));
+	return WBlock(getBlockSource_().getBlock(x, y, z));
 }

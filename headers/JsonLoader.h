@@ -74,16 +74,19 @@ struct ConfigJReader {
 			v.emplace_back(std::move(tmp));
 		}
 	}
-	template <typename TP>
-	void __parse(rapidjson::Value& val, std::unordered_map<string,TP>& v) {
+	template <typename TP,typename TP2>
+	void __parse(rapidjson::Value& val, std::unordered_map<TP2,TP>& v) {
 		if (!val.IsObject()) {
 			throw "val needs to be object"s;
 		}
 		auto ar = val.GetObject();
 		for (auto& [k,va] : ar) {
 			TP tmp;
+			TP2 tmpkey;
 			__parse(va, tmp);
-			v.emplace(k.GetString(),std::move(tmp));
+			std::stringstream x{ k.GetString() };
+			x >> tmpkey;
+			v.emplace(std::move(tmpkey),std::move(tmp));
 		}
 	}
 	template<typename TP>

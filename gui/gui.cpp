@@ -6,13 +6,41 @@
 #include<api\myPacket.h>
 #include<mcapi/Player.h>
 namespace GUI {
+	static vector<string> onlineLIST;
+	static string onlineLISTV;
 	LIGHTBASE_API std::vector<string> getPlayerList() {
-		std::vector<string> rv;
-		auto p = LocateS<WLevel>()->getUsers();
-		for (auto i : p) {
-			rv.emplace_back(i.getName());
+		return onlineLIST;
+	}
+	LIGHTBASE_API const string& getPlayerListView() {
+		return onlineLISTV;
+	}
+	static void regenLISTV() {
+		onlineLISTV.clear();
+		onlineLISTV = '[';
+		for (auto& i : onlineLIST) {
+			onlineLISTV.push_back('"');
+			onlineLISTV.append(i);
+			onlineLISTV.append("\",");
 		}
-		return rv;
+		if (onlineLISTV.back() == ',')
+			onlineLISTV.pop_back();
+		onlineLISTV.push_back(']');
+	}
+	void INIT() {
+		addListener([](PlayerJoinEvent& ev) {
+			onlineLIST.push_back(ev.getPlayer().getName());
+			regenLISTV();
+		},EvPrio::HIGH);
+		addListener([](PlayerLeftEvent& ev) {
+			auto& name = ev.getPlayer().getName();
+			for (auto it = onlineLIST.begin(); it != onlineLIST.end(); ++it) {
+				if (*it == name) {
+					onlineLIST.erase(it);
+					break;
+				}
+			}
+			regenLISTV();
+		},EvPrio::HIGH);
 	}
 	using rapidjson::Value;
 	LIGHTBASE_API unsigned int newFormID() {

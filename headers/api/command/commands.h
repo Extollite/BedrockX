@@ -113,6 +113,12 @@ namespace CMDREG {
 				catch (std::exception e) {
 					b.error("exception during command:\""s + e.what()+"\" please check your args");
 				}
+				catch (string e) {
+					b.error("internal exception during command:\""s + e + "\"");
+				}
+				catch (...) {
+					b.error("Internal error");
+				}
 			}
 			sub() {}
 		};

@@ -1,6 +1,8 @@
 ﻿#include <lbpch.h>
 #include<api\event\playerEvent.h>
 #include<mcapi/Level.h>
+#include<ctime>
+#include<api\refl\playerMap.h>
 /*
 EXPORT_EVENT(PlayerPreJoinEvent);
 EXPORT_EVENT(PlayerJoinEvent);
@@ -49,8 +51,34 @@ THook(bool, "?destroyBlock@GameMode@@UEAA_NAEBVBlockPos@@E@Z", void* thi, BlockP
 	return false;
 }
 /*ServerPlayer& sp, BlockPos& _pos,WItem _item, uchar _side*/
+#define RATELIMIT_CLICK 250
+static playerMap<std::pair<clock_t,unsigned long long>> LASTCLICK;
+static inline unsigned long long HASH(BlockPos& pos) {
+	unsigned long long rv = pos.x;
+	rv <<= 24;
+	rv |= pos.y;
+	rv <<= 24;
+	return rv | pos.z;
+}
+static inline bool RATELIMIT(ServerPlayer& sp, BlockPos pos) {
+	auto& [last,lastpos]=LASTCLICK[sp];
+	auto lastposH = HASH(pos);
+	if (lastposH != lastpos) {
+		last = clock();
+		lastpos = lastposH;
+		return false;
+	}
+	auto now = clock();
+	if (now - last <= RATELIMIT_CLICK)
+		return true;
+	last = now;
+	return false;
+}
 THook(bool, "?useItemOn@GameMode@@UEAA_NAEAVItemStack@@AEBVBlockPos@@EAEBVVec3@@PEBVBlock@@@Z", void* thi, ItemStack& a2, BlockPos& a3_pos, unsigned char side, void * a5, void* a6_block) {
-	if (PlayerUseItemOnEvent::_call(*dAccess<ServerPlayer*, 8>(thi), a3_pos, a2, side))
+	auto& sp = *dAccess<ServerPlayer*, 8>(thi);
+	if (RATELIMIT(sp, a3_pos))
+		return false;
+	if (PlayerUseItemOnEvent::_call(sp, a3_pos, a2, side))
 		return original(thi, a2, a3_pos, side, a5, a6_block);
 	return false;
 }

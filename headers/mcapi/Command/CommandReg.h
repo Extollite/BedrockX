@@ -3,6 +3,7 @@
 #include<unordered_map>
 class CommandMessage {
 	char filler[32];
+public:
 	string get(CommandOrigin const& x) {
 		string (CommandMessage::*rv)(CommandOrigin const&);
 		*(void**)&rv = SYM("?getMessage@CommandMessage@@QEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBVCommandOrigin@@@Z");

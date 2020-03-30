@@ -51,7 +51,7 @@ class BlockActor;
 class ItemStack;
 struct WDim : Wrapped<Dimension> {
 	WDim(Dimension& x) : Wrapped<Dimension>(x) {}
-	LBAPI std::unique_ptr<BlockSource> makeSource();
+	LBAPI class BlockSource& getBlockSource_();
 	LBAPI void setBlock(int x, int y, int z, Block const& blk);
 	LBAPI struct WBlock getBlock(int x, int y, int z);
 	LBAPI int getID();
@@ -90,7 +90,7 @@ struct WPlayer : Wrapped<ServerPlayer> {
 	LBAPI xuid_t getXuid();
 	LBAPI string getRealName();
 	LBAPI permlvl_t getPermLvl();
-	LBAPI string getIP();
+	LBAPI class BlockSource& getBlockSource_();
 	void teleport(Vec3 to, int dimid) {
 		actor()->teleport(to, dimid);
 	}
@@ -111,6 +111,9 @@ struct WPlayer : Wrapped<ServerPlayer> {
 	}
 	LBAPI class NetworkIdentifier* _getNI();
 	LBAPI class Certificate* _getCert();
+	string getIP() {
+		return BDX::getIP(*_getNI());
+	}
 };
 struct WItem : Wrapped<ItemStack> {
 	WItem(ItemStack& is) : Wrapped<ItemStack>(is) {}

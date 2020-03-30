@@ -89,6 +89,7 @@ LBAPI string WPlayer::getRealName() {
 LBAPI permlvl_t WPlayer::getPermLvl() {
 	return v->getCommandPermissionLevel()&0xff;
 }
-LBAPI string WPlayer::getIP() {
-	return (LocateS<RakPeer_t>()->getAdr(*_getNI()).toString());
+LBAPI class BlockSource& WPlayer::getBlockSource_() {
+	//_ZNK5Actor9getRegionEv
+	return *dAccess<BlockSource*, 0x348>(v);
 }

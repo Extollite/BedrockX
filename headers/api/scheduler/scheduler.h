@@ -4,39 +4,29 @@
 #include <api/lightbase.h>
 typedef unsigned long long tick_t;
 typedef unsigned int taskid_t;
-extern LIGHTBASE_API tick_t ticknow;
-extern LIGHTBASE_API taskid_t gtaskid;
-struct ITaskBase {
-	tick_t schedule_time;
-	tick_t interval;
-	taskid_t taskid;
-	function<void(void)> cb;
-	ITaskBase(function<void(void)>&& fn, tick_t time_diff, tick_t interval, taskid_t tid) : schedule_time(ticknow + time_diff), interval(interval), taskid(tid), cb(std::move(fn)) {}
-};
-struct DelayedTask:ITaskBase {
-	DelayedTask(function<void(void)>&& fn, tick_t time_diff) : ITaskBase(std::move(fn),time_diff,0,++gtaskid) {}
-};
-struct RepeatingTask : ITaskBase {
-	RepeatingTask(function<void(void)>&& fn, tick_t interval) : ITaskBase(std::move(fn), 0, interval, ++gtaskid) {}
-};
-struct DelayedRepeatingTask : ITaskBase {
-	DelayedRepeatingTask(function<void(void)>&& fn, tick_t time_diff, tick_t interval) : ITaskBase(std::move(fn), time_diff, interval, ++gtaskid) {}
-};
-#ifdef LIGHTBASE_EXPORTS
-struct MainHandler {
-	LIGHTBASE_API bool cancel(taskid_t id);
-	bool __cancel(taskid_t id);
-	LIGHTBASE_API taskid_t schedule(ITaskBase&& task);
-	taskid_t __schedule(ITaskBase&& task);
-	LIGHTBASE_API void scheduleNext(function<void()>&& fn);
-	void nextrun();
-	void tick();
-	MainHandler();
-};
-#else
-struct MainHandler {
+namespace Handler {
+	extern LIGHTBASE_API tick_t ticknow;
+	extern LIGHTBASE_API taskid_t gtaskid;
+	struct ITaskBase {
+		tick_t schedule_time;
+		tick_t interval;
+		taskid_t taskid;
+		function<void(void)> cb;
+		ITaskBase(function<void(void)>&& fn, tick_t time_diff, tick_t interval, taskid_t tid) : schedule_time(Handler::ticknow + time_diff), interval(interval), taskid(tid), cb(std::move(fn)) {}
+	};
 	LIGHTBASE_API bool cancel(taskid_t id);
 	LIGHTBASE_API taskid_t schedule(ITaskBase&& task);
 	LIGHTBASE_API void scheduleNext(function<void()>&& fn);
 };
-#endif
+
+struct DelayedTask:Handler::ITaskBase {
+	DelayedTask(function<void(void)>&& fn, tick_t time_diff) : Handler::ITaskBase(std::move(fn),time_diff,0,++Handler::gtaskid) {}
+};
+struct RepeatingTask : Handler::ITaskBase {
+	RepeatingTask(function<void(void)>&& fn, tick_t interval) : Handler::ITaskBase(std::move(fn), 0, interval, ++Handler::gtaskid) {}
+};
+struct DelayedRepeatingTask : Handler::ITaskBase {
+	DelayedRepeatingTask(function<void(void)>&& fn, tick_t time_diff, tick_t interval) : Handler::ITaskBase(std::move(fn), time_diff, interval, ++Handler::gtaskid) {}
+};
+
+
